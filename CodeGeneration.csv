@@ -1,0 +1,8 @@
+﻿UnitType;ItemType;ItemName;SettingName;SettingValue
+Logic;Controller;App.Record;Visibility;public
+Logic;Facade;App.Record;Generate;True
+Logic;Factory;App.Record;Generate;True
+WebApi;Controller;App.Record;Generate;True
+AspMvc;Controller;App.Record;Generate;True
+WebApi;Property;App.EntityType.EntityTypeId;Attributes;System.Text.Json.Serialization.JsonIgnore
+AspMvc;Property;App.ColumnInfoFilter.EntityTypeId;Generate;False
