@@ -1,0 +1,25 @@
+@*@GeneratedCode*@
+@model QTHungryDogs.AspMvc.Models.App.SpecialOpeningHour
+
+<tr>
+ <td>
+  @Html.DisplayFor(model => model.RestaurantId)
+ </td>
+ <td>
+  @Html.DisplayFor(model => model.From)
+ </td>
+ <td>
+  @Html.DisplayFor(model => model.To)
+ </td>
+ <td>
+  @Html.DisplayFor(model => model.Notes)
+ </td>
+ <td>
+  @Html.DisplayFor(model => model.State)
+ </td>
+ <td>
+  @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+  @Html.ActionLink("Details", "Details", new { id=Model.Id }) |
+  @Html.ActionLink("Delete", "Delete", new { id=Model.Id })
+ </td>
+</tr>
