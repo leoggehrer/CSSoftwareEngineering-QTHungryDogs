@@ -1,4 +1,5 @@
-﻿using QTHungryDogs.Logic.Modules.Common;
+﻿using QTHungryDogs.Logic.Entities.Base;
+using QTHungryDogs.Logic.Modules.Common;
 
 namespace QTHungryDogs.Logic.Entities.App
 {
@@ -11,5 +12,8 @@ namespace QTHungryDogs.Logic.Entities.App
         [MaxLength(2048)]
         public string? Notes { get; set; }
         public SpecialOpenState State { get; set; }
+
+        // Navigation properties
+        public Restaurant? Restaurant { get; set; }
     }
 }

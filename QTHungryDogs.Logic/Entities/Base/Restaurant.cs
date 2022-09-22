@@ -15,5 +15,9 @@ namespace QTHungryDogs.Logic.Entities.Base
         [MaxLength(256)]
         public string Email { get; set; } = String.Empty;
         public RestaurantState State { get; set; }
+
+        // Navigation properties
+        public List<Base.OpeningHour> OpeningHoures { get; set; } = new();
+        public List<App.SpecialOpeningHour> SpecialOpeningHoures { get; set; } = new();
     }
 }
