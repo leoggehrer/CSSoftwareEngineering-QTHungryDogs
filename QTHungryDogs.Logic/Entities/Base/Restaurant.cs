@@ -1,4 +1,5 @@
-﻿using QTHungryDogs.Logic.Modules.Common;
+﻿using QTHungryDogs.Logic.Entities.App;
+using QTHungryDogs.Logic.Modules.Common;
 
 namespace QTHungryDogs.Logic.Entities.Base
 {
@@ -15,5 +16,9 @@ namespace QTHungryDogs.Logic.Entities.Base
         [MaxLength(256)]
         public string Email { get; set; } = String.Empty;
         public RestaurantState State { get; set; }
+
+        // Navigation properties
+        public List<OpeningHour> OpeningHours { get; set; } = new();
+        public List<SpecialOpeningHour> SpecialOpeningHours { get; set; } = new();
     }
 }
