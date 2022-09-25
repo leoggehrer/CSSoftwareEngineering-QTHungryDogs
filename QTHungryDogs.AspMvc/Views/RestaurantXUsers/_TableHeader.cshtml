@@ -1,0 +1,38 @@
+@*@GeneratedCode*@
+@model IEnumerable<QTHungryDogs.AspMvc.Models.Base.RestaurantXUser>
+@{
+  var orderBy = (string)ViewBag.OrderBy ?? string.Empty;
+}
+<thead>
+ <tr>
+  <th>
+   @if (orderBy.StartsWith("RestaurantId") && orderBy.EndsWith("ASC"))
+    {
+     <a asp-action="OrderBy" asp-route-orderBy="RestaurantId DESC" class="btn btn-outline"><strong>RestaurantId</strong> <i class="fa fa-sort-desc"></i></a>
+    }
+   else if (orderBy.StartsWith("RestaurantId") && orderBy.EndsWith("DESC"))
+    {
+     <a asp-action="OrderBy" asp-route-orderBy="" class="btn btn-outline"><strong>RestaurantId</strong> <i class="fa fa-sort-asc"></i></a>
+    }
+   else
+    {
+     <a asp-action="OrderBy" asp-route-orderBy="RestaurantId ASC" class="btn btn-outline"><strong>RestaurantId</strong></a>
+    }
+  </th>
+  <th>
+   @if (orderBy.StartsWith("UserId") && orderBy.EndsWith("ASC"))
+    {
+     <a asp-action="OrderBy" asp-route-orderBy="UserId DESC" class="btn btn-outline"><strong>UserId</strong> <i class="fa fa-sort-desc"></i></a>
+    }
+   else if (orderBy.StartsWith("UserId") && orderBy.EndsWith("DESC"))
+    {
+     <a asp-action="OrderBy" asp-route-orderBy="" class="btn btn-outline"><strong>UserId</strong> <i class="fa fa-sort-asc"></i></a>
+    }
+   else
+    {
+     <a asp-action="OrderBy" asp-route-orderBy="UserId ASC" class="btn btn-outline"><strong>UserId</strong></a>
+    }
+  </th>
+  <th></th>
+ </tr>
+</thead>

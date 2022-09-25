@@ -6,11 +6,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();
 
-// Add logic data access components
-#if ACCOUNT_ON
-builder.Services.AddTransient<QTHungryDogs.Logic.Contracts.IDataAccess<QTHungryDogs.Logic.Entities.Account.Role>, QTHungryDogs.Logic.Controllers.Account.RolesController>();
-#endif
-
 // Add session cookie
 builder.Services.AddSession(options =>
 {

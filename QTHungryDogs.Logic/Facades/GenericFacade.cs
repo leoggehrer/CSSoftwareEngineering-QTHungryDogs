@@ -16,8 +16,6 @@ namespace QTHungryDogs.Logic.Facades
         where TModel : Models.IdentityModel, new()
         where TEntity : Entities.IdentityEntity, new()
     {
-        private bool disposedValue;
-
         protected GenericController<TEntity> Controller { get; init; }
         protected GenericFacade(GenericController<TEntity> controller)
             : base(controller)
@@ -31,9 +29,10 @@ namespace QTHungryDogs.Logic.Facades
         /// <returns>The facade type</returns>
         internal virtual TModel ToModel(TEntity entity)
         {
-            var result = new TModel();
-
-            result.Source = entity;
+            var result = new TModel
+            {
+                Source = entity
+            };
             return result;
         }
         /// <summary>
@@ -132,6 +131,11 @@ namespace QTHungryDogs.Logic.Facades
 
             return entities.Select(e => ToModel(e)).ToArray();
         }
+        /// <summary>
+        /// Returns all objects of the elements in the collection.
+        /// </summary>
+        /// <param name="includeItems">The include items</param>
+        /// <returns>All objects of the element collection.</returns>
         public virtual async Task<TModel[]> GetAllAsync(params string[] includeItems)
         {
             var entities = await Controller.GetAllAsync(includeItems).ConfigureAwait(false);
@@ -199,6 +203,14 @@ namespace QTHungryDogs.Logic.Facades
 
             return entities.Select(e => ToModel(e)).ToArray();
         }
+        /// <summary>
+        /// Gets a subset of items from the repository.
+        /// </summary>
+        /// <param name="orderBy">Sorts the elements of a sequence in order according to a key.</param>
+        /// <param name="pageIndex">0 based page index.</param>
+        /// <param name="pageSize">The pagesize.</param>
+        /// <param name="includeItems">The include items</param>
+        /// <returns>Subset in accordance with the parameters.</returns>
         public virtual async Task<TModel[]> GetPageListAsync(string orderBy, int pageIndex, int pageSize, params string[] includeItems)
         {
             var entities = await Controller.GetPageListAsync(orderBy, pageIndex, pageSize, includeItems).ConfigureAwait(false);
@@ -220,9 +232,7 @@ namespace QTHungryDogs.Logic.Facades
         /// <summary>
         /// Gets a subset of items from the repository.
         /// </summary>
-        /// <param name="orderBy">Sorts the elements of a sequence according to a sort clause.</param>
-        /// <param name="pageIndex">0 based page index.</param>
-        /// <param name="pageSize">The pagesize.</param>
+        /// <param name="predicate">A string to test each element for a condition.</param>
         /// <param name="includeItems">The include items</param>
         /// <returns>Subset in accordance with the parameters.</returns>
         public virtual async Task<TModel[]> QueryAsync(string predicate, params string[] includeItems)
@@ -396,27 +406,6 @@ namespace QTHungryDogs.Logic.Facades
             return Controller.SaveChangesAsync();
         }
         #endregion SaveChanges
-
-        #region Dispose pattern
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    Controller.Dispose();
-                }
-                disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-        #endregion Dispose pattern
     }
 }
 //MdEnd

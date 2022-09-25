@@ -3,7 +3,6 @@
 #nullable disable
 using Microsoft.AspNetCore.Mvc;
 using QTHungryDogs.Logic.Contracts;
-using System.Drawing.Printing;
 #if ACCOUNT_ON
 using Microsoft.AspNetCore.Mvc.Filters;
 #endif
@@ -21,14 +20,20 @@ namespace QTHungryDogs.AspMvc.Controllers
     {
         public enum ActionMode : int
         {
-            Index,
-            Details,
-            ViewCreate,
-            Create,
-            ViewEdit,
-            Edit,
-            ViewDelete,
-            Delete,
+            Index = 1,
+            Details = 2,
+            ViewCreate = 4,
+            Create = 8,
+            ViewEdit = 16,
+            Edit = 32,
+            ViewDelete = 64,
+            Delete = 128,
+
+            CreateAction = ViewCreate + Create,
+            EditAction = ViewEdit + Edit,
+            DeleteAction = ViewDelete + Delete,
+
+            CreateOrEditAction = CreateAction + EditAction,
         }
         protected IBaseAccess<TAccessModel> DataAccess { get; init; }
 

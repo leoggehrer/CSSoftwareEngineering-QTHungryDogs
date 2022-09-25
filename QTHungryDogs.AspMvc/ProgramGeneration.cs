@@ -10,6 +10,7 @@ namespace QTHungryDogs.AspMvc
         {
             builder.Services.AddTransient<QTHungryDogs.Logic.Contracts.Base.IOpeningHoursAccess<QTHungryDogs.Logic.Entities.Base.OpeningHour>, QTHungryDogs.Logic.Controllers.Base.OpeningHoursController>();
             builder.Services.AddTransient<QTHungryDogs.Logic.Contracts.Base.IRestaurantsAccess<QTHungryDogs.Logic.Entities.Base.Restaurant>, QTHungryDogs.Logic.Controllers.Base.RestaurantsController>();
+            builder.Services.AddTransient<QTHungryDogs.Logic.Contracts.Base.IRestaurantXUsersAccess<QTHungryDogs.Logic.Entities.Base.RestaurantXUser>, QTHungryDogs.Logic.Controllers.Base.RestaurantXUsersController>();
             builder.Services.AddTransient<QTHungryDogs.Logic.Contracts.App.ISpecialOpeningHoursAccess<QTHungryDogs.Logic.Entities.App.SpecialOpeningHour>, QTHungryDogs.Logic.Controllers.App.SpecialOpeningHoursController>();
         }
     }

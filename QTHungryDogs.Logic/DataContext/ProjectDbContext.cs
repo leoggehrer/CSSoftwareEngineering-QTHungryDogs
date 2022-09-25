@@ -41,7 +41,6 @@ namespace QTHungryDogs.Logic.DataContext
 #if ACCOUNT_ON
         public DbSet<Entities.Account.Identity>? IdentitySet { get; set; }
         public DbSet<Entities.Account.Role>? RoleSet { get; set; }
-        public DbSet<Entities.Account.IdentityXRole>? IdentityXRoleSet { get; set; }
         public DbSet<Entities.Account.User>? UserSet { get; set; }
         public DbSet<Entities.Account.LoginSession>? LoginSessionSet { get; set; }
 #if LOGGING_ON
@@ -132,11 +131,6 @@ namespace QTHungryDogs.Logic.DataContext
                 {
                     handled = true;
                     result = RoleSet as DbSet<E>;
-                }
-                else if (typeof(E) == typeof(Entities.Account.IdentityXRole))
-                {
-                    handled = true;
-                    result = IdentityXRoleSet as DbSet<E>;
                 }
                 else if (typeof(E) == typeof(Entities.Account.User))
                 {

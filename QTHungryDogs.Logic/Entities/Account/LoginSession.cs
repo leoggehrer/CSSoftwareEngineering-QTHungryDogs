@@ -3,14 +3,14 @@
 #if ACCOUNT_ON
 namespace QTHungryDogs.Logic.Entities.Account
 {
-    [Table("LoginSessions", Schema = "Account")]
+    [Table("LoginSessions", Schema = "account")]
     internal partial class LoginSession : VersionEntity
     {
         private DateTime? _logoutTime;
         private Identity? identity;
 
         public int IdentityId { get; internal set; }
-        public int TimeOutInMinutes { get; private set; }
+        public int TimeOutInMinutes { get; internal set; }
         [Required]
         [MaxLength(128)]
         public string SessionToken { get; internal set; } = string.Empty;
@@ -42,9 +42,9 @@ namespace QTHungryDogs.Logic.Entities.Account
 
         #region transient properties
         [NotMapped]
-        public byte[] PasswordHash { get; private set; } = Array.Empty<byte>();
+        internal byte[] PasswordHash { get; set; } = Array.Empty<byte>();
         [NotMapped]
-        public byte[] PasswordSalt { get; private set; } = Array.Empty<byte>();
+        internal byte[] PasswordSalt { get; set; } = Array.Empty<byte>();
         [NotMapped]
         public bool IsRemoteAuth { get; internal set; }
         [NotMapped]

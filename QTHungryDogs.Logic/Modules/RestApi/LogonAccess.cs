@@ -1,11 +1,12 @@
 ﻿//@CodeCopy
 //MdStart
-using QTHungryDogs.Logic.Modules.Exceptions;
-using System.Net.Http.Headers;
-using System.Text.Json;
-
+#if ACCOUNT_ON
 namespace QTHungryDogs.Logic.Modules.RestApi
 {
+    using QTHungryDogs.Logic.Modules.Exceptions;
+    using System.Net.Http.Headers;
+    using System.Text.Json;
+
     public partial class LogonAccess
     {
         protected static string MediaType => "application/json";
@@ -68,5 +69,5 @@ namespace QTHungryDogs.Logic.Modules.RestApi
         }
     }
 }
-
+#endif
 //MdEnd

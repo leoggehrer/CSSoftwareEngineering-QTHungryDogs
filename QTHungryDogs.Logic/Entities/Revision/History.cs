@@ -3,7 +3,7 @@
 #if ACCOUNT_ON && REVISION_ON
 namespace QTHungryDogs.Logic.Entities.Revision
 {
-    [Table("Histories", Schema = "Revision")]
+    [Table("Histories", Schema = "revision")]
     internal partial class History : IdentityEntity
     {
         public int IdentityId { get; set; }

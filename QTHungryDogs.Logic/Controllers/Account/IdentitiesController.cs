@@ -1,11 +1,15 @@
 ﻿//@CodeCopy
 //MdStart
 #if ACCOUNT_ON
+using QTHungryDogs.Logic.Entities.Account;
+using System.Reflection;
+
 namespace QTHungryDogs.Logic.Controllers.Account
 {
     [Modules.Security.Authorize("SysAdmin", "AppAdmin")]
-    internal sealed partial class IdentitiesController : GenericController<Entities.Account.Identity>
+    internal sealed partial class IdentitiesController : GenericController<Entities.Account.Identity>, Contracts.Account.IIdentitiesAccess<Entities.Account.Identity>
     {
+        internal override IEnumerable<string> Includes => new string[] { "Roles" };
         public IdentitiesController()
         {
         }
@@ -13,13 +17,66 @@ namespace QTHungryDogs.Logic.Controllers.Account
         public IdentitiesController(ControllerObject other) : base(other)
         {
         }
-        public Task<Entities.Account.Identity?> GetValidIdentityByEmail(string email)
+
+        protected override void BeforeActionExecute(ActionType actionType, Identity entity)
         {
-            return EntitySet.Include(e => e.IdentityXRoles)
-                                 .ThenInclude(e => e.Role)
-                                 .FirstOrDefaultAsync(e => e.State == Modules.Common.State.Active
-                                                        && e.AccessFailedCount < 4
-                                                        && e.Email.ToLower() == email.ToLower());
+            if (actionType == ActionType.Insert)
+            {
+                entity.Guid = Guid.NewGuid().ToString();
+            }
+            else if (actionType == ActionType.Update)
+            {
+                using var ctrl = new IdentitiesController();
+                var dbEntity = ctrl.EntitySet.Find(entity.Id);
+
+                if (dbEntity != null)
+                {
+                    entity.Guid = dbEntity.Guid;
+                }
+            }
+            base.BeforeActionExecute(actionType, entity);
+        }
+        internal Task<Entities.Account.Identity?> GetValidIdentityByEmailAsync(string email)
+        {
+            return EntitySet.Include(e => e.Roles)
+                            .FirstOrDefaultAsync(e => e.State == Modules.Common.State.Active
+                                                   && e.AccessFailedCount < 4
+                                                   && e.Email.ToLower() == email.ToLower());
+        }
+
+        public async Task AddRoleAsync(int id, int roleId)
+        {
+            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Create).ConfigureAwait(false);
+
+            var roleCtrl = new RolesController(this);
+            var role = await roleCtrl.GetByIdAsync(roleId).ConfigureAwait(false);
+
+            if (role != null)
+            {
+                var entity = await GetByIdAsync(id).ConfigureAwait(false);
+
+                if (entity != null)
+                {
+                    entity.Roles.Add(role);
+                }
+            }
+        }
+        public async Task RemoveRoleAsync(int id, int roleId)
+        {
+            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Delete).ConfigureAwait(false);
+
+            var roleCtrl = new RolesController(this);
+            var role = await roleCtrl.GetByIdAsync(roleId).ConfigureAwait(false);
+
+            if (role != null)
+            {
+                var entity = await GetByIdAsync(id).ConfigureAwait(false);
+
+                if (entity != null)
+                {
+                    entity.Roles.Remove(role);
+                }
+            }
         }
     }
 }

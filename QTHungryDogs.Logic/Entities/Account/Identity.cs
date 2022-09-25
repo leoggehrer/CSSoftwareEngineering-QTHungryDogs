@@ -1,11 +1,12 @@
 ﻿//@CodeCopy
 //MdStart
 #if ACCOUNT_ON
-using QTHungryDogs.Logic.Modules.Common;
-
 namespace QTHungryDogs.Logic.Entities.Account
 {
-    [Table("Identities", Schema = "Account")]
+    using QTHungryDogs.Logic.Modules.Common;
+
+    [Table("Identities", Schema = "account")]
+    [Index(nameof(Name), IsUnique = true)]
     [Index(nameof(Email), IsUnique = true)]
     internal partial class Identity : VersionEntity
     {
@@ -35,8 +36,9 @@ namespace QTHungryDogs.Logic.Entities.Account
         #endregion transient properties
 
         // Navigation properties
+        [ForeignKey("RoleId")]
+        public List<Role> Roles { get; set; } = new();
         public List<LoginSession> LoginSessions { get; set; } = new();
-        public List<IdentityXRole> IdentityXRoles { get; set; } = new();
     }
 }
 #endif

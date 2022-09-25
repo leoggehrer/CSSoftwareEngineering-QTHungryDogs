@@ -73,6 +73,51 @@ namespace QTHungryDogs.Logic
         {
             return AccountManager.LogoutAsync(sessionToken);
         }
+
+        public static async Task<Identity> GetIdentityByAsync(string sessionToken, int id)
+        {
+            using var ctrl = new Controllers.Account.IdentitiesController() { SessionToken = sessionToken };
+            var entity = await ctrl.GetByIdAsync(id).ConfigureAwait(false);
+
+            return entity != null ? Identity.Create(entity) : throw new Modules.Exceptions.LogicException(Modules.Exceptions.ErrorType.InvalidId);
+        }
+        public static async Task<Identity[]> GetIdentitiesAsync(string sessionToken)
+        {
+            using var ctrl = new Controllers.Account.IdentitiesController() { SessionToken = sessionToken };
+            var entities = await ctrl.GetAllAsync().ConfigureAwait(false);
+
+            return entities.Select(e => Identity.Create(e)).ToArray();
+        }
+        public static async Task<Identity> UpdateIdentityAsync(string sessionToken, int id, Identity identity)
+        {
+            using var ctrl = new Controllers.Account.IdentitiesController() { SessionToken = sessionToken };
+            var entity = await ctrl.GetByIdAsync(id).ConfigureAwait(false);
+
+            if (entity == null)
+            {
+                throw new Modules.Exceptions.LogicException(Modules.Exceptions.ErrorType.InvalidId);
+            }
+
+            entity.CopyFrom(identity, n => n.Equals("Guid", StringComparison.InvariantCultureIgnoreCase) == false);
+            entity = await ctrl.UpdateAsync(entity).ConfigureAwait(false);
+            await ctrl.SaveChangesAsync().ConfigureAwait(false);
+
+            identity.CopyFrom(entity);
+            return identity;
+        }
+        public static async Task DeleteIdentityAsync(string sessionToken, int id)
+        {
+            using var ctrl = new Controllers.Account.IdentitiesController() { SessionToken = sessionToken };
+            var entity = await ctrl.GetByIdAsync(id).ConfigureAwait(false);
+
+            if (entity == null)
+            {
+                throw new Modules.Exceptions.LogicException(Modules.Exceptions.ErrorType.InvalidId);
+            }
+
+            await ctrl.DeleteAsync(id).ConfigureAwait(false);
+            await ctrl.SaveChangesAsync().ConfigureAwait(false);
+        }
     }
 }
 #endif

@@ -1,11 +1,10 @@
 ﻿//@CodeCopy
 //MdStart
-#if ACCOUNT_ON
-
+#if ACCOUNT_ON && LOGGING_ON
 namespace QTHungryDogs.Logic.Entities.Logging
 {
-    [Table("ActionLogs", Schema = "Logging")]
-    public partial class ActionLog : IdentityEntity
+    [Table("ActionLogs", Schema = "logging")]
+    internal partial class ActionLog : IdentityEntity
     {
         public int IdentityId { get; internal set; }
         public DateTime Time { get; internal set; }

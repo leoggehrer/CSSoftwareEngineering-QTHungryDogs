@@ -8,6 +8,7 @@ namespace QTHungryDogs.Logic.Models
 {
     public abstract partial class IdentityModel : IIdentifyable
     {
+        private int _id;
         protected Entities.IdentityEntity? _source;
 
         internal virtual Entities.IdentityEntity Source
@@ -20,8 +21,14 @@ namespace QTHungryDogs.Logic.Models
         /// </summary>
         public virtual int Id 
         {
-            get => Source.Id; 
-            set => Source.Id = value; 
+            get => Source?.Id ?? _id;
+            set
+            {
+                if (Source != null)
+                    Source.Id = value;
+                else
+                    _id = value;
+            }
         }
         /// <summary>
         /// Determines whether two object instances are equal

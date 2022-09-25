@@ -169,7 +169,7 @@ namespace QTHungryDogs.Logic.Modules.Security
                 BeforeLogging(subjectType, methodBase, accessType, ref handled);
                 if (handled == false)
                 {
-                    using var actionLogCtrl = new Controllers.Account.ActionLogsController()
+                    using var actionLogCtrl = new Controllers.Logging.ActionLogsController()
                     {
                         SessionToken = SystemAuthorizationToken
                     };

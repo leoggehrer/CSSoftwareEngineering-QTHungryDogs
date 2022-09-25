@@ -29,6 +29,7 @@
     }
 }
 
+<img class="card-img-top" src="/img/banner.jpg" style="margin-top: -20px; margin-bottom: -50px" alt="Banner">
 <h1>@title</h1>
 
 @if (filter != null && filter.Show)
@@ -58,7 +59,7 @@
 else
 {
     <p>
-        <a asp-action="Create" class="btn btn-outline-success">Create New</a>
+        <a asp-action="Create" class="btn btn-outline-success" title="Add item"><i class="fa fa-plus"></i></a>
     </p>
 }
 

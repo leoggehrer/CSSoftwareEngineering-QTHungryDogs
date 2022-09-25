@@ -4,7 +4,7 @@
 namespace QTHungryDogs.Logic.Controllers.Account
 {
     [Modules.Security.Authorize("SysAdmin", "AppAdmin")]
-    public sealed partial class RolesController : GenericController<Entities.Account.Role>
+    internal sealed partial class RolesController : GenericController<Entities.Account.Role>, Contracts.Account.IRolesAccess<Entities.Account.Role>
     {
         public RolesController()
         {

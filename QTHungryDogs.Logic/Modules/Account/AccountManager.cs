@@ -44,8 +44,11 @@ namespace QTHungryDogs.Logic.Modules.Account
                 try
                 {
                     var (Hash, Salt) = CreatePasswordHash(password);
-                    using var identityXRolesCtrl = new Controllers.Account.IdentityXRolesController(identitiesCtrl);
-
+                    var role = new Role
+                    {
+                        Designation = StaticLiterals.RoleSysAdmin,
+                        Description = "Created by the system (first identity).",
+                    };
                     var identity = new Identity
                     {
                         Guid = Guid.NewGuid().ToString(),
@@ -55,20 +58,10 @@ namespace QTHungryDogs.Logic.Modules.Account
                         PasswordSalt = Salt,
                         EnableJwtAuth = enableJwtAuth,
                     };
-                    var role = new Role
+                    identity.Roles.Add(role);
 
-                    {
-                        Designation = StaticLiterals.RoleSysAdmin,
-                        Description = "Created by the system (first identity).",
-                    };
-                    var identityXRole = new IdentityXRole
-                    {
-                        Identity = identity,
-                        Role = role,
-                    };
-
-                    await identityXRolesCtrl.InsertAsync(identityXRole).ConfigureAwait(false);
-                    await identityXRolesCtrl.SaveChangesAsync().ConfigureAwait(false);
+                    await identitiesCtrl.InsertAsync(identity).ConfigureAwait(false);
+                    await identitiesCtrl.SaveChangesAsync().ConfigureAwait(false);
                 }
                 catch (Exception)
                 {
@@ -105,24 +98,22 @@ namespace QTHungryDogs.Logic.Modules.Account
                 if (roles.Length > 0)
                 {
                     using var rolesCtrl = new Controllers.Account.RolesController(identitiesCtrl);
-                    using var identityXRolesCtrl = new Controllers.Account.IdentityXRolesController(identitiesCtrl);
-                    var dbRoles = await rolesCtrl.GetAllAsync().ConfigureAwait(false);
+                    var rolesInDb = await rolesCtrl.GetAllAsync().ConfigureAwait(false);
 
                     foreach (var role in roles)
                     {
                         var accRole = role.Trim();
-                        var dbRole = dbRoles.FirstOrDefault(r => r.Designation.Equals(accRole, StringComparison.CurrentCultureIgnoreCase));
-                        var identityXRole = new IdentityXRole() { Identity = identity };
+                        var dbRole = rolesInDb.FirstOrDefault(r => r.Designation.Equals(accRole, StringComparison.CurrentCultureIgnoreCase));
 
                         if (dbRole != null)
                         {
-                            identityXRole.Role = dbRole;
+                            identity.Roles.Add(dbRole);
                         }
                         else
                         {
-                            identityXRole.Role = new Role() { Designation = accRole };
+                            identity.Roles.Add(new Role() { Designation = accRole });
                         }
-                        await identityXRolesCtrl.InsertAsync(identityXRole).ConfigureAwait(false);
+                        await identitiesCtrl.InsertAsync(identity).ConfigureAwait(false);
                     }
                 }
                 else
@@ -274,13 +265,16 @@ namespace QTHungryDogs.Logic.Modules.Account
                 if (VerifyPasswordHash(oldPassword, identity.PasswordHash, identity.PasswordSalt) == false)
                     throw new AuthorizationException(ErrorType.InvalidPassword);
 
+                var (Hash, Salt) = CreatePasswordHash(newPassword);
+
                 identity.Password = newPassword;
+                identity.PasswordHash = Hash;
+                identity.PasswordSalt = Salt;
+
                 await identitiesCtrl.UpdateAsync(identity).ConfigureAwait(false);
                 await identitiesCtrl.SaveChangesAsync().ConfigureAwait(false);
                 if (login.Identity != null)
                 {
-                    var (Hash, Salt) = CreatePasswordHash(newPassword);
-
                     login.Identity.PasswordHash = Hash;
                     login.Identity.PasswordSalt = Salt;
                 }
@@ -307,14 +301,17 @@ namespace QTHungryDogs.Logic.Modules.Account
             if (identity == null)
                 throw new AuthorizationException(ErrorType.InvalidAccount);
 
+            var (Hash, Salt) = CreatePasswordHash(newPassword);
+
             identity.AccessFailedCount = 0;
             identity.Password = newPassword;
+            identity.PasswordHash = Hash;
+            identity.PasswordSalt = Salt;
+
             await identitiesCtrl.UpdateAsync(identity).ConfigureAwait(false);
             await identitiesCtrl.SaveChangesAsync().ConfigureAwait(false);
             if (login.Identity != null)
             {
-                var (Hash, Salt) = CreatePasswordHash(newPassword);
-
                 login.Identity.PasswordHash = Hash;
                 login.Identity.PasswordSalt = Salt;
             }
@@ -370,6 +367,7 @@ namespace QTHungryDogs.Logic.Modules.Account
                 {
                     using var identitiesCtrl = new Controllers.Account.IdentitiesController(sessionsCtrl);
                     var identity = await identitiesCtrl.EntitySet
+                                                       .Include(e => e.Roles)
                                                        .FirstOrDefaultAsync(e => e.Id == session.IdentityId)
                                                        .ConfigureAwait(false);
 
@@ -378,7 +376,7 @@ namespace QTHungryDogs.Logic.Modules.Account
                         session.Name = identity.Name;
                         session.Email = identity.Email;
                         session.Identity = identity;
-                        session.Roles.AddRange(await QueryIdentityRolesAsync(sessionsCtrl, identity.Id).ConfigureAwait(false));
+                        session.Roles.AddRange(identity.Roles);
                         session.JsonWebToken = JsonWebToken.GenerateToken(new Claim[]
                         {
                             new Claim(ClaimTypes.Email, identity.Email),
@@ -403,11 +401,7 @@ namespace QTHungryDogs.Logic.Modules.Account
                 {
                     SessionToken = Authorization.SystemAuthorizationToken,
                 };
-                var identity = await identitiesCtrl.EntitySet
-                                                   .FirstOrDefaultAsync(e => e.State == Common.State.Active
-                                                                          && e.AccessFailedCount < 4
-                                                                          && e.Email.ToLower() == email.ToLower())
-                                                   .ConfigureAwait(false);
+                var identity = await identitiesCtrl.GetValidIdentityByEmailAsync(email).ConfigureAwait(false);
 
                 if (identity != null && VerifyPasswordHash(password, identity.PasswordHash, identity.PasswordSalt))
                 {
@@ -422,7 +416,7 @@ namespace QTHungryDogs.Logic.Modules.Account
                         session.Name = identity.Name;
                         session.Email = identity.Email;
                         session.Identity = identity;
-                        session.Roles.AddRange(await QueryIdentityRolesAsync(sessionsCtrl, identity.Id).ConfigureAwait(false));
+                        session.Roles.AddRange(identity.Roles);
                         session.JsonWebToken = JsonWebToken.GenerateToken(new Claim[]
                         {
                             new Claim(ClaimTypes.Email, identity.Email),
@@ -447,7 +441,7 @@ namespace QTHungryDogs.Logic.Modules.Account
                 {
                     SessionToken = Authorization.SystemAuthorizationToken,
                 };
-                var identity = await identitiesCtrl.GetValidIdentityByEmail(email).ConfigureAwait(false);
+                var identity = await identitiesCtrl.GetValidIdentityByEmailAsync(email).ConfigureAwait(false);
 
                 if (identity != null && VerifyPasswordHash(password, identity.PasswordHash, identity.PasswordSalt))
                 {
@@ -460,7 +454,7 @@ namespace QTHungryDogs.Logic.Modules.Account
                         OptionalInfo = optionalInfo,
                         Identity = identity,
                     };
-                    session.Roles.AddRange(identity.IdentityXRoles.Select(e => e.Role!));
+                    session.Roles.AddRange(identity.Roles);
                     session.JsonWebToken = JsonWebToken.GenerateToken(new Claim[]
                     {
                         new Claim(ClaimTypes.Email, identity.Email),
@@ -484,15 +478,6 @@ namespace QTHungryDogs.Logic.Modules.Account
             {
                 result = querySession.Clone();
             }
-            return result;
-        }
-        internal static async Task<IEnumerable<Role>> QueryIdentityRolesAsync(ControllerObject controllerObject, int identityId)
-        {
-            var result = new List<Role>();
-            using var identityXRolesCtrl = new Controllers.Account.IdentityXRolesController(controllerObject);
-            var roles = await identityXRolesCtrl.QueryIdentityRolesAsync(identityId).ConfigureAwait(false);
-
-            result.AddRange(roles);
             return result;
         }
         #endregion Internal logon

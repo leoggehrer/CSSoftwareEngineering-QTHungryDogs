@@ -22,6 +22,21 @@ namespace QTHungryDogs.Logic.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("IdentityRole", b =>
+                {
+                    b.Property<int>("IdentityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdentityId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("IdentityRole", "account");
+                });
+
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Account.Identity", b =>
                 {
                     b.Property<int>("Id")
@@ -77,35 +92,10 @@ namespace QTHungryDogs.Logic.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("Identities", "Account");
-                });
+                    b.HasIndex("Name")
+                        .IsUnique();
 
-            modelBuilder.Entity("QTHungryDogs.Logic.Entities.Account.IdentityXRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("IdentityId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdentityId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("IdentityXRoles", "Account");
+                    b.ToTable("Identities", "account");
                 });
 
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Account.LoginSession", b =>
@@ -149,7 +139,7 @@ namespace QTHungryDogs.Logic.Migrations
 
                     b.HasIndex("IdentityId");
 
-                    b.ToTable("LoginSessions", "Account");
+                    b.ToTable("LoginSessions", "account");
                 });
 
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Account.Role", b =>
@@ -180,7 +170,7 @@ namespace QTHungryDogs.Logic.Migrations
                     b.HasIndex("Designation")
                         .IsUnique();
 
-                    b.ToTable("Roles", "Account");
+                    b.ToTable("Roles", "account");
                 });
 
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Account.User", b =>
@@ -191,7 +181,7 @@ namespace QTHungryDogs.Logic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Firstname")
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
@@ -199,7 +189,7 @@ namespace QTHungryDogs.Logic.Migrations
                     b.Property<int>("IdentityId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Lastname")
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
@@ -211,7 +201,9 @@ namespace QTHungryDogs.Logic.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", "Account");
+                    b.HasIndex("IdentityId");
+
+                    b.ToTable("Users", "account");
                 });
 
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.App.SpecialOpeningHour", b =>
@@ -329,6 +321,33 @@ namespace QTHungryDogs.Logic.Migrations
                     b.ToTable("Restaurants", "base");
                 });
 
+            modelBuilder.Entity("QTHungryDogs.Logic.Entities.Base.RestaurantXUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("RestaurantXUsers", "base");
+                });
+
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Logging.ActionLog", b =>
                 {
                     b.Property<int>("Id")
@@ -359,7 +378,7 @@ namespace QTHungryDogs.Logic.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ActionLogs", "Logging");
+                    b.ToTable("ActionLogs", "logging");
                 });
 
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Revision.History", b =>
@@ -394,32 +413,39 @@ namespace QTHungryDogs.Logic.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Histories", "Revision");
+                    b.ToTable("Histories", "revision");
                 });
 
-            modelBuilder.Entity("QTHungryDogs.Logic.Entities.Account.IdentityXRole", b =>
+            modelBuilder.Entity("IdentityRole", b =>
                 {
-                    b.HasOne("QTHungryDogs.Logic.Entities.Account.Identity", "Identity")
-                        .WithMany("IdentityXRoles")
+                    b.HasOne("QTHungryDogs.Logic.Entities.Account.Role", null)
+                        .WithMany()
                         .HasForeignKey("IdentityId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("QTHungryDogs.Logic.Entities.Account.Role", "Role")
+                    b.HasOne("QTHungryDogs.Logic.Entities.Account.Identity", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Identity");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Account.LoginSession", b =>
                 {
                     b.HasOne("QTHungryDogs.Logic.Entities.Account.Identity", "Identity")
                         .WithMany("LoginSessions")
+                        .HasForeignKey("IdentityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Identity");
+                });
+
+            modelBuilder.Entity("QTHungryDogs.Logic.Entities.Account.User", b =>
+                {
+                    b.HasOne("QTHungryDogs.Logic.Entities.Account.Identity", "Identity")
+                        .WithMany()
                         .HasForeignKey("IdentityId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -438,10 +464,19 @@ namespace QTHungryDogs.Logic.Migrations
                     b.Navigation("Restaurant");
                 });
 
+            modelBuilder.Entity("QTHungryDogs.Logic.Entities.Base.RestaurantXUser", b =>
+                {
+                    b.HasOne("QTHungryDogs.Logic.Entities.Base.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
+                });
+
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Account.Identity", b =>
                 {
-                    b.Navigation("IdentityXRoles");
-
                     b.Navigation("LoginSessions");
                 });
 #pragma warning restore 612, 618

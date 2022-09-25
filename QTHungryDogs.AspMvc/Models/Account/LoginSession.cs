@@ -1,8 +1,8 @@
 ﻿//@CodeCopy
 //MdStart
+#if ACCOUNT_ON
 namespace QTHungryDogs.AspMvc.Models.Account
 {
-#if ACCOUNT_ON
     /// <summary>
     /// A model class for the login data.
     /// </summary>
@@ -41,8 +41,8 @@ namespace QTHungryDogs.AspMvc.Models.Account
         /// <summary>
         /// The login roles.
         /// </summary>
-        public Role[] Roles { get; set; } = Array.Empty<Role>();
+        public AccessRole[] Roles { get; set; } = Array.Empty<AccessRole>();
     }
-#endif
 }
+#endif
 //MdEnd
