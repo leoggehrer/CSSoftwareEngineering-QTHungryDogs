@@ -10,9 +10,8 @@ namespace QTHungryDogs.Logic.Entities.Account
         [Required]
         [MaxLength(64)]
         public string Designation { get; set; } = string.Empty;
-        [Required]
         [MaxLength(256)]
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; }
 
         // Navigation properties
         [ForeignKey("IdentityId")]

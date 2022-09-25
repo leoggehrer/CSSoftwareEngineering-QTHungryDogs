@@ -3,7 +3,6 @@
 namespace QTHungryDogs.Logic.Entities.Base
 {
     [Table("OpeningHours", Schema = "base")]
-    [Index(nameof(RestaurantId), nameof(Weekday), IsUnique = true)]
     public class OpeningHour : VersionEntity
     {
         public int RestaurantId { get; set; }
@@ -12,6 +11,8 @@ namespace QTHungryDogs.Logic.Entities.Base
         public TimeSpan OpenTo { get; set; }
         [MaxLength(2048)]
         public string? Notes { get; set; }
+
+        public bool IsActive { get; set; } = true;
 
         // Navigation properties
         public Restaurant? Restaurant { get; set; }

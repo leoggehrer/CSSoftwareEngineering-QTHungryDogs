@@ -15,7 +15,7 @@ namespace QTHungryDogs.WebApi.Models.Account
         /// <summary>
         /// Gets and sets a role description.
         /// </summary>
-        public string Description { get; set; } = string.Empty;
+        public string? Description { get; set; } = string.Empty;
 
         /// <summary>
         /// Creates an instance of Identity and copies the properties of the same name from the object parameter. 

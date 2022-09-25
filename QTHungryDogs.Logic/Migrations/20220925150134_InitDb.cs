@@ -92,9 +92,14 @@ namespace QTHungryDogs.Logic.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     OwnerName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     UniqueName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    AddressStreet = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    AddressHousenumber = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
+                    AddressZipcode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    AddressCity = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
                     State = table.Column<int>(type: "int", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
@@ -111,31 +116,12 @@ namespace QTHungryDogs.Logic.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Designation = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SpecialOpeningHours",
-                schema: "app",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RestaurantId = table.Column<int>(type: "int", nullable: false),
-                    From = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    To = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Notes = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
-                    State = table.Column<int>(type: "int", nullable: false),
-                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SpecialOpeningHours", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -202,6 +188,7 @@ namespace QTHungryDogs.Logic.Migrations
                     OpenFrom = table.Column<TimeSpan>(type: "time", nullable: false),
                     OpenTo = table.Column<TimeSpan>(type: "time", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
@@ -232,6 +219,32 @@ namespace QTHungryDogs.Logic.Migrations
                     table.PrimaryKey("PK_RestaurantXUsers", x => x.Id);
                     table.ForeignKey(
                         name: "FK_RestaurantXUsers_Restaurants_RestaurantId",
+                        column: x => x.RestaurantId,
+                        principalSchema: "base",
+                        principalTable: "Restaurants",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SpecialOpeningHours",
+                schema: "app",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RestaurantId = table.Column<int>(type: "int", nullable: false),
+                    From = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    To = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Notes = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
+                    State = table.Column<int>(type: "int", nullable: false),
+                    RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SpecialOpeningHours", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SpecialOpeningHours_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
                         principalSchema: "base",
                         principalTable: "Restaurants",
@@ -293,11 +306,10 @@ namespace QTHungryDogs.Logic.Migrations
                 column: "IdentityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OpeningHours_RestaurantId_Weekday",
+                name: "IX_OpeningHours_RestaurantId",
                 schema: "base",
                 table: "OpeningHours",
-                columns: new[] { "RestaurantId", "Weekday" },
-                unique: true);
+                column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Restaurants_UniqueName",
@@ -319,6 +331,12 @@ namespace QTHungryDogs.Logic.Migrations
                 table: "Roles",
                 column: "Designation",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SpecialOpeningHours_RestaurantId",
+                schema: "app",
+                table: "SpecialOpeningHours",
+                column: "RestaurantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_IdentityId",

@@ -12,7 +12,7 @@ using QTHungryDogs.Logic.DataContext;
 namespace QTHungryDogs.Logic.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    [Migration("20220925120955_InitDb")]
+    [Migration("20220925150134_InitDb")]
     partial class InitDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,7 +153,6 @@ namespace QTHungryDogs.Logic.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -239,6 +238,8 @@ namespace QTHungryDogs.Logic.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RestaurantId");
+
                     b.ToTable("SpecialOpeningHours", "app");
                 });
 
@@ -249,6 +250,9 @@ namespace QTHungryDogs.Logic.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Notes")
                         .HasMaxLength(2048)
@@ -273,8 +277,7 @@ namespace QTHungryDogs.Logic.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RestaurantId", "Weekday")
-                        .IsUnique();
+                    b.HasIndex("RestaurantId");
 
                     b.ToTable("OpeningHours", "base");
                 });
@@ -286,6 +289,31 @@ namespace QTHungryDogs.Logic.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AddressCity")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("AddressHousenumber")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<string>("AddressStreet")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("AddressZipcode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -455,10 +483,21 @@ namespace QTHungryDogs.Logic.Migrations
                     b.Navigation("Identity");
                 });
 
+            modelBuilder.Entity("QTHungryDogs.Logic.Entities.App.SpecialOpeningHour", b =>
+                {
+                    b.HasOne("QTHungryDogs.Logic.Entities.Base.Restaurant", "Restaurant")
+                        .WithMany("SpecialOpeningHours")
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
+                });
+
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Base.OpeningHour", b =>
                 {
                     b.HasOne("QTHungryDogs.Logic.Entities.Base.Restaurant", "Restaurant")
-                        .WithMany()
+                        .WithMany("OpeningHours")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -480,6 +519,13 @@ namespace QTHungryDogs.Logic.Migrations
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Account.Identity", b =>
                 {
                     b.Navigation("LoginSessions");
+                });
+
+            modelBuilder.Entity("QTHungryDogs.Logic.Entities.Base.Restaurant", b =>
+                {
+                    b.Navigation("OpeningHours");
+
+                    b.Navigation("SpecialOpeningHours");
                 });
 #pragma warning restore 612, 618
         }

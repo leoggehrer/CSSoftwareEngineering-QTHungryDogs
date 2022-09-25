@@ -1,0 +1,276 @@
+﻿Id;DisplayName;UniqueName;OwnerName;AddressStreet;AddressHousenumber;AddressZipcode;AddressCity;State
+1;Burgermeister by Kebap Mann;burgermeister-by-kebap-mann-linz;burgermeister-by-kebap-mann-linz;Melissenweg;2a;4020;Linz;1
+2;Deno Pizza und Grill;deno-pizza-grill-linz;deno-pizza-grill-linz;Simonystraße ;1:00 AM;4030;Linz;2
+3;Casa Adriana ;casa-adriana-steyr;casa-adriana-steyr;Prof. Erich Grandy Platz ;02-Apr;4400;Steyr;2
+4;Dauphine Pizza;dauphine-pizza-linz;dauphine-pizza-linz;Dauphinestraße;208;4030;Linz ;2
+5;Panda Wok;panda-wok-linz;panda-wok-linz;Lederergasse;2;4020;Linz;2
+6;Pizzeria Casa Leon und Gamos;casa-leon-steyr;casa-leon-steyr;Josef Rohrauerstraße ;1;4400;Steyr;2
+7;Hot Burger Box Asten ;hot-burger-box-asten-asten;hot-burger-box-asten-asten;Handelsring;08-Oct;4481;Asten ;2
+8;Pizza Heaven Urfahr ;pizza-heaven-rudolfstrasse;pizza-heaven-rudolfstrasse;Rudolfstraße ;39;4040;Linz;2
+9;Pizza Milano;pizza-milano-linz;pizza-milano-linz;Prinz Eugen Straße ;5;4020;Linz;2
+10;Bella Italia II;bella-italia-ii-steyr;bella-italia-ii-steyr;Karl Punzerstraße ;34;4400;Steyr;2
+11;PIZZA HEAVEN ;pizza-heaven-landwiedstrasse-alt;pizza-heaven-landwiedstrasse-alt;Landwiedstraße;31;4020;Linz;1
+12;Pizza Time;pizza-time-pregarten;pizza-time-pregarten;Stadtplatz;23;4230;Pregarten;2
+13;Casa Milano;casa-milano-steyr;casa-milano-steyr;Ennser Straße ;1;4400;Steyr;2
+14;Pizzeria David Urfahr;pizzeria-david-urfahr-linz;pizzeria-david-urfahr-linz;Wildbergstraße ;6;4040;Linz;2
+15;Til Treffpunkt ;til-treffpunkt-pasching;til-treffpunkt-pasching;Adlbert Stifter Strasse ;31;4061;Pasching;2
+16;Pizzeria Da Luca ;pizzeria-da-luca-linz;pizzeria-da-luca-linz;Werndlstraße ;21;4020;Linz;2
+17;ADA Pizza Kebap Haus;ada-pizza-kebab-haus-hoersching;ada-pizza-kebab-haus-hoersching;Brucknerplatz;6;4063;Hörsching ;2
+18;Baron Pizza & Kebab House;baron-pizza-kebab-house-enns;baron-pizza-kebab-house-enns;Wienerstraße ;2;4470;Enns ;2
+19;Kebap Mann;kebab-mann-linz;kebab-mann-linz;Melissenweg;2a;4020;Linz ;2
+20;Bug´s Bar & Restaurant;bugs-bar-restaurant-linz;bugs-bar-restaurant-linz;Hauptplatz;3;4020;Linz;1
+21;Pizzeria Giovanni;pizzeria-giovanni-linz;pizzeria-giovanni-linz;Wienerstraße ;91;4020;Linz;2
+22;Tokyo Running Sushi;tokyo-running-sushi-linz;tokyo-running-sushi-linz;Landstraße ;66;4020;Linz ;2
+23;Phonebox;phonebox-linz;phonebox-linz;Weißenwolffstraße;1;4020;Linz;2
+24;Xin Xin;xin-xin-steyr;xin-xin-steyr;Enge Gasse ;20;4400;Steyr;1
+25;INoodles;inoodles-linz;inoodles-linz;Gutenbergstraße ;2;4030;Linz;2
+26;Kung Fu ;kung-fu-linz;kung-fu-linz;Landstraße;71-75;4020;Linz;2
+27;Restaurant existiert nicht;test-restaurant-peilstein;test-restaurant-peilstein;Rinnmühle;25;4153;Peilstein;1
+28;Kim San ;kim-san-linz;kim-san-linz;Hauptplatz;4;4020;Linz ;2
+29;Gonzales Pizzeria;gonzales-pizzeria-linz;gonzales-pizzeria-linz;Unionstraße ;102/2;4020;Linz;1
+30;Pizzeria Siciliana;pizzeria-siciliana-wels;pizzeria-siciliana-wels;Bahnhofstraße ;17;4600;Wels ;2
+31;Restaurant Sarang;restaurant-sarang-linz;restaurant-sarang-linz;Anatasius-Grün-Straße ;1;4020;Linz ;2
+32;Mehl und Salz ;mehl-und-salz-wels ;mehl-und-salz-wels ;Eferdingerstraße ;6;4600;Wels ;2
+33;Pizzeria Gabriel ;pizzeria-gabriel-steyr;pizzeria-gabriel-steyr;Wehrgrabengasse;16;4400;Steyr;2
+34;La Marina ;la-marina-traun;la-marina-traun;Hauptplatz;8;4050;Traun;2
+35;Fuzo Kebap Pizza;fuzo-linz;fuzo-linz;Rudolfstraße ;1;4040;Linz;2
+36;Bella Pizza ;bella-pizza-linz;bella-pizza-linz;Wienerstraße ;145;4020;Linz;2
+37;Uni Pizza;uni-pizza-linz;uni-pizza-linz;Johann Wilhelm Kleinstraße ;53;4040;Linz;1
+38;Piatto Pizza & Kebap;piatto-pizza-kebap-linz;piatto-pizza-kebap-linz;Wienerstraße ;486;4030;Linz;2
+39;Kebaplounge Istanbul;kebaplounge-istanbul-steyr;kebaplounge-istanbul-steyr;Bahnhofstraße ;01-Mar;4400;Steyr;2
+40;Doy Doy Pizza und Kebab;doy-doy-piza-kebab-wels;doy-doy-piza-kebab-wels;Linzerstraße ;146;4600;Wels ;2
+41;Pizzeria Tuana;pizzeria-tuana-linz;pizzeria-tuana-linz;Hanuschstraße ;78;4020;Linz;2
+42;Mee Noodles;mee-noodles-linz;mee-noodles-linz;Mozartstrasse ;7;4020;Linz ;2
+43;Fuzo Wels;fuzo-wels-wels;fuzo-wels-wels;Stadtplatz;11;4060;Wels ;2
+44;Pizzeria Casa Romana;pizzeria-casa-romana-steyr;pizzeria-casa-romana-steyr;Johannesgasse ;25;4400;Steyr;1
+45;Pizza Solo;pizza-solo-linz;pizza-solo-linz;Füchselstraße ;14;4020;Linz;2
+46;Palas Restaurant;palas-restaurant-haid;palas-restaurant-haid;Hauptplatz;26;4053;Haid;1
+47;Bella Italia ;bella-italia-steyr;bella-italia-steyr;Pachnergasse;3;4400;Steyr;2
+48;Restaurant Semo;restaurant-semo-wels;restaurant-semo-wels;Salzburgerstraße;67;4600;Wels;2
+49;My Pizza hot and fresh;my-pizza-hot-and-fresh-linz;my-pizza-hot-and-fresh-linz;Schmiedegasse ;1;4040;Linz ;2
+50;El Paso;el-paso-linz;el-paso-linz;OK-Platz;1A;4020;Linz;2
+51;Pizzeria Ristorante Da Vinci Linz;da-vinci-linz-linz;da-vinci-linz-linz;Schillerstraße ;2;4020;Linz;2
+52;David Pizzeria ;david-pizzeria-marchtrenk;david-pizzeria-marchtrenk;Bahnhofstraße ;5;4614;Marchtrenk;2
+53;Pizzeria Mido;pizzeria-mido-steyr;pizzeria-mido-steyr;Schönauer Straße;9;4400;Steyr;2
+54;David Leonding ;david-leonding;david-leonding;Welserstraße ;43;4060;Leonding;2
+55;La Familia;la-familia-haid;la-familia-haid;Hauptplatz;35;4053;Haid;2
+56;Ömers Burger Grill;omers-freistadt;omers-freistadt;Eisengasse;18;4240;Freistadt;2
+57;Locanta Ristorante ;locanta-ristorante-marchtrenk;locanta-ristorante-marchtrenk;Linzerstraße ;18;4614;Marchtrenk;2
+58;Pizzeria;city-kebap-pizza-linz-old;city-kebap-pizza-linz-old;Wiener Straße ;12;4020;Linz ;1
+59;Flamingo;Flamingo-Unterweitersdorf;Flamingo-Unterweitersdorf;Betriebsstraße ;8;4210;Unterweitersdorf;2
+60;Pizzeria Pierra;pizzeria-pierra-traun;pizzeria-pierra-traun;Leondingerstraße;14;4050;Traun;2
+61;Holzofenpizzeria Buon Appetito;holzofenpizzeria-bon-appetito-linz;holzofenpizzeria-bon-appetito-linz;Freistädterstraße;47;4040;Linz;2
+62;DAVID KING;david-king-wels;david-king-wels;Salzburgerstraße;67/1;4600;Wels ;2
+63;Venezia Pizzeria ;venezia-pizzeria-stflorian;venezia-pizzeria-stflorian;Marktplatz;3;4490;St Florian;2
+64;Pizzeria Ristorante Da Vinci Lissfeld;da-vinci-lissfeld-linz;da-vinci-lissfeld-linz;Hausleitnerweg;105;4020;Linz;2
+65;Kocak Pizza House;kocak-pizza-house-traun;kocak-pizza-house-traun;Hauptplatz;5;4050;Traun;2
+66;Balkan;balkan-linz;balkan-linz;Wienerstraße ;6;4020;Linz;1
+67;Pizzaservice Solo ;pizzaservice-solo-wels;pizzaservice-solo-wels;Gabelsbergerstraße ;1;4600;Wels;1
+68;Imperial;imperial-steyr;imperial-steyr;Stadtplatz;21;4400;Steyr;2
+69;ALT Burger & Pizza House;burger-pizza-house-wels;burger-pizza-house-wels;Bahnhofstraße ;6;4600;Wels;1
+70;King Food ;king-food-steyr;king-food-steyr;Haratzmüllerstraße ;63A;4400;Steyr;2
+71;Pizza Burger Asten;pizza-burger-asten-asten;pizza-burger-asten-asten;Wienerstraße ;10;4481;Asten ;1
+72;Uno Pizza;uno-pizza-wels;uno-pizza-wels;Eferdingerstraße ;72;4600;Wels;2
+73;Alimo;alimo-asten;alimo-asten;Handelsring;5c;4481;Asten ;1
+74;Buffalo;buffalo-linz;buffalo-linz;Hauptstraße ;66;4040;Linz;2
+75;La Diva Ristorente ;la-diva-ristorente-enns;la-diva-ristorente-enns;Am Römerfeld ;5;4470;Enns ;2
+76;Pizza Zone;pizza-zone-linz;pizza-zone-linz;Vogelfängerweg;25;4030;Linz ;2
+77;Cardoloni;cardoloni-thallheim;cardoloni-thallheim;Reinberghof;2;4600;Thallheim;2
+78;China Palast;china-palast-linz;china-palast-linz;Brucknerstraße ;28;4020;Linz ;2
+79;Casa Corrado ;casa-corrado-linz;casa-corrado-linz;Hauptstraße ;01-May;4040;Linz ;2
+80;Pizzeria Colorado ;pizzeria-colorado-wilhering;pizzeria-colorado-wilhering;Linzerstraße ;44;4073;Wilhering;2
+81;Pizza Station Lucia;pizza-station-lucia-linz;pizza-station-lucia-linz;Wischerstraße ;1;4040;Linz;2
+82;Alt Pizza Mir;pizza-mir-linz-alt;pizza-mir-linz-alt;Museumsstraße ;19;4020;Linz;1
+83;Pizza Baron;pizza-baron-linz;pizza-baron-linz;Wiener Straße ;6;4020;Linz;1
+84;Pizza Valentinos;pizza-valentinos-linz;pizza-valentinos-linz;Franckstraße ;33;4020;Linz;2
+85;Fratello Pizzeria;fratello-pizzeria-wartberg;fratello-pizzeria-wartberg;Arnbergstraße;6;4224;Wartberg /Aist ;2
+86;Kung Fu Pasching ;kung-fu-pasching-pasching;kung-fu-pasching-pasching;Pluskaufstraße ;7;4061;Pasching ;1
+87;Hot Burger Box Leonding;hot-burgerbox-leonding;hot-burgerbox-leonding;Wiener Bundesstraße;10;4060;Leonding;2
+88;Austro Pizzeria alt;pizzeria-austro-linz;pizzeria-austro-linz;Leonfeldnerstraße;21;4040;Linz;1
+92;Restaurant Zanos;zanos-unterweitersdorf;zanos-unterweitersdorf;Untere Dorfstraße;2;4213;Unterweitersdorf;2
+93;Ristorante Pizzeria Napoli;napoli-freistadt;napoli-freistadt;Markt ;44;4271;St Oswald ;2
+94;Da Vinci Pizzeria;da-vinci-freistadt;da-vinci-freistadt;Stifterplatz;1;4240;Freistadt;2
+95;Jimmys Burger;jimmys-burger-linz;jimmys-burger-linz;Landstraße ;119;4020;Linz;2
+96;Wirzshaus zur ewigen Ruh;wirzshaus-zur-ewigen-ruh-linz;wirzshaus-zur-ewigen-ruh-linz;Friedhofstraße ;12;4020;Linz;1
+97;Alt Pizzeria Al Forno ;alforno-valentin-oldf;alforno-valentin-oldf;Westbahnstraße;20a;4300;St Valentin;1
+98;Pizzeria Riviera;riviera-sankt-georgen;riviera-sankt-georgen;Mauthausenerstraße ;21;4222;St Georgen an der Gusen;2
+99;La Bella Pizzeria ;pizzeria-la-bella-katsdorf;pizzeria-la-bella-katsdorf;Linzer Straße ;5;4223;Katsdorf;2
+100;Cocktail Lieferservice;cocktail-service-leonding;cocktail-service-leonding;Rathausgasse;3;4060;Leonding ;2
+103;Curry and Co;curry-und-co-linz;curry-und-co-linz;Franckstraße ;45;4030;Linz ;2
+105;Burger & Pizza Blitz ;burger-pizza-blitz-linz;burger-pizza-blitz-linz;Wienerstraße ;89;4020;Linz;2
+107;Zottis Hallenbad Restaurant ;zottis-hallenbad-restaurant;zottis-hallenbad-restaurant;Bahnhofstraße ;6;4240;Freistadt ;4
+108;Zum Mafiosi;zum-mafiosi-linz;zum-mafiosi-linz;Garnisionsstraße ;13 B ;4020;Linz ;2
+112;Divan Arriba Restaurant ;divan-cafe-linz;divan-cafe-linz;Wienerstraße ;41a;4020;Linz ;2
+113;Arriba Mexicano;arriba-mexicano-linz;arriba-mexicano-linz;Wienerstraße ;41a;4020;Linz ;1
+114;La Dolce Ristorante Pizzeria ;la-dolce-pizzeria-linz;la-dolce-pizzeria-linz;Auwiesenstraße ;202;4030;Linz;2
+115;Lederei;lederei-linz;lederei-linz;Klammstraße ;8;4020;Linz ;2
+116;Pizzeria Emir ;pizzeria-emir-hoersching;pizzeria-emir-hoersching;Linzer Straße ;23;4063;Hörsching ;2
+117;La Fiesta ;la-fiesta-linz;la-fiesta-linz;Magazingasse;10;4020;Linz ;2
+118;Mama Indiya;mama-indiya-linz;mama-indiya-linz;Schmidtorstrasse ;1;4020;Linz ;2
+119;Xonu ;xonu-linz;xonu-linz;Hafenstraße ;2a;4020;Linz ;2
+120;Taj Mahal;taj-mahal-linz;taj-mahal-linz;Adlergasse ;14;4020;Linz ;2
+123;dean & david ;dean-and-david-linz;dean-and-david-linz;Hauptstraße ;54;4040;Linz ;2
+124;dean & david ;dean-and-david-wels;dean-and-david-wels;Weliosplatz;1;4600;Wels ;1
+126;Al Capone;al-capone-marchtrenk;al-capone-marchtrenk;Linzerstraße ;18;4614;Marchtrenk;2
+127;Pizza House;pizza-house-marchtrenk;pizza-house-marchtrenk;Kindergartenstraße ;1;4614;Marchtrenk;1
+128;WoW Thai Kitchen ;wow-thai-kitchen-linz;wow-thai-kitchen-linz;Südbahnhofmarkt Koje ;5c;4020;Linz ;2
+129;Alt Pizzeria Ristorante Da Vinci Pichling ;da-vinci-pichling-old;da-vinci-pichling-old;Weikerlseestraße ;71 - 73;4030;Linz ;1
+130;Bella Napoli;bella-napoli-linz;bella-napoli-linz;Langgasse ;6;4020;Linz ;2
+131;Drinks & Snacks Savior ;drinks-snacks-linz;drinks-snacks-linz;Rudolfstraße;6;4040;Linz ;1
+132;Pizzeria Hellmon;hellmon-hellmonsoedt;hellmon-hellmonsoedt;Gewerbezeile  ;3;4202;Hellmonsödt;2
+133;ASIA WOK CHINA Court Alt;asia-wok-china-court-linz-alt;asia-wok-china-court-linz-alt;Landwiedstraße ;43;4020;Linz ;1
+134;Pizzeria Restaurant Leone;pizzeria-leone-gramastetten;pizzeria-leone-gramastetten;Marktstraße ;15;4201;Gramastetten;2
+135;Pizzeria Levata de Sole;pizzeria-levata-de-sole-steyr;pizzeria-levata-de-sole-steyr;Wieserfeldplatz;11;4400;Steyr ;2
+136;La Rosina ;la-rosina-ansfelden;la-rosina-ansfelden;Gabelsbergstraße ;2;4052;Ansfelden;2
+137;Pho Hanoi ;pho-hanoi-linz;pho-hanoi-linz;Freistädterstraße;60;4040;Linz ;2
+138;Pleschinger Stube ;pleschinger-stube-linz;pleschinger-stube-linz;Plesching ;33;4040;Linz ;2
+139;tamu sana;tamu-sana-linz;tamu-sana-linz;Kirchengasse ;6;4040;Linz ;2
+140;Ayam Zaman;ayam-zaman-linz;ayam-zaman-linz;Landstraße ;32;4020;Linz ;2
+141;Mongole BBQ Lentiacity ;mongole-bbq-lentia-urfahr;mongole-bbq-lentia-urfahr;Blütenstraße;15;4040;Linz ;2
+142;Pizzeria Fabio ;fabio-pichling;fabio-pichling;Seiderstraße ;5;4030;Linz ;2
+143;Be Right Back;be-right-back-linz;be-right-back-linz;Hofgasse;12;4020;Linz ;2
+144;Gasthaus Makss;gasthof-makss-wels;gasthof-makss-wels;Salzburgerstraße ;164;4600;Wels ;2
+145;Food Fusion ;food-fusion-linz;food-fusion-linz;Wiener Straße ;203;4020;Linz ;2
+146;Chinoiss Asia Restaurant ;chinoiss-linz;chinoiss-linz;Rainerstraße ;20;4020;Linz ;2
+147;Chinarestaurant Tai Yang;taiyang-linz;taiyang-linz;Pritzstraße;10;4030;Linz ;2
+148;Alt: Casa Toscana ;casa-toscana-linz-old;casa-toscana-linz-old;Derfflingerstraße ;10;4020;Linz ;1
+149;Wok and More  ;xu-wok-and-more-linz;xu-wok-and-more-linz;Hamoderstraße ;6a;4020;Linz ;2
+150;HAYAT;hayat-linz;hayat-linz;Salzburgerstraße ;265;4030;Linz ;2
+151;WOK KAISER  ;wok-kaiser-steyr;wok-kaiser-steyr;Fachmarktring  ;2;4407;Dietach ;1
+152;Fit2go ;fit-2-go-linz;fit-2-go-linz;Freistädter Straße ;315;4040;Linz ;2
+153;Smokehouse American BBQ;smokehouse-sierning;smokehouse-sierning;Voralpenstraße ;20;4523;Neuzeug ;2
+154;Wok and Roll;wok-and-roll-wels;wok-and-roll-wels;Stadtplatz ;39;4600;Wels ;2
+155;Stadionwirt ;stadion-wirt-steyr;stadion-wirt-steyr;Volksstraße ;16;4400;Steyr;2
+156;Ängus & Nuba;nuba-linz;nuba-linz;Harrachstraße ;06-Jul;4020;Linz ;2
+157;Deniz Restaurant ;deniz-st-poelten;deniz-st-poelten;Bräuhausgasse ;4;3100;St Pölten ;2
+158;The Babylon;babylon-st-poelten;babylon-st-poelten;Engelbert Leimer-Str;1;3100;St Pölten  ;1
+159;Pizzeria Mirna ;mirna-st-poelten;mirna-st-poelten;Mühlweg ;73;3100;St Pölten ;2
+160;Pizza Tyom;tyom-st-poelten;tyom-st-poelten;Linzerstraße ;30;3100;St Pölten ;2
+161;ONira Nepali inspired Global Cuisine;o-nira-salzburg;o-nira-salzburg;Siebenstädterstraße ;19;5020;Salzburg ;2
+162;Kathmandu Restaurant & Bar;kathmandu-salzburg;kathmandu-salzburg;Moosstraße ;36;5020;Salzburg ;2
+163;Lecker Imbiss;lecker-imbiss-st-poelten;lecker-imbiss-st-poelten;Mühlweg ;55;3100;St Pölten ;2
+164;Mangia Delizioso;mangia-salzburg;mangia-salzburg;Andreas Hofer Straße ;9;5020;Salzburg ;2
+165;China Garten Bambus;china-garten-wels;china-garten-wels;Grieskirchner Straße ;91;4600;Wels ;2
+166;Yes Sir Pizza ;yes-sir-pizza-salzburg;yes-sir-pizza-salzburg;Ignaz Harrer Straße ;30;5020;Salzburg ;2
+167;Pizza Acasa Italy;pizza-acasa-italy-salzburg;pizza-acasa-italy-salzburg;Ignaz Harrer Straße ;83;5020;Salzburg ;2
+168;Happy Asia ;happy-asia-salzburg;happy-asia-salzburg;Rainerstraße ;24;5020;Salzburg ;2
+169;Way to India ;way-to-india-salzburg;way-to-india-salzburg;Rainerstraße ;24;5020;Salzburg ;2
+170;Pink Dragon ;pink-dragon-linz;pink-dragon-linz;Friedensplatz ;3;4020;Linz ;2
+171;Smoky Chicken;smoky-chicken-steyr;smoky-chicken-steyr;Voralpenstraße ;20;4253;Neuzeug ;2
+172;Schlosstaverne Ebelsberg;schlosstaverne-ebelsberg;schlosstaverne-ebelsberg;Ebelsberger Schloßweg ;22;4030;Linz ;2
+173;Pizza Classic ;pizza-classic-salzburg;pizza-classic-salzburg;Plainstraße ;73;5020;Salzburg ;2
+174;Casa Della Pizza ;casa-della-pizza-steyr;casa-della-pizza-steyr;Pachergasse ;17;4400;Steyr ;1
+175;Mozart Pizza ;mozart-salzburg;mozart-salzburg;Franz-Martin-Straße;31;5020;Salzburg ;2
+176;Pizza Castello ;castello-salzburg;castello-salzburg;Ignaz Harrer Straße ;56;5020;Salzburg ;2
+177;Döner Mann;doener-mann-salzburg;doener-mann-salzburg;Siebenstädterstraße ;10;5020;Salzburg ;2
+178;Ariana ;ariana-salzburg;ariana-salzburg;Petersbrunnerstraße ;9;5020;Salzburg ;2
+179;Liebhaberei Linz;liebhaberei-linz;liebhaberei-linz;Hauptplatz ;11;4020;Linz ;2
+180;Aigner Pizza ;aigner-salzburg;aigner-salzburg;Aigner Straße ;58;5026;Salzburg ;2
+181;El Profesor Ristorante Pizzeria  ;el-profesor-salzburg;el-profesor-salzburg;Schießstattstraße ;9;5020;Salzburg ;2
+182;Dinos Essbar ;dinos-salzburg;dinos-salzburg;Vogelweiderstraße ;61;5020;Salzburg ;2
+183;Austro alt;austro-linz-old;austro-linz-old;Leonfeldner Straße ;21;4020;Linz ;1
+184;Va Bene ;va-bene-linz;va-bene-linz;Prinz Eugen Straße;22;4020;Linz ;2
+185;Griechisches Restaurant Mamas Kitchen  ;mamas-kitchen-st-poelten;mamas-kitchen-st-poelten;Julius Raab-Promenade;13;3100;St Pölten ;2
+186;Deniz Restaurant ;deniz-linzer-strasse-st-poelten;deniz-linzer-strasse-st-poelten;Linzer Straße;13;3100;St Pölten;2
+187;Sportbuffet Vickerl  ;vickerl-linz;vickerl-linz;Flötzerweg ;99;4030;Linz ;2
+188;Pizza Tresoro;tresoro-st-poelten;tresoro-st-poelten;Dr Wilhelm-Steingötterstraße ;13;3107;St Pölten ;2
+189;Haus des Döners;pizza-house-marchtrenk-1;pizza-house-marchtrenk-1;Kindergartenstraße ;1;4614;Marchtrenk;2
+190;Da Capo ;da-capo-st-poelten;da-capo-st-poelten;Kremser Landstraße;37;3100;St Pölten ;2
+191;Pirkl Stuben;pirkl-stubn-st-poelten;pirkl-stubn-st-poelten;Josefstraße;52;3100;St Pölten ;2
+192;Snacks und Drinks, Beppo bringts!;a1-tankstelle-linz;a1-tankstelle-linz;Landwiedstraße;61;4020;Linz ;1
+193;Kebap King ;kebap-king-st-poelten;kebap-king-st-poelten;Brunngasse;7;3100;St Pölten ;2
+194;Hollywood Pizza und Burger ;hollywood-wiener-strasse-st-poelten;hollywood-wiener-strasse-st-poelten;Wiener  Straße ;52;3100;St Pölten ;2
+195;Kurtis Kebap Pizza und Grill Spratzern;kurtis-kebap-st-poelten;kurtis-kebap-st-poelten;Schuhmeierstraße ;20;3100;St Pölten ;2
+196;Pizzeria Milano ;pizzeria-milano-st-poelten;pizzeria-milano-st-poelten;Josefstraße ;33e ;3100;St Pölten ;2
+197;Bratwurstglöckerl;bratwurstgloeckerl-linz;bratwurstgloeckerl-linz;Angerholzerweg;38;4020;Linz ;2
+198;Tasty Toast ;tasty-toast-linz;tasty-toast-linz;Plus-Kauf-Straße;7;4061;Pasching;1
+199;Tropically;tropically-linz;tropically-linz;Plus-Kauf-Straße;7;4061;Pasching;1
+200;Popeye Kebap;popeye-salzburg;popeye-salzburg;Ignaz Harrer Straße ;56;5020;Salzburg ;2
+201;Pizza Joy ;pizza-joy-salzburg;pizza-joy-salzburg;Maxglaner Hauptstraße;33A;5020;Salzburg ;2
+202;Gustav Grün ;gustav-gruen-urfahr;gustav-gruen-urfahr;Freistädterstraße;315;4040;Linz ;2
+203;Die Donauwirtinnen ;die-donauwirtinnen-linz;die-donauwirtinnen-linz;Webergasse ;2;4040;Linz ;2
+204;La Sportivo Deluxe;la-sportivo-deluxe-st-poelten;la-sportivo-deluxe-st-poelten;Bimbo-Binder-Promenade;27;3100;St Pölten ;2
+205;The Box Noodles Lorenza ;the-box-noodles-st-poelten;the-box-noodles-st-poelten;Herzogenburger Straße  ;21;3100;St Pölten ;1
+206;Imis Pizza Express ;imis-pizza-express-salzburg;imis-pizza-express-salzburg;Richard-Kürth-Straße ;8;5020;Salzburg ;2
+207;Meikels Big Bite;meikels-big-bite-micheldorf;meikels-big-bite-micheldorf;Weinzierlerstraße ;68;4563;Micheldorf ;2
+208;Pizzeria Fiori;pizzeria-fiori-asten;pizzeria-fiori-asten;Geranienstraße ;2;4481;Asten;2
+209;Hira Bistro ;hira-bistro-salzburg;hira-bistro-salzburg;Ignaz Harrer Straße ;56;5020;Salzburg ;2
+210;Restaurant LuQQa;luqqa-st-valentin;luqqa-st-valentin;Hauptplatz;1;4300;St. Valentin ;2
+211;Royal Pizza Kebap ;royal-pizza-kebap-st-valentin;royal-pizza-kebap-st-valentin;Hauptstraße ;17;4300;St. Valentin ;2
+212;Indisches Restaurant Surya;surya-salzburg;surya-salzburg;Kleßheimer Allee ;78;5020;Salzburg ;2
+213;Mr Foody Pizza Burger Kebap ;mr-foody-salzburg;mr-foody-salzburg;Linzer Bundesstraße ;38;5020;Salzburg ;2
+214;Spezialitäten aus dem Balkan ;spezialitaeten-aus-dem-balkan-linz;spezialitaeten-aus-dem-balkan-linz;Wienerstraße;6;4020;Linz ;2
+216;Alaturka Restaurant;alaturka-linz;alaturka-linz;Humboldtstraße;46;4020;Linz ;2
+217;Pizzeria Hausleitner;pizzeria-hausleitner-st-poelten;pizzeria-hausleitner-st-poelten;Mariazeller Straße ;30 a;3150;Wilhelmsburg ;2
+218;Zum Schiefen Apfelbaum ;zum-schiefen-apfelbaum-linz;zum-schiefen-apfelbaum-linz;Hanuschstraße ;26;4020;Linz ;2
+219;Hanas;hanas-st-poelten;hanas-st-poelten;Herzogenburger Straße  ;46;3100;St Pölten ;2
+220;Mr Wang ;mr-wang-unterweitersdorf;mr-wang-unterweitersdorf;Betriebsstraße;9;4210;Unterweitersdorf;2
+221;Amando ;amando-linz;amando-linz;Schörgenhubstraße ;8;4030;Linz ;2
+222;Marco Polo;marco-polo-linz;marco-polo-linz;Fabrikstraße ;16;4020;Linz ;2
+223;Pizzeria Donatello ;donatello-linz;donatello-linz;Rudigerstraße ;8;4020;Linz ;2
+224;Rossstall ;rossstall-freistadt;rossstall-freistadt;Salzgasse ;5;4240;Freistadt ;2
+225;Ignaz Grill und Pizza Haus ;ignaz-grill-salzburg;ignaz-grill-salzburg; Ignaz-Harrer-Straße ;30 a ;5020;Salzburg ;2
+226;LaKeso ;lakeso-wels;lakeso-wels;Bahnhofstraße ;56;4600;Wels ;2
+227;Pizza La Cata ;la-cata-salzburg;la-cata-salzburg;Vogelweidestraße ;70;5020;Salzburg ;2
+228;Konoba 25;konoba-25-salzburg;konoba-25-salzburg;Rainerstraße ;25 a ;5020;Salzburg ;2
+229;Claberia Bistro ;claberia-bistro-salzburg;claberia-bistro-salzburg;Leonhard von Keutschachstraße;16;5020;Salzburg ;2
+230;Casaantonio e piccolo Gio Grande ;casa-antonio-salzburg;casa-antonio-salzburg;Erzabt  Klotz Straße ;9;5020;Salzburg ;2
+231;Burger & Pizza House;burger-pizza-house-wels-1;burger-pizza-house-wels-1;Ringstraße ;36;4600;Wels;2
+232;Hanedan ;hanedan-linz;hanedan-linz;Wiener Straße ;296;4030;Linz ;2
+233;Damians;damians-st-poelten;damians-st-poelten;Schulring ;21;3100;St Pölten ;2
+234;FLASH DRINKS;flash-drinks-salzburg;flash-drinks-salzburg;Vogelweidestraße ;8:00 AM;5020;Salzburg ;1
+235;Pizzahaus;pizzahaus-braunau;pizzahaus-braunau;Stadtplatz ;58;5280;Braunau;2
+236;Pizzeria Mercato ;mercato-linz;mercato-linz;Matthäus-Herzogstrasse;9;4030;Linz ;2
+237;Afridi Kitchen;afridi-kitchen-steyr;afridi-kitchen-steyr;Pachergasse ;17;4400;Steyr ;2
+238;my Indigo Lentia ;my-indigo-lentia-city;my-indigo-lentia-city;Hauptstraße ;54;4040;Linz ;1
+239;Happy Pizza Delivery ;happy-pizza-delivery-st-poelten;happy-pizza-delivery-st-poelten;Mühlweg;73;3100;St Pölten ;2
+243;Pizzeria Ristorante Da Vinci Pichling;da-vinci-pichling;da-vinci-pichling;Weikerlstraße ;71 - 73;4030;Linz ;2
+245;My Indigo Promenade ;my-indigo-promenade-linz;my-indigo-promenade-linz;Promenade ;25;4020;Linz ;2
+246;Pizzeria Havana ;havana-pregarten;havana-pregarten;Stadtplatz ;23;4230;Pregarten;2
+247;Casa Toscana;casa-toscana-linz;casa-toscana-linz;Derflingerstraße ;10;4020;Linz ;2
+248;Sam Time ;sam-time-linz;sam-time-linz;Freistädter Straße ;23;4040;Linz ;2
+249;Burger Factory;burger-factory-urfahr;burger-factory-urfahr;Rudolfstraße;1;4040;Linz;2
+255;BROTHERS;brothers-linz;brothers-linz;Wienerstraße;378 a;4030;Linz ;2
+256;Nachtversorger;nachtversorger-linz;nachtversorger-linz;Rudolfstraße;1;4040;Linz;2
+257;Austro Pizzeria;austro-linz;austro-linz;Leonfeldnerstraße;21;4040;Linz;2
+258;Wirtshaus Dahoam ;wirtshaus-dahoam-urfahr;wirtshaus-dahoam-urfahr;Rudolfstraße;39;4040;Linz;2
+259;Bistro Vu;bistro-vu-linz;bistro-vu-linz;Wiener Straße ;81;4020;Linz ;2
+260;Coconut Thai Restaurant ;coconut-linz;coconut-linz;Marienstraße;11;4020;Linz ;2
+261;Don Hoze ;don-hoze-linz;don-hoze-linz;Füchselstraße;12a;4020;Linz ;2
+262;Al Forno ;alforno-valentin;alforno-valentin;Westbahnstraße;20a;4300;St Valentin ;2
+263;Knödl Sepp;knoedl-sepp-neuzeug;knoedl-sepp-neuzeug;Voralpenstraße ;20;4253;Neuzeug ;2
+264;Gorgonzola ;gorgonzola-linz;gorgonzola-linz;Hauptstraße ;72;4040;Linz ;2
+265;Restaurant Trevi;trevi-linz;trevi-linz;Gesellenhausstraße ;5;4020;Linz ;2
+266;Lederei Italia;lederei-italia-linz;lederei-italia-linz;Leonfeldnerstraße ;325;4040;Linz ;2
+268;Thai Haus Som ;thai-haus-som-linz;thai-haus-som-linz;Mühlkreisbahnstraße ;04-Jun;4040;Linz ;2
+269;Lava Pizza Grill und Burger ;lava-pizza-linz;lava-pizza-linz;Frankstraße ;25;4020;Linz ;2
+270;Los Cabos;los-cabos-traun;los-cabos-traun;Hauptplatz ;19;4050;Traun ;2
+271;Glorious Bastards;glorious-bastards-linz;glorious-bastards-linz;Promenade;25;4020;Linz;2
+272;Pinsarella;pinsarella-linz;pinsarella-linz;Promenade;25;4020;Linz;2
+273;Il Mammone;il-mammone-linz;il-mammone-linz;Promenade;25;4020;Linz;2
+274;Bullhorn;bullhorn-linz;bullhorn-linz;Salzburger Straße ;29;4030;Linz ;2
+275;Pizza Mir;pizza-mir-linz;pizza-mir-linz;Museumsstraße;19;4020;Linz;2
+276;Rice Corner (China Garten);rice-corner-linz;rice-corner-linz;Flötzerweg ;10;4030;Linz ;2
+277;Schmankerlfleischer Köttstorfer;koettsdorfer-linz;koettsdorfer-linz;Hatschekstraße ;1;4020;Linz ;2
+278;Annas Imbiss;annas-imbiss-pregarten;annas-imbiss-pregarten;Bahnhofstraße ;16;4230;Pregarten ;2
+279;Danub;danub-marchtrenk;danub-marchtrenk;Neufahrner Straße ;13;4614;Marchtrenk;2
+280;Pizza Manufaktur;pizza-manufaktur-leonding;pizza-manufaktur-leonding;Ehrenfellnerstraße ;11;4060;Leonding ;2
+281;The Best ;the-best-traun;the-best-traun;Traunerstraße ;124;4050;Traun;2
+282;Notos ;notos-linz;notos-linz;Landwiedstraße ;61;4020;Linz ;2
+283;Thai Thai ;thai-thai-linz;thai-thai-linz;Lunaplatz ;3;4030;Linz;2
+284;American Pizza by Nico und Angelo;american-pizza-steyr;american-pizza-steyr;Voralpenstraße ;20;4523;Neuzeug;2
+285;Pizza Pasta Company;pasta-company-linz;pasta-company-linz;Rudolfstraße ;39;4040;Linz;2
+286;Piccolos;piccolo-linz;piccolo-linz;Landstraße ;119;4020;Linz;2
+287;Casa Verona ;casa-verona-steyr;casa-verona-steyr;Karl-Punzerstraße ;34;4400;Steyr;2
+288;Pizzeria Dell Amor ;dell-amor-steyr;dell-amor-steyr;Prof.-Erich-Grandy-Platz ;2;4400;Steyr ;2
+289;RIKSCHA ;rikscha-linz;rikscha-linz;Goethestraße ;5;4020;Linz ;2
+290;Würstelhaus;wuerstelhaus-linz;wuerstelhaus-linz;Unionstraße ;33;4020;Linz ;2
+291;Grill und Schnitzel House  ;grill-schnitzel-linz;grill-schnitzel-linz;Unionstraße ;33;4020;Linz ;2
+292;My Pizza hot and fresh;my-pizza-traun;my-pizza-traun;Leondingerstraße ;58;4050;Traun;2
+293;Buffalo;buffalo-traun;buffalo-traun;Leondingerstraße ;58;4050;Traun;2
+294;Original Berliner Gemüse Döner ;berliner-gemuese-doener-steyr;berliner-gemuese-doener-steyr;Ennser Straße ;16;4400;Steyr ;2
+295;Pizza Heaven;pizza-heaven-landwiedstrasse;pizza-heaven-landwiedstrasse;Landwiedstraße ;31;4020;Linz ;2
+296;ASIA WOK CHINA COURT;asia-wok-china-court-linz;asia-wok-china-court-linz;Landwiedstraße ;43;4020;Linz ;2
+297;Cocktail Lounge ;cocktail-lounge-freistadt;cocktail-lounge-freistadt;Lasbergerstraße ;6;4240;Freistadt ;2
+298;Royal Donuts;royal-donuts-linz;royal-donuts-linz;Mozartstraße ;12;4020;Linz ;2
+299;Arkade - Cafe - Bistro - Pizzeria;arkade-linz@hungrylama.at;arkade-linz@hungrylama.at;Bertl-Konrad-Straße ;2;4400;Steyr;2

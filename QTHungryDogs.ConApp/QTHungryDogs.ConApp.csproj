@@ -41,4 +41,13 @@
     <ProjectReference Include="..\QTHungryDogs.Logic\QTHungryDogs.Logic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="RestaurantOpenings.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Restaurants.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

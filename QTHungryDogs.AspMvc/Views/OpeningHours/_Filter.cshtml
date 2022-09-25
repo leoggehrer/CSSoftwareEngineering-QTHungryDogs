@@ -15,7 +15,10 @@
    </div>
    <div class="form-group">
     <label asp-for="Weekday" class="control-label"></label>
-    <input asp-for="Weekday" class="form-control" />
+   @{
+    var valuesWeekday = new SelectListItem[]{ new SelectListItem() }.Union(Enum.GetValues(typeof(QTHungryDogs.Logic.Modules.Common.Weekday)).Cast<QTHungryDogs.Logic.Modules.Common.Weekday>().Select(e => new SelectListItem(e.ToString(), e.ToString())));
+   }
+   @Html.DropDownListFor(m => m.Weekday, valuesWeekday, null, new { @class = "form-select" })
    </div>
    <div class="form-group">
     <label asp-for="OpenFrom" class="control-label"></label>

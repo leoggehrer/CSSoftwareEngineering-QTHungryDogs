@@ -5,7 +5,7 @@
     var title = "Index";
     var pageSize = (int)(ViewBag.PageSize ?? 0);
     var modelCount = (int)(ViewBag.ModelCount ?? 0);
-    var infoClass = "btn btn-outline-info ";
+    var infoClass = "btn btn-outline-primary ";
     var infoTitle = $"{modelCount} records";
     var type = Model.GetType();
     var filter = ViewBag.Filter as QTHungryDogs.AspMvc.Models.View.IFilterModel;

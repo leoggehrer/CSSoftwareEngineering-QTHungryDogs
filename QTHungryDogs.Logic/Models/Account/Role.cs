@@ -30,7 +30,7 @@ namespace QTHungryDogs.Logic.Models.Account
             get => Source.Designation;
             set => Source.Designation = value;
         }
-        public System.String Description
+        public System.String? Description
         {
             get => Source.Description;
             set => Source.Description = value;
@@ -113,8 +113,10 @@ namespace QTHungryDogs.Logic.Models.Account
         internal static QTHungryDogs.Logic.Models.Account.Role Create(QTHungryDogs.Logic.Entities.Account.Role other)
         {
             BeforeCreate(other);
-            var result = new QTHungryDogs.Logic.Models.Account.Role();
-            result.Source = other;
+            var result = new QTHungryDogs.Logic.Models.Account.Role
+            {
+                Source = other
+            };
             AfterCreate(result, other);
             return result;
         }
