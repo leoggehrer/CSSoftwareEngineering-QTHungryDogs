@@ -318,11 +318,6 @@ namespace QTHungryDogs.Logic.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
                     b.Property<string>("OwnerName")
                         .IsRequired()
                         .HasMaxLength(256)

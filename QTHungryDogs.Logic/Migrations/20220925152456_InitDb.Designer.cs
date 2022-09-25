@@ -12,7 +12,7 @@ using QTHungryDogs.Logic.DataContext;
 namespace QTHungryDogs.Logic.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    [Migration("20220925150134_InitDb")]
+    [Migration("20220925152456_InitDb")]
     partial class InitDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -316,11 +316,6 @@ namespace QTHungryDogs.Logic.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");

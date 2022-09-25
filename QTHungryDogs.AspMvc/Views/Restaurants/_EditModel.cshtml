@@ -6,9 +6,9 @@
   <div asp-validation-summary="ModelOnly" class="text-danger"></div>
   <input asp-for="Id" type="hidden" />
   <div class="form-group">
-   <label asp-for="Name" class="control-label"></label>
-   <input asp-for="Name" class="form-control" />
-   <span asp-validation-for="Name" class="text-danger"></span>
+   <label asp-for="DisplayName" class="control-label"></label>
+   <input asp-for="DisplayName" class="form-control" />
+   <span asp-validation-for="DisplayName" class="text-danger"></span>
   </div>
   <div class="form-group">
    <label asp-for="OwnerName" class="control-label"></label>
@@ -24,6 +24,26 @@
    <label asp-for="Email" class="control-label"></label>
    <input asp-for="Email" class="form-control" />
    <span asp-validation-for="Email" class="text-danger"></span>
+  </div>
+  <div class="form-group">
+   <label asp-for="AddressStreet" class="control-label"></label>
+   <input asp-for="AddressStreet" class="form-control" />
+   <span asp-validation-for="AddressStreet" class="text-danger"></span>
+  </div>
+  <div class="form-group">
+   <label asp-for="AddressHousenumber" class="control-label"></label>
+   <input asp-for="AddressHousenumber" class="form-control" />
+   <span asp-validation-for="AddressHousenumber" class="text-danger"></span>
+  </div>
+  <div class="form-group">
+   <label asp-for="AddressZipcode" class="control-label"></label>
+   <input asp-for="AddressZipcode" class="form-control" />
+   <span asp-validation-for="AddressZipcode" class="text-danger"></span>
+  </div>
+  <div class="form-group">
+   <label asp-for="AddressCity" class="control-label"></label>
+   <input asp-for="AddressCity" class="form-control" />
+   <span asp-validation-for="AddressCity" class="text-danger"></span>
   </div>
   <div class="form-group">
    <label asp-for="State" class="control-label"></label>

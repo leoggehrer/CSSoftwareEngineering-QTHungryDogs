@@ -42,6 +42,21 @@ namespace QTHungryDogs.AspMvc.Models.Account
         /// The login roles.
         /// </summary>
         public AccessRole[] Roles { get; set; } = Array.Empty<AccessRole>();
+
+        public static LoginSession Create(Logic.Models.Account.LoginSession other)
+        {
+            return new LoginSession
+            {
+                IdentityId = other.IdentityId,
+                SessionToken = other.SessionToken,
+                LoginTime = other.LoginTime,
+                LogoutTime = other.LogoutTime,
+                Name = other.Name,
+                Email = other.Email,
+                OptionalInfo = other.OptionalInfo,
+                Roles = other.Roles.Select(r => Models.Account.AccessRole.Create(r)).ToArray(),
+            };
+        }
     }
 }
 #endif

@@ -251,14 +251,12 @@ namespace QTHungryDogs.AspMvc.Controllers.Account
         {
             try
             {
-                var internLogin = await Logic.AccountAccess.LogonAsync(viewModel.Email, viewModel.Password).ConfigureAwait(false);
-                var loginSession = new LoginSession();
+                var loginSession = await Logic.AccountAccess.LogonAsync(viewModel.Email, viewModel.Password).ConfigureAwait(false);
 
-                if (internLogin != null)
+                if (loginSession != null)
                 {
-                    loginSession.CopyFrom(internLogin);
+                    SessionWrapper.LoginSession = Models.Account.LoginSession.Create(loginSession);
                 }
-                SessionWrapper.LoginSession = loginSession;
             }
             catch (Exception ex)
             {

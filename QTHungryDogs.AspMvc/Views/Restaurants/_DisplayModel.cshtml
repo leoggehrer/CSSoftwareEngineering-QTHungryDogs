@@ -1,35 +1,90 @@
-@*@GeneratedCode*@
+@*@CustomCode*@
 @model QTHungryDogs.AspMvc.Models.Base.Restaurant
 
+<style>
+    .row {
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+
+    h3 {
+        margin-top: 20px;
+    }
+</style>
+
 <dl class="row">
- <dt class="col-sm-2">
-  @Html.DisplayNameFor(model => model.Name)
- </dt>
- <dd class="col-sm-10">
-  @Html.DisplayFor(model => model.Name)
- </dd>
- <dt class="col-sm-2">
-  @Html.DisplayNameFor(model => model.OwnerName)
- </dt>
- <dd class="col-sm-10">
-  @Html.DisplayFor(model => model.OwnerName)
- </dd>
- <dt class="col-sm-2">
-  @Html.DisplayNameFor(model => model.UniqueName)
- </dt>
- <dd class="col-sm-10">
-  @Html.DisplayFor(model => model.UniqueName)
- </dd>
- <dt class="col-sm-2">
-  @Html.DisplayNameFor(model => model.Email)
- </dt>
- <dd class="col-sm-10">
-  @Html.DisplayFor(model => model.Email)
- </dd>
- <dt class="col-sm-2">
-  @Html.DisplayNameFor(model => model.State)
- </dt>
- <dd class="col-sm-10">
-  @Html.DisplayFor(model => model.State)
- </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.DisplayName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.DisplayName)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.OwnerName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.OwnerName)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.UniqueName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.UniqueName)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Email)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Email)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.AddressStreet)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.AddressStreet)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.AddressHousenumber)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.AddressHousenumber)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.AddressZipcode)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.AddressZipcode)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.AddressCity)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.AddressCity)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.State)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.State)
+    </dd>
 </dl>
+
+<h3>Opening hours</h3>
+<hr />
+@foreach (var item in Model.OpeningHours.OrderBy(e => e.Weekday).ThenBy(e => e.OpenFrom))
+{
+    <dl class="row">
+        <dd class="col-sm-1">
+            @item.Weekday
+        </dd>
+        <dd class="col-sm-1">
+            @item.OpenFrom.ToString("hh':'mm")
+        </dd>
+        <dd class="col-sm-1">
+            @item.OpenTo.ToString("hh':'mm")
+        </dd>
+        <dd class="col-sm-1">
+            @item.IsActive
+        </dd>
+    </dl>
+}

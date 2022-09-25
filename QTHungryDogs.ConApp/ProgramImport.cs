@@ -28,6 +28,7 @@ namespace QTHungryDogs.ConApp
                                       Id = d[0],
                                       Restaurant = new Restaurant
                                       {
+                                          Email = $"restaurant-{d[0]}@gmx.at",
                                           DisplayName = d[1],
                                           UniqueName = d[2],
                                           OwnerName = d[3],

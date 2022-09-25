@@ -36,8 +36,8 @@
 {
     <div class="row" style="margin: 1em 0em 1em 0em;">
         <div class="btn-group" role="group" aria-label="Basic outlined filter">
-            <a asp-action="Create" class="btn btn-outline-success" title="Add item"><i class="fa fa-plus"></i></a>
             <button type="button" class="@infoClass" data-bs-toggle="collapse" data-bs-target="#collapseInfo" aria-expanded="false" aria-controls="collapseInfo" title="@infoTitle"><i class="fa fa-info"></i></button>
+            <a asp-action="Create" class="btn btn-outline-success" title="Add item"><i class="fa fa-plus"></i></a>
             <button type="button" class="btn btn-outline-secondary col-md-10" data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter" title="Clear filter">@filter.ToString()</button>
             <a asp-action="Clear" class="btn btn-outline-primary" title="Clear filter"><i class="fa fa-trash"></i></a>
             <button type="button" class="btn btn-outline-primary " data-bs-toggle="collapse" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter" title="Open filter"><i class="fa fa-filter"></i></button>

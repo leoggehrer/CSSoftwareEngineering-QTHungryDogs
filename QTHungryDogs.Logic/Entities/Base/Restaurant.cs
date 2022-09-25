@@ -8,8 +8,6 @@ namespace QTHungryDogs.Logic.Entities.Base
     public class Restaurant : VersionEntity
     {
         [MaxLength(256)]
-        public string Name { get; set; } = String.Empty;
-        [MaxLength(256)]
         public string DisplayName { get; set; } = String.Empty;
         [MaxLength(256)]
         public string OwnerName { get; set; } = String.Empty;

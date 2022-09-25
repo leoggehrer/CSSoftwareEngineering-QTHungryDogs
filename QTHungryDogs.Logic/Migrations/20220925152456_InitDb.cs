@@ -91,7 +91,6 @@ namespace QTHungryDogs.Logic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     OwnerName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     UniqueName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),

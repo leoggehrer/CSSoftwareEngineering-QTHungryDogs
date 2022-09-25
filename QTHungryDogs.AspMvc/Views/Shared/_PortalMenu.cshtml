@@ -1,4 +1,4 @@
-@*@CodeCopy*@
+@*@CustomCode*@
 @{
     @using QTHungryDogs.AspMvc.Modules.Session
 
@@ -11,6 +11,13 @@
 @*#if ACCOUNT_ON*@
         @if (sessionWrapper.LoginSession != null)
         {
+            if (sessionWrapper.LoginSession.Roles.Any(e => e.Designation == "SysAdmin")
+                || sessionWrapper.LoginSession.Roles.Any(e => e.Designation == "AppAdmin"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Restaurants" asp-action="Index">@("Restaurants")</a>
+                </li>
+            }
         }
 @*#endif*@
         <li class="nav-item">

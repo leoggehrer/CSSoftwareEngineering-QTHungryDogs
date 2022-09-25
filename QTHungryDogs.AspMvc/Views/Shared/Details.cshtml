@@ -5,12 +5,11 @@
     ViewData["Title"] = "Details";
 }
 
-<img class="card-img-top" src="/img/banner.jpg" style="margin-top: -20px; margin-bottom: -85px" alt="Banner">
+<img class="card-img-top" src="/img/banner.jpg" style="margin-top: -20px; margin-bottom: -50px" alt="Banner">
 <h1>Details</h1>
-
+<h3>@Model.GetType().Name</h3>
+<hr />
 <div>
-    <h4>@Model.GetType().Name</h4>
-    <hr />
     @await Html.PartialAsync("_DisplayModel", Model)
 </div>
 
