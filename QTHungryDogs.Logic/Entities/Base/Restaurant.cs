@@ -18,7 +18,12 @@ namespace QTHungryDogs.Logic.Entities.Base
         public RestaurantState State { get; set; }
 
         // Navigation properties
+<<<<<<< HEAD
         public List<OpeningHour> OpeningHours { get; set; } = new();
         public List<SpecialOpeningHour> SpecialOpeningHours { get; set; } = new();
+=======
+        public List<Base.OpeningHour> OpeningHoures { get; set; } = new();
+        public List<App.SpecialOpeningHour> SpecialOpeningHoures { get; set; } = new();
+>>>>>>> 8fc0e462a8c5680e30c26f1fea337fb686db3a29
     }
 }

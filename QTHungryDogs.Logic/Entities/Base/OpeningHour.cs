@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using QTHungryDogs.Logic.Modules.Common;
 
 namespace QTHungryDogs.Logic.Entities.Base
 {
@@ -7,7 +7,7 @@ namespace QTHungryDogs.Logic.Entities.Base
     public class OpeningHour : VersionEntity
     {
         public int RestaurantId { get; set; }
-        public int Weekday { get; set; }
+        public Weekday Weekday { get; set; }
         public TimeSpan OpenFrom { get; set; }
         public TimeSpan OpenTo { get; set; }
         [MaxLength(2048)]
