@@ -1,57 +1,92 @@
-@*@GeneratedCode*@
+@*@CustomCode*@
 @model QTHungryDogs.AspMvc.Models.Base.Restaurant
 
+<style>
+    .row {
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+
+    h3 {
+        margin-top: 20px;
+    }
+</style>
+
 <div class="row">
- <div class="col-md-4">
-  <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-  <input asp-for="Id" type="hidden" />
-  <div class="form-group">
-   <label asp-for="DisplayName" class="control-label"></label>
-   <input asp-for="DisplayName" class="form-control" />
-   <span asp-validation-for="DisplayName" class="text-danger"></span>
-  </div>
-  <div class="form-group">
-   <label asp-for="OwnerName" class="control-label"></label>
-   <input asp-for="OwnerName" class="form-control" />
-   <span asp-validation-for="OwnerName" class="text-danger"></span>
-  </div>
-  <div class="form-group">
-   <label asp-for="UniqueName" class="control-label"></label>
-   <input asp-for="UniqueName" class="form-control" />
-   <span asp-validation-for="UniqueName" class="text-danger"></span>
-  </div>
-  <div class="form-group">
-   <label asp-for="Email" class="control-label"></label>
-   <input asp-for="Email" class="form-control" />
-   <span asp-validation-for="Email" class="text-danger"></span>
-  </div>
-  <div class="form-group">
-   <label asp-for="AddressStreet" class="control-label"></label>
-   <input asp-for="AddressStreet" class="form-control" />
-   <span asp-validation-for="AddressStreet" class="text-danger"></span>
-  </div>
-  <div class="form-group">
-   <label asp-for="AddressHousenumber" class="control-label"></label>
-   <input asp-for="AddressHousenumber" class="form-control" />
-   <span asp-validation-for="AddressHousenumber" class="text-danger"></span>
-  </div>
-  <div class="form-group">
-   <label asp-for="AddressZipcode" class="control-label"></label>
-   <input asp-for="AddressZipcode" class="form-control" />
-   <span asp-validation-for="AddressZipcode" class="text-danger"></span>
-  </div>
-  <div class="form-group">
-   <label asp-for="AddressCity" class="control-label"></label>
-   <input asp-for="AddressCity" class="form-control" />
-   <span asp-validation-for="AddressCity" class="text-danger"></span>
-  </div>
-  <div class="form-group">
-   <label asp-for="State" class="control-label"></label>
-   @{
-    var valuesState = Enum.GetValues(typeof(QTHungryDogs.Logic.Modules.Common.RestaurantState)).Cast<QTHungryDogs.Logic.Modules.Common.RestaurantState>().Select(e => new SelectListItem(e.ToString(), e.ToString()));
-   }
-   @Html.DropDownListFor(m => m.State, valuesState, null, new { @class = "form-select" })
-   <span asp-validation-for="State" class="text-danger"></span>
-  </div>
- </div>
+    <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input asp-for="Id" type="hidden" />
+        <div class="form-group">
+            <label asp-for="DisplayName" class="control-label"></label>
+            <input asp-for="DisplayName" class="form-control" />
+            <span asp-validation-for="DisplayName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="OwnerName" class="control-label"></label>
+            <input asp-for="OwnerName" class="form-control" />
+            <span asp-validation-for="OwnerName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="UniqueName" class="control-label"></label>
+            <input asp-for="UniqueName" class="form-control" />
+            <span asp-validation-for="UniqueName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email" class="control-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AddressStreet" class="control-label"></label>
+            <input asp-for="AddressStreet" class="form-control" />
+            <span asp-validation-for="AddressStreet" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AddressHousenumber" class="control-label"></label>
+            <input asp-for="AddressHousenumber" class="form-control" />
+            <span asp-validation-for="AddressHousenumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AddressZipcode" class="control-label"></label>
+            <input asp-for="AddressZipcode" class="form-control" />
+            <span asp-validation-for="AddressZipcode" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AddressCity" class="control-label"></label>
+            <input asp-for="AddressCity" class="form-control" />
+            <span asp-validation-for="AddressCity" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="State" class="control-label"></label>
+            @{
+                var valuesState = Enum.GetValues(typeof(QTHungryDogs.Logic.Modules.Common.RestaurantState)).Cast<QTHungryDogs.Logic.Modules.Common.RestaurantState>().Select(e => new SelectListItem(e.ToString(), e.ToString()));
+            }
+            @Html.DropDownListFor(m => m.State, valuesState, null, new { @class = "form-select" })
+            <span asp-validation-for="State" class="text-danger"></span>
+        </div>
+    </div>
 </div>
+
+<h3>Opening hours @Html.ActionLink("+", "AddOpeningHour", "OpeningHours", new { restaurantId = Model.Id }, new { @class="btn btn-outline-secondary" })</h3>
+<hr />
+@foreach (var item in Model.OpeningHours.OrderBy(e => e.Weekday).ThenBy(e => e.OpenFrom))
+{
+    <dl class="row">
+        <dd class="col-sm-1">
+            @item.Weekday
+        </dd>
+        <dd class="col-sm-1">
+            @item.OpenFrom.ToString("hh':'mm")
+        </dd>
+        <dd class="col-sm-1">
+            @item.OpenTo.ToString("hh':'mm")
+        </dd>
+        <dd class="col-sm-1">
+            @item.IsActive
+        </dd>
+        <dd class="col-sm-1">
+            @Html.ActionLink("...", "Edit", "OpeningHours", new { id = item.Id }, new { @class="btn btn-sm btn-outline-primary" })
+            @Html.ActionLink("X", "Delete", "OpeningHours", new { id = item.Id }, new { @class="btn btn-sm btn-outline-danger" })
+        </dd>
+    </dl>
+}
