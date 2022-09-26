@@ -67,7 +67,7 @@
     </div>
 </div>
 
-<h3>Opening hours @Html.ActionLink("+", "AddOpeningHour", "OpeningHours", new { restaurantId = Model.Id }, new { @class="btn btn-outline-secondary" })</h3>
+<h3>Opening hours @Html.ActionLink("+", "AddOpeningHour", "OpeningHours", new { restaurantId = Model.Id }, new { @class="btn btn-outline-success", @title="Add item" })</h3>
 <hr />
 @foreach (var item in Model.OpeningHours.OrderBy(e => e.Weekday).ThenBy(e => e.OpenFrom))
 {
