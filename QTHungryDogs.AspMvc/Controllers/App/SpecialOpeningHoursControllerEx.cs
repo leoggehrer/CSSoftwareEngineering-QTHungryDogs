@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace QTHungryDogs.AspMvc.Controllers.Base
+namespace QTHungryDogs.AspMvc.Controllers.App
 {
-    partial class OpeningHoursController
+    partial class SpecialOpeningHoursController
     {
         public override IActionResult BackToIndex()
         {
@@ -10,13 +10,13 @@ namespace QTHungryDogs.AspMvc.Controllers.Base
             var backAction = SessionWrapper.GetStringValue($"{ControllerName}.BackAction", "Index");
             var backParam = SessionWrapper.GetStringValue($"{ControllerName}.BackParam", string.Empty);
 
-            return string.IsNullOrEmpty(backParam) ? RedirectToAction(backAction, backController) : RedirectToAction(backAction, backController, new { id=Convert.ToInt32(backParam) });
+            return string.IsNullOrEmpty(backParam) ? RedirectToAction(backAction, backController) : RedirectToAction(backAction, backController, new { id = Convert.ToInt32(backParam) });
         }
-        protected override RedirectToActionResult RedirectAfterAction(ActionMode actionMode, Logic.Entities.Base.OpeningHour accessModel)
+        protected override RedirectToActionResult RedirectAfterAction(ActionMode actionMode, Logic.Entities.App.SpecialOpeningHour accessModel)
         {
             return RedirectToAction("Edit", "Restaurants", new { id = accessModel.RestaurantId });
         }
-        protected override Models.Base.OpeningHour BeforeView(Models.Base.OpeningHour viewModel, ActionMode actionMode)
+        protected override Models.App.SpecialOpeningHour BeforeView(Models.App.SpecialOpeningHour viewModel, ActionMode actionMode)
         {
             using var masterAccess = new Logic.Controllers.Base.RestaurantsController((DataAccess as Logic.Controllers.ControllerObject)!);
             var masterItem = Task.Run(async () => await masterAccess.GetByIdAsync(viewModel.RestaurantId)).Result;
@@ -33,12 +33,11 @@ namespace QTHungryDogs.AspMvc.Controllers.Base
         }
 
         [HttpGet]
-        public IActionResult AddOpeningHour(int restaurantId)
+        public IActionResult AddSpecialOpeningHour(int restaurantId)
         {
-            var accessModel = new Models.Base.OpeningHour
+            var accessModel = new Models.App.SpecialOpeningHour
             {
                 RestaurantId = restaurantId,
-                IsActive = true,
             };
             SessionWrapper.SetStringValue($"{ControllerName}.BackController", "Restaurants");
             SessionWrapper.SetStringValue($"{ControllerName}.BackAction", "Edit");
@@ -47,3 +46,4 @@ namespace QTHungryDogs.AspMvc.Controllers.Base
         }
     }
 }
+

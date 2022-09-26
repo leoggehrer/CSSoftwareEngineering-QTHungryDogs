@@ -71,6 +71,21 @@
 
 <h3>Opening hours</h3>
 <hr />
+<dl class="row">
+    <dt class="col-sm-1">
+        Weekday
+    </dt>
+    <dt class="col-sm-1">
+        OpenFrom
+    </dt>
+    <dt class="col-sm-1">
+        OpenTo
+    </dt>
+    <dt class="col-sm-1">
+        Active
+    </dt>
+</dl>
+<p></p>
 @foreach (var item in Model.OpeningHours.OrderBy(e => e.Weekday).ThenBy(e => e.OpenFrom))
 {
     <dl class="row">

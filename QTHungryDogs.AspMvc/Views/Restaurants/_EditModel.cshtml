@@ -69,6 +69,21 @@
 
 <h3>Opening hours @Html.ActionLink("+", "AddOpeningHour", "OpeningHours", new { restaurantId = Model.Id }, new { @class="btn btn-outline-success", @title="Add item" })</h3>
 <hr />
+<dl class="row">
+    <dt class="col-sm-1">
+        Weekday
+    </dt>
+    <dt class="col-sm-1">
+        OpenFrom
+    </dt>
+    <dt class="col-sm-1">
+        OpenTo
+    </dt>
+    <dt class="col-sm-1">
+        Active
+    </dt>
+</dl>
+<p></p>
 @foreach (var item in Model.OpeningHours.OrderBy(e => e.Weekday).ThenBy(e => e.OpenFrom))
 {
     <dl class="row">
@@ -87,6 +102,42 @@
         <dd class="col-sm-1">
             @Html.ActionLink("...", "Edit", "OpeningHours", new { id = item.Id }, new { @class="btn btn-sm btn-outline-primary" })
             @Html.ActionLink("X", "Delete", "OpeningHours", new { id = item.Id }, new { @class="btn btn-sm btn-outline-danger" })
+        </dd>
+    </dl>
+}
+
+
+<h3>Special opening hours @Html.ActionLink("+", "AddSpecialOpeningHour", "SpecialOpeningHours", new { restaurantId = Model.Id }, new { @class="btn btn-outline-success", @title="Add item" })</h3>
+<hr />
+<dl class="row">
+    <dt class="col-sm-1">
+        Weekday
+    </dt>
+    <dt class="col-sm-2">
+        OpenFrom
+    </dt>
+    <dt class="col-sm-2">
+        OpenTo
+    </dt>
+    <dt class="col-sm-1">
+        State
+    </dt>
+</dl>
+<p></p>
+@foreach (var item in Model.SpecialOpeningHours.OrderBy(e => e.From))
+{
+    <dl class="row">
+        <dd class="col-sm-1">
+            @(item.From.HasValue ? item.From.Value.DayOfWeek : string.Empty)
+        </dd>
+        <dd class="col-sm-2">
+            @(item.From.HasValue ? item.From.Value : string.Empty)
+        </dd>
+        <dd class="col-sm-2">
+            @(item.To.HasValue ? item.To.Value : string.Empty)
+        </dd>
+        <dd class="col-sm-1">
+            @item.State
         </dd>
     </dl>
 }
