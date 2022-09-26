@@ -220,7 +220,10 @@ namespace QTHungryDogs.Logic.Migrations
                         .HasMaxLength(2048)
                         .HasColumnType("nvarchar(2048)");
 
-                    b.Property<int>("RestaurantId")
+                    b.Property<long>("RestaurantId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("RestaurantId1")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("RowVersion")
@@ -236,7 +239,7 @@ namespace QTHungryDogs.Logic.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RestaurantId");
+                    b.HasIndex("RestaurantId1");
 
                     b.ToTable("SpecialOpeningHours", "app");
                 });
@@ -262,7 +265,10 @@ namespace QTHungryDogs.Logic.Migrations
                     b.Property<TimeSpan>("OpenTo")
                         .HasColumnType("time");
 
-                    b.Property<int>("RestaurantId")
+                    b.Property<long>("RestaurantId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("RestaurantId1")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("RowVersion")
@@ -275,7 +281,7 @@ namespace QTHungryDogs.Logic.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RestaurantId");
+                    b.HasIndex("RestaurantId1");
 
                     b.ToTable("OpeningHours", "base");
                 });
@@ -352,7 +358,10 @@ namespace QTHungryDogs.Logic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("RestaurantId")
+                    b.Property<long>("RestaurantId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("RestaurantId1")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("RowVersion")
@@ -360,10 +369,12 @@ namespace QTHungryDogs.Logic.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId1");
 
                     b.HasIndex("RestaurantId", "UserId")
                         .IsUnique();
@@ -480,9 +491,8 @@ namespace QTHungryDogs.Logic.Migrations
                 {
                     b.HasOne("QTHungryDogs.Logic.Entities.Base.Restaurant", "Restaurant")
                         .WithMany("SpecialOpeningHours")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("RestaurantId1")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Restaurant");
                 });
@@ -491,9 +501,8 @@ namespace QTHungryDogs.Logic.Migrations
                 {
                     b.HasOne("QTHungryDogs.Logic.Entities.Base.Restaurant", "Restaurant")
                         .WithMany("OpeningHours")
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("RestaurantId1")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Restaurant");
                 });
@@ -502,9 +511,8 @@ namespace QTHungryDogs.Logic.Migrations
                 {
                     b.HasOne("QTHungryDogs.Logic.Entities.Base.Restaurant", "Restaurant")
                         .WithMany()
-                        .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("RestaurantId1")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Restaurant");
                 });

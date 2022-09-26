@@ -15,7 +15,7 @@ namespace QTHungryDogs.AspMvc.Controllers.Base
         protected override Models.Base.OpeningHour BeforeView(Models.Base.OpeningHour viewModel, ActionMode actionMode)
         {
             using var masterAccess = new Logic.Controllers.Base.RestaurantsController((DataAccess as Logic.Controllers.ControllerObject)!);
-            var masterItem = Task.Run(async () => await masterAccess.GetByIdAsync(viewModel.RestaurantId)).Result;
+            var masterItem = Task.Run(async () => await masterAccess.GetByIdAsync((int)viewModel.RestaurantId)).Result;
 
             if (masterItem == null)
             {

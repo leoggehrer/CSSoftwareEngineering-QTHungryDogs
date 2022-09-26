@@ -182,20 +182,21 @@ namespace QTHungryDogs.Logic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RestaurantId = table.Column<int>(type: "int", nullable: false),
+                    RestaurantId = table.Column<long>(type: "bigint", nullable: false),
                     Weekday = table.Column<int>(type: "int", nullable: false),
                     OpenFrom = table.Column<TimeSpan>(type: "time", nullable: false),
                     OpenTo = table.Column<TimeSpan>(type: "time", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    RestaurantId1 = table.Column<int>(type: "int", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OpeningHours", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OpeningHours_Restaurants_RestaurantId",
-                        column: x => x.RestaurantId,
+                        name: "FK_OpeningHours_Restaurants_RestaurantId1",
+                        column: x => x.RestaurantId1,
                         principalSchema: "base",
                         principalTable: "Restaurants",
                         principalColumn: "Id",
@@ -209,16 +210,17 @@ namespace QTHungryDogs.Logic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RestaurantId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RestaurantId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    RestaurantId1 = table.Column<int>(type: "int", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RestaurantXUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RestaurantXUsers_Restaurants_RestaurantId",
-                        column: x => x.RestaurantId,
+                        name: "FK_RestaurantXUsers_Restaurants_RestaurantId1",
+                        column: x => x.RestaurantId1,
                         principalSchema: "base",
                         principalTable: "Restaurants",
                         principalColumn: "Id",
@@ -232,19 +234,20 @@ namespace QTHungryDogs.Logic.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RestaurantId = table.Column<int>(type: "int", nullable: false),
+                    RestaurantId = table.Column<long>(type: "bigint", nullable: false),
                     From = table.Column<DateTime>(type: "datetime2", nullable: true),
                     To = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Notes = table.Column<string>(type: "nvarchar(2048)", maxLength: 2048, nullable: true),
                     State = table.Column<int>(type: "int", nullable: false),
+                    RestaurantId1 = table.Column<int>(type: "int", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SpecialOpeningHours", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SpecialOpeningHours_Restaurants_RestaurantId",
-                        column: x => x.RestaurantId,
+                        name: "FK_SpecialOpeningHours_Restaurants_RestaurantId1",
+                        column: x => x.RestaurantId1,
                         principalSchema: "base",
                         principalTable: "Restaurants",
                         principalColumn: "Id",
@@ -305,10 +308,10 @@ namespace QTHungryDogs.Logic.Migrations
                 column: "IdentityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OpeningHours_RestaurantId",
+                name: "IX_OpeningHours_RestaurantId1",
                 schema: "base",
                 table: "OpeningHours",
-                column: "RestaurantId");
+                column: "RestaurantId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Restaurants_UniqueName",
@@ -325,6 +328,12 @@ namespace QTHungryDogs.Logic.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_RestaurantXUsers_RestaurantId1",
+                schema: "base",
+                table: "RestaurantXUsers",
+                column: "RestaurantId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Roles_Designation",
                 schema: "account",
                 table: "Roles",
@@ -332,10 +341,10 @@ namespace QTHungryDogs.Logic.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_SpecialOpeningHours_RestaurantId",
+                name: "IX_SpecialOpeningHours_RestaurantId1",
                 schema: "app",
                 table: "SpecialOpeningHours",
-                column: "RestaurantId");
+                column: "RestaurantId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_IdentityId",
