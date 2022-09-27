@@ -21,14 +21,14 @@ namespace QTHungryDogs.WebApi.Controllers
         /// <returns>The logon session object.</returns>  
         [HttpGet("logon", Name = nameof(LogonByAsync))]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Logic.Models.Account.LoginSession>> LogonByAsync(
+        public async Task<ActionResult<Models.Account.LoginSession>> LogonByAsync(
             [FromQuery(Name = "email")] string email,
             [FromQuery(Name = "password")] string password,
             [FromQuery(Name = "info")] string? info)
         {
             var result = await Logic.AccountAccess.LogonAsync(email, password, info ?? string.Empty);
 
-            return Ok(result);
+            return Ok(Models.Account.LoginSession.Create(result));
         }
 
         /// <summary>  

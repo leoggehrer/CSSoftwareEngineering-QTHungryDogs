@@ -36,10 +36,10 @@ namespace QTHungryDogs.WebApi.Models.Account
         public State State { get; set; } = State.Active;
 
         /// <summary>
-        /// Creates an instance of Identity and copies the properties of the same name from the object parameter. 
+        /// Creates an instance of type AccessIdentity.
         /// </summary>
-        /// <param name="source">The object to copy.</param>
-        /// <returns></returns>
+        /// <param name="source">The object from which the instance is created.</param>
+        /// <returns>The created instance.</returns>
         public static AccessIdentity Create(object source)
         {
             var result = new AccessIdentity();

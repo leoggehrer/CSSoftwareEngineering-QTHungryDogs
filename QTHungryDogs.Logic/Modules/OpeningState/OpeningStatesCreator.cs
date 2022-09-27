@@ -1,12 +1,11 @@
 ﻿using QTHungryDogs.Logic.Entities.App;
 using QTHungryDogs.Logic.Entities.Base;
-using QTHungryDogs.Logic.Extensions;
 using QTHungryDogs.Logic.Models.OpeningState;
 using QTHungryDogs.Logic.Modules.Common;
 
 namespace QTHungryDogs.Logic.Modules.OpeningState
 {
-    internal class TimeTableHelper
+    internal class OpeningStatesCreator
     {
         public static IEnumerable<FromToTime> Split(IEnumerable<FromToTime> timeTable)
         {
@@ -208,14 +207,14 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                                             => (CreateDate(date, 0, 0, 0),
                                                 CreateDate(date.AddDays(7), 23, 59, 59));
 
-        public static IEnumerable<FromToTime> LoadDayTimeTable(IEnumerable<OpeningHour> openingHours, IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime date)
+        public static IEnumerable<FromToTime> CreateDayOpeningStates(IEnumerable<OpeningHour> openingHours, IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime date)
         {
             var result = new List<FromToTime>();
 
             result.AddRange(LoadDayOpeningHours(openingHours, date));
             result.AddRange(LoadDaySpecialOpeningHours(specialOpeningHours, date));
-            result.AddRange(TimeTableHelper.Expand(result.Eject()));
-            result.AddRange(TimeTableHelper.Fillup(result.Eject()));
+            result.AddRange(OpeningStatesCreator.Expand(result.Eject()));
+            result.AddRange(OpeningStatesCreator.Fillup(result.Eject()));
 
             if (result.Any() == false)
             {
@@ -223,8 +222,8 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                 {
                     result.Add(new FromToTime
                     {
-                        From = TimeTableHelper.CreateDate(date, 0, 0, 0),
-                        To = TimeTableHelper.CreateDate(date, 23, 59, 59),
+                        From = OpeningStatesCreator.CreateDate(date, 0, 0, 0),
+                        To = OpeningStatesCreator.CreateDate(date, 23, 59, 59),
                         State = OpenState.NoDefinition,
                     });
                 }
@@ -234,12 +233,12 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
         public static IEnumerable<FromToTime> LoadWeekTimeTable(IEnumerable<OpeningHour> openingHours, IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime date)
         {
             var result = new List<FromToTime>();
-            var (from, to) = TimeTableHelper.CreateWeekRangeAt(date);
+            var (from, to) = OpeningStatesCreator.CreateWeekRangeAt(date);
 
-            result.AddRange(LoadOpeningHours(openingHours, from.AddDays(-1), to));
-            result.AddRange(LoadSpecialOpeningHours(specialOpeningHours, from, to));
-            result.AddRange(TimeTableHelper.Expand(result.Eject()));
-            result.AddRange(TimeTableHelper.Fillup(result.Eject()));
+            result.AddRange(CreateOpeningStates(openingHours, from.AddDays(-1), to));
+            result.AddRange(CreateOpeningStates(specialOpeningHours, from, to));
+            result.AddRange(OpeningStatesCreator.Expand(result.Eject()));
+            result.AddRange(OpeningStatesCreator.Fillup(result.Eject()));
 
             if (result.Any() == false)
             {
@@ -247,19 +246,42 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                 {
                     result.Add(new FromToTime
                     {
-                        From = TimeTableHelper.CreateDate(date, 0, 0, 0),
-                        To = TimeTableHelper.CreateDate(date, 23, 59, 59),
+                        From = OpeningStatesCreator.CreateDate(date, 0, 0, 0),
+                        To = OpeningStatesCreator.CreateDate(date, 23, 59, 59),
                         State = OpenState.NoDefinition,
                     });
                 }
             }
             return result;
         }
-        private static IEnumerable<FromToTime> LoadOpeningHours(IEnumerable<OpeningHour> openingHours, DateTime from, DateTime to)
+        public static IEnumerable<FromToTime> CreateFromToOpeningStates(IEnumerable<OpeningHour> openingHours, IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime from, DateTime to)
         {
             var result = new List<FromToTime>();
-            var runFrom = TimeTableHelper.CreateDate(from, 0, 0, 0);
-            var runTo = TimeTableHelper.CreateDate(to, 23, 59, 59);
+
+            result.AddRange(CreateOpeningStates(openingHours, from, to));
+            result.AddRange(CreateOpeningStates(specialOpeningHours, from, to));
+            result.AddRange(OpeningStatesCreator.Expand(result.Eject()));
+            result.AddRange(OpeningStatesCreator.Fillup(result.Eject()));
+
+            if (result.Any() == false)
+            {
+                if (result.Count == 0)
+                {
+                    result.Add(new FromToTime
+                    {
+                        From = OpeningStatesCreator.CreateDate(from, 0, 0, 0),
+                        To = OpeningStatesCreator.CreateDate(from, 23, 59, 59),
+                        State = OpenState.NoDefinition,
+                    });
+                }
+            }
+            return result;
+        }
+        private static IEnumerable<FromToTime> CreateOpeningStates(IEnumerable<OpeningHour> openingHours, DateTime from, DateTime to)
+        {
+            var result = new List<FromToTime>();
+            var runFrom = OpeningStatesCreator.CreateDate(from, 0, 0, 0);
+            var runTo = OpeningStatesCreator.CreateDate(to, 23, 59, 59);
             var run = runFrom;
 
             while (run <= runTo)
@@ -274,8 +296,8 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                     {
                         fromToTime = new FromToTime
                         {
-                            From = TimeTableHelper.CreateDate(run, item.OpenFrom.Hours, item.OpenFrom.Minutes, item.OpenFrom.Seconds),
-                            To = TimeTableHelper.CreateDate(run, item.OpenTo.Hours, item.OpenTo.Minutes, item.OpenTo.Seconds),
+                            From = OpeningStatesCreator.CreateDate(run, item.OpenFrom.Hours, item.OpenFrom.Minutes, item.OpenFrom.Seconds),
+                            To = OpeningStatesCreator.CreateDate(run, item.OpenTo.Hours, item.OpenTo.Minutes, item.OpenTo.Seconds),
                             State = OpenState.Open,
                         };
                     }
@@ -285,8 +307,8 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
 
                         fromToTime = new FromToTime
                         {
-                            From = TimeTableHelper.CreateDate(run, item.OpenFrom.Hours, item.OpenFrom.Minutes, item.OpenFrom.Seconds),
-                            To = TimeTableHelper.CreateDate(nextDay, item.OpenTo.Hours, item.OpenTo.Minutes, item.OpenTo.Seconds),
+                            From = OpeningStatesCreator.CreateDate(run, item.OpenFrom.Hours, item.OpenFrom.Minutes, item.OpenFrom.Seconds),
+                            To = OpeningStatesCreator.CreateDate(nextDay, item.OpenTo.Hours, item.OpenTo.Minutes, item.OpenTo.Seconds),
                             State = OpenState.Open,
                         };
                     }
@@ -299,11 +321,11 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
             }
             return result;
         }
-        private static IEnumerable<FromToTime> LoadSpecialOpeningHours(IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime from, DateTime to)
+        private static IEnumerable<FromToTime> CreateOpeningStates(IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime from, DateTime to)
         {
             var result = new List<FromToTime>();
-            var runFrom = TimeTableHelper.CreateDate(from, 0, 0, 0);
-            var runTo = TimeTableHelper.CreateDate(to, 23, 59, 59);
+            var runFrom = OpeningStatesCreator.CreateDate(from, 0, 0, 0);
+            var runTo = OpeningStatesCreator.CreateDate(to, 23, 59, 59);
             var run = runFrom;
 
             while (run <= runTo)
@@ -332,13 +354,13 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
 
         private static IEnumerable<FromToTime> LoadDayOpeningHours(IEnumerable<OpeningHour> openingHours, DateTime date)
         {
-            var result = LoadOpeningHours(openingHours, date.AddDays(-1), date.AddDays(1));
+            var result = CreateOpeningStates(openingHours, date.AddDays(-1), date.AddDays(1));
 
             return result.Where(e => e.From.GetDayStamp() == date.GetDayStamp() || e.To.GetDayStamp() == date.GetDayStamp());
         }
         private static IEnumerable<FromToTime> LoadDaySpecialOpeningHours(IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime date)
         {
-            var result = LoadSpecialOpeningHours(specialOpeningHours, date, date);
+            var result = CreateOpeningStates(specialOpeningHours, date, date);
 
             return result;
         }

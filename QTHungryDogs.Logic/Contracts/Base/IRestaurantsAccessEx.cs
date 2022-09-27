@@ -2,8 +2,9 @@
 
 namespace QTHungryDogs.Logic.Contracts.Base
 {
-    partial interface IRestaurantsAccess<T>// : Contracts.IDataAccess<T>
+    partial interface IRestaurantsAccess<T>
     {
-        Task<IEnumerable<FromToTime>> LoadDayTimeTable(int id, DateTime date);
+        Task<IEnumerable<FromToTime>> CreateDayOpeningStates(int id, DateTime date);
+        Task<IEnumerable<FromToTime>> CreateFromToOpeningStates(int id, DateTime from, DateTime to);
     }
 }

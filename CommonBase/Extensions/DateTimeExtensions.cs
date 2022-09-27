@@ -1,10 +1,14 @@
-﻿namespace QTHungryDogs.Logic.Extensions
-{
+﻿namespace CommonBase.Extensions
+{ 
     public static partial class DateTimeExtensions
     {
         public static TimeSpan CreateTime(this DateTime source)
         {
             return new TimeSpan(source.Hour, source.Minute, source.Second);
+        }
+        public static DateTime CreateDate(this DateTime date)
+        {
+            return new DateTime(date.Year, date.Month, date.Day);
         }
         public static long GetMonthStamp(this DateTime source)
         {

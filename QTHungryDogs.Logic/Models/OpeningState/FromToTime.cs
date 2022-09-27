@@ -1,5 +1,4 @@
-﻿using QTHungryDogs.Logic.Extensions;
-using QTHungryDogs.Logic.Modules.Common;
+﻿using QTHungryDogs.Logic.Modules.Common;
 
 namespace QTHungryDogs.Logic.Models.OpeningState
 {

@@ -29,7 +29,7 @@ namespace QTHungryDogs.Logic.Entities.Base
             get 
             {
                 var openState = State == RestaurantState.InActive 
-                             || State == RestaurantState.Closed ? OpenState.ClosedState : OpenState.NoDefinition;
+                             || State == RestaurantState.Closed ? OpenState.ClosedPermanent : OpenState.Open;
 
                 return openState;
             }

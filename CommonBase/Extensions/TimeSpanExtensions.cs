@@ -1,5 +1,5 @@
-﻿namespace QTHungryDogs.Logic.Extensions
-{
+﻿namespace CommonBase.Extensions
+{ 
     public static class TimeSpanExtensions
     {
         public static DateTime CreateDate(this TimeSpan source)
