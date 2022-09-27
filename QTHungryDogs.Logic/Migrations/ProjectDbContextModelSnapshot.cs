@@ -344,13 +344,16 @@ namespace QTHungryDogs.Logic.Migrations
                     b.ToTable("Restaurants", "base");
                 });
 
-            modelBuilder.Entity("QTHungryDogs.Logic.Entities.Base.RestaurantXUser", b =>
+            modelBuilder.Entity("QTHungryDogs.Logic.Entities.Base.RestaurantXIdentity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("IdentityId")
+                        .HasColumnType("int");
 
                     b.Property<int>("RestaurantId")
                         .HasColumnType("int");
@@ -360,15 +363,12 @@ namespace QTHungryDogs.Logic.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("rowversion");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("RestaurantId", "UserId")
+                    b.HasIndex("RestaurantId", "IdentityId")
                         .IsUnique();
 
-                    b.ToTable("RestaurantXUsers", "base");
+                    b.ToTable("RestaurantXIdentity", "base");
                 });
 
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Logging.ActionLog", b =>
@@ -498,7 +498,7 @@ namespace QTHungryDogs.Logic.Migrations
                     b.Navigation("Restaurant");
                 });
 
-            modelBuilder.Entity("QTHungryDogs.Logic.Entities.Base.RestaurantXUser", b =>
+            modelBuilder.Entity("QTHungryDogs.Logic.Entities.Base.RestaurantXIdentity", b =>
                 {
                     b.HasOne("QTHungryDogs.Logic.Entities.Base.Restaurant", "Restaurant")
                         .WithMany()

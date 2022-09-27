@@ -203,21 +203,21 @@ namespace QTHungryDogs.Logic.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RestaurantXUsers",
+                name: "RestaurantXIdentity",
                 schema: "base",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RestaurantId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false),
+                    IdentityId = table.Column<int>(type: "int", nullable: false),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RestaurantXUsers", x => x.Id);
+                    table.PrimaryKey("PK_RestaurantXIdentity", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RestaurantXUsers_Restaurants_RestaurantId",
+                        name: "FK_RestaurantXIdentity_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
                         principalSchema: "base",
                         principalTable: "Restaurants",
@@ -318,10 +318,10 @@ namespace QTHungryDogs.Logic.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_RestaurantXUsers_RestaurantId_UserId",
+                name: "IX_RestaurantXIdentity_RestaurantId_IdentityId",
                 schema: "base",
-                table: "RestaurantXUsers",
-                columns: new[] { "RestaurantId", "UserId" },
+                table: "RestaurantXIdentity",
+                columns: new[] { "RestaurantId", "IdentityId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -367,7 +367,7 @@ namespace QTHungryDogs.Logic.Migrations
                 schema: "base");
 
             migrationBuilder.DropTable(
-                name: "RestaurantXUsers",
+                name: "RestaurantXIdentity",
                 schema: "base");
 
             migrationBuilder.DropTable(

@@ -1,5 +1,5 @@
 @*@GeneratedCode*@
-@model QTHungryDogs.AspMvc.Models.Base.RestaurantXUserFilter
+@model QTHungryDogs.AspMvc.Models.Base.RestaurantXIdentityFilter
 
 @{
   var boolSelect = new SelectList(new[] { new { Id = "", Value = "---" }, new { Id = "True", Value = "True" }, new { Id = "False", Value = "False" } }, "Id", "Value");
@@ -14,8 +14,8 @@
     <input asp-for="RestaurantId" class="form-control" />
    </div>
    <div class="form-group">
-    <label asp-for="UserId" class="control-label"></label>
-    <input asp-for="UserId" class="form-control" />
+    <label asp-for="IdentityId" class="control-label"></label>
+    <input asp-for="IdentityId" class="form-control" />
    </div>
    <p></p>
    <div class="form-group">

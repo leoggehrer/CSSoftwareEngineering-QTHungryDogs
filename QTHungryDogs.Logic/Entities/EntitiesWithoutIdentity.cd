@@ -1,18 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="QTHungryDogs.Logic.Entities.Base.Restaurant">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+    <Position X="3.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAADAAAAAAAAAAAAQAAgAAAAAgIAAABAAAAAA=</HashCode>
+      <HashCode>AAIAEAAAAKCAAAACAAAQAAAAAgCAAAAgIAAABAAAAAA=</HashCode>
       <FileName>Entities\Base\Restaurant.cs</FileName>
     </TypeIdentifier>
-    <ShowAsCollectionAssociation>
-      <Property Name="OpeningHoures" />
-      <Property Name="SpecialOpeningHoures" />
-    </ShowAsCollectionAssociation>
   </Class>
   <Class Name="QTHungryDogs.Logic.Entities.App.SpecialOpeningHour">
-    <Position X="5" Y="3.25" Width="2" />
+    <Position X="6.25" Y="1.25" Width="2" />
     <TypeIdentifier>
       <HashCode>IgAgAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAEBAAAAAA=</HashCode>
       <FileName>Entities\App\SpecialOpeningHour.cs</FileName>
@@ -22,9 +18,9 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="QTHungryDogs.Logic.Entities.Base.OpeningHour">
-    <Position X="5" Y="0.5" Width="1.5" />
+    <Position X="0.5" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAAgAAAAAAAAAgAAAAAAAAAAAAAAABAAAAAEAAIAAAA=</HashCode>
+      <HashCode>IAAgAAAAAAAAAgAAEAAAAAAAAAAAABAAAAAEAAIAAAA=</HashCode>
       <FileName>Entities\Base\OpeningHour.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
