@@ -11,7 +11,7 @@ namespace QTHungryDogs.Logic.Entities.App
         public DateTime? To { get; set; }
         [MaxLength(2048)]
         public string? Notes { get; set; }
-        public SpecialOpenState State { get; set; }
+        public OpenState State { get; set; }
 
         // Navigation properties
         public Restaurant? Restaurant { get; set; }

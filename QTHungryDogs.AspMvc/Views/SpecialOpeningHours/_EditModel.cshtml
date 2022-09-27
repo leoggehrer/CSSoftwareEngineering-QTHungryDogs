@@ -28,7 +28,7 @@
         <div class="form-group">
             <label asp-for="State" class="control-label"></label>
             @{
-                var valuesState = Enum.GetValues(typeof(QTHungryDogs.Logic.Modules.Common.SpecialOpenState)).Cast<QTHungryDogs.Logic.Modules.Common.SpecialOpenState>().Select(e => new SelectListItem(e.ToString(), e.ToString()));
+                var valuesState = Enum.GetValues(typeof(QTHungryDogs.Logic.Modules.Common.OpenState)).Cast<QTHungryDogs.Logic.Modules.Common.OpenState>().Select(e => new SelectListItem(e.ToString(), e.ToString()));
             }
             @Html.DropDownListFor(m => m.State, valuesState, null, new { @class = "form-select" })
             <span asp-validation-for="State" class="text-danger"></span>

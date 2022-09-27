@@ -24,7 +24,16 @@ namespace QTHungryDogs.Logic.Entities.Base
         [MaxLength(64)]
         public string AddressCity { get; set; } = String.Empty;
         [NotMapped]
-        public OpenState OpenState { get; internal set; }
+        public OpenState OpenState 
+        {
+            get 
+            {
+                var openState = State == RestaurantState.InActive 
+                             || State == RestaurantState.Closed ? OpenState.ClosedState : OpenState.NoDefinition;
+
+                return openState;
+            }
+        }
         public RestaurantState State { get; set; }
 
         // Navigation properties
