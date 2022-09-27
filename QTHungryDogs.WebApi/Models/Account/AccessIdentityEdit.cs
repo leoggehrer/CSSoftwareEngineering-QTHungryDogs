@@ -8,7 +8,7 @@ namespace QTHungryDogs.WebApi.Models.Account
     /// <summary>
     /// This model represents an account identity.
     /// </summary>
-    public class IdentityEdit
+    public class AccessIdentityEdit
     {
         /// <summary>
         /// Gets or sets the property data.
@@ -40,9 +40,9 @@ namespace QTHungryDogs.WebApi.Models.Account
         /// </summary>
         /// <param name="source">The object to copy.</param>
         /// <returns></returns>
-        public static Identity Create(object source)
+        public static AccessIdentity Create(object source)
         {
-            var result = new Identity();
+            var result = new AccessIdentity();
 
             result.CopyFrom(source);
             return result;

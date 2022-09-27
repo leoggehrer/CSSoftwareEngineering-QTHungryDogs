@@ -57,6 +57,10 @@
             <span asp-validation-for="AddressCity" class="text-danger"></span>
         </div>
         <div class="form-group">
+            <label asp-for="OpenState" class="control-label"></label>
+            <input asp-for="OpenState" class="form-control" readonly="readonly" />
+        </div>
+        <div class="form-group">
             <label asp-for="State" class="control-label"></label>
             @{
                 var valuesState = Enum.GetValues(typeof(QTHungryDogs.Logic.Modules.Common.RestaurantState)).Cast<QTHungryDogs.Logic.Modules.Common.RestaurantState>().Select(e => new SelectListItem(e.ToString(), e.ToString()));
@@ -105,7 +109,6 @@
         </dd>
     </dl>
 }
-
 
 <h3>Special opening hours @Html.ActionLink("+", "AddSpecialOpeningHour", "SpecialOpeningHours", new { restaurantId = Model.Id }, new { @class="btn btn-outline-success", @title="Add item" })</h3>
 <hr />

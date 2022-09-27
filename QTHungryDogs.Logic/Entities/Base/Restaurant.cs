@@ -23,6 +23,8 @@ namespace QTHungryDogs.Logic.Entities.Base
         public string AddressZipcode { get; set; } = String.Empty;
         [MaxLength(64)]
         public string AddressCity { get; set; } = String.Empty;
+        [NotMapped]
+        public OpenState OpenState { get; internal set; }
         public RestaurantState State { get; set; }
 
         // Navigation properties

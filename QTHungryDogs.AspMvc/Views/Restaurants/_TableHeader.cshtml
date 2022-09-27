@@ -62,6 +62,9 @@
             }
         </th>
         <th>
+            <a class="btn btn-outline"><strong>OpenState</strong></a>
+        </th>
+        <th>
             @if (orderBy.StartsWith("State") && orderBy.EndsWith("ASC"))
             {
                 <a asp-action="OrderBy" asp-route-orderBy="State DESC" class="btn btn-outline"><strong>State</strong> <i class="fa fa-sort-desc"></i></a>

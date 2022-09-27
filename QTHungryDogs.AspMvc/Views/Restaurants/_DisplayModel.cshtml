@@ -62,6 +62,12 @@
         @Html.DisplayFor(model => model.AddressCity)
     </dd>
     <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.OpenState)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.OpenState)
+    </dd>
+    <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.State)
     </dt>
     <dd class="col-sm-10">
@@ -100,6 +106,41 @@
         </dd>
         <dd class="col-sm-1">
             @item.IsActive
+        </dd>
+    </dl>
+}
+
+<h3>Special opening hours</h3>
+<hr />
+<dl class="row">
+    <dt class="col-sm-1">
+        Weekday
+    </dt>
+    <dt class="col-sm-2">
+        OpenFrom
+    </dt>
+    <dt class="col-sm-2">
+        OpenTo
+    </dt>
+    <dt class="col-sm-1">
+        State
+    </dt>
+</dl>
+<p></p>
+@foreach (var item in Model.SpecialOpeningHours.OrderBy(e => e.From))
+{
+    <dl class="row">
+        <dd class="col-sm-1">
+            @(item.From.HasValue ? item.From.Value.DayOfWeek : string.Empty)
+        </dd>
+        <dd class="col-sm-2">
+            @(item.From.HasValue ? item.From.Value : string.Empty)
+        </dd>
+        <dd class="col-sm-2">
+            @(item.To.HasValue ? item.To.Value : string.Empty)
+        </dd>
+        <dd class="col-sm-1">
+            @item.State
         </dd>
     </dl>
 }
