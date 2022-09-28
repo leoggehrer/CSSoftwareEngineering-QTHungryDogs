@@ -1,4 +1,5 @@
-﻿using QTHungryDogs.Logic.Entities.App;
+﻿using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using QTHungryDogs.Logic.Entities.App;
 using QTHungryDogs.Logic.Entities.Base;
 using QTHungryDogs.Logic.Models.OpeningState;
 using QTHungryDogs.Logic.Modules.Common;
@@ -38,6 +39,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
         }
         public static IEnumerable<FromToTime> Expand(IEnumerable<FromToTime> timeTable)
         {
+            var result = new List<FromToTime>();
             var expandTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.FromDateSecondStamp));
 
             for (int i = 0; i < expandTimeTable.Count - 1; i++)
@@ -45,24 +47,48 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                 var curItem = expandTimeTable[i];
                 var nxtItem = expandTimeTable[i + 1];
 
+                if (i == 0 && curItem.From.GetTimeSecondStamp() > 0)
+                {
+                    result.Add(new FromToTime
+                    {
+                        From = CreateDate(curItem.From, 0, 0, 0),
+                        To = curItem.From.AddSeconds(-1),
+                        State = OpenState.Closed,
+                    });
+                }
                 if ((curItem.State & OpenState.OpenState) > 0
                     && curItem.ToDateSecondStamp > nxtItem.ToDateSecondStamp)
                 {
-                    var fromToTime = new FromToTime
+                    result.Add(new FromToTime
                     {
                         From = nxtItem.To.AddSeconds(1),
                         To = curItem.To,
                         State = curItem.State,
-                    };
-                    expandTimeTable.Insert(i + 2, fromToTime);
+                    });
+                }
+                else if ((curItem.State & OpenState.OpenState) > 0
+                         && (nxtItem.State & OpenState.OpenState) > 0
+                         && curItem.ToDateSecondStamp < nxtItem.FromDateSecondStamp)
+                {
+                    result.Add(new FromToTime
+                    {
+                        From = curItem.To.AddSeconds(1),
+                        To = nxtItem.From.AddSeconds(-1),
+                        State = OpenState.Closed,
+                    });
+                    result.Add(curItem);
+                }
+                else
+                {
+                    result.Add(curItem);
                 }
             }
-            MoveFromTimeToBottom(expandTimeTable, OpenState.ClosedState, OpenState.OpenState);
-            MoveToTimeToTop(expandTimeTable, OpenState.ClosedState, OpenState.OpenState);
-            MoveFromTimeToBottom(expandTimeTable, OpenState.OpenState, OpenState.OpenState);
-            MoveToTimeToTop(expandTimeTable, OpenState.OpenState, OpenState.OpenState);
+            MoveFromTimeToBottom(result, OpenState.ClosedState, OpenState.OpenState);
+            MoveToTimeToTop(result, OpenState.ClosedState, OpenState.OpenState);
+            MoveFromTimeToBottom(result, OpenState.OpenState, OpenState.OpenState);
+            MoveToTimeToTop(result, OpenState.OpenState, OpenState.OpenState);
 
-            return expandTimeTable.Where(e => e.ToDateSecondStamp > e.FromDateSecondStamp);
+            return result.Where(e => e.ToDateSecondStamp > e.FromDateSecondStamp);
         }
         public static IEnumerable<FromToTime> Fillup(IEnumerable<FromToTime> timeTable)
         {
@@ -195,9 +221,6 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
             return date.Hour == 23 && date.Minute == 59 && date.Second == 59;
         }
 
-        public static DateTime CreateNow() => DateTime.Now;
-        public static DateTime CreateDate(int hour, int minute, int second)
-                                            => CreateDate(DateTime.Now, hour, minute, second);
         public static DateTime CreateDate(DateTime date, int hour, int minute, int second)
                                             => new(date.Year, date.Month, date.Day, hour, minute, second);
         public static (DateTime from, DateTime to) CreateWeekRange(DateTime date)
@@ -207,52 +230,56 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                                             => (CreateDate(date, 0, 0, 0),
                                                 CreateDate(date.AddDays(7), 23, 59, 59));
 
-        public static IEnumerable<FromToTime> CreateDayOpeningStates(IEnumerable<OpeningHour> openingHours, IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime date)
+        public static OpenState GetOpenState(Restaurant restaurant, DateTime date)
         {
-            var result = new List<FromToTime>();
+            var result = OpenState.NoDefinition;
+            var dateStamp = date.GetDateSecondStamp();
 
-            result.AddRange(LoadDayOpeningHours(openingHours, date));
-            result.AddRange(LoadDaySpecialOpeningHours(specialOpeningHours, date));
-            result.AddRange(OpeningStatesCreator.Expand(result.Eject()));
-            result.AddRange(OpeningStatesCreator.Fillup(result.Eject()));
-
-            if (result.Any() == false)
+            if (restaurant.State == RestaurantState.InActive)
             {
-                if (result.Count == 0)
+                result = OpenState.Closed;
+            }
+            else if (restaurant.State == RestaurantState.Closed)
+            {
+                result = OpenState.Closed;
+            }
+            else if (restaurant.SpecialOpeningHours.FirstOrDefault(e => e.State == OpenState.IsBusy && e.To.HasValue && e.From.GetDateSecondStamp() <= dateStamp && dateStamp <= e.To.Value.GetDateSecondStamp()) != null)
+            {
+                //var specialOpening = restaurant.SpecialOpeningHours.FirstOrDefault(e => e.From.GetDateSecondStamp() <= date.GetDateSecondStamp() && e.To.HasValue == false && e.State == OpenState.ClosedPermanent);
+
+                result = OpenState.ClosedPermanent;
+            }
+            else if (restaurant.SpecialOpeningHours.FirstOrDefault(e => e.State == OpenState.ClosedPermanent && e.From.GetDateSecondStamp() <= dateStamp && (e.To.HasValue == false || dateStamp <= e.To.Value.GetDateSecondStamp())) != null)
+            {
+                //var specialOpening = restaurant.SpecialOpeningHours.FirstOrDefault(e => e.From.GetDateSecondStamp() <= date.GetDateSecondStamp() && e.To.HasValue == false && e.State == OpenState.ClosedPermanent);
+
+                result = OpenState.ClosedPermanent;
+            }
+            else
+            {
+                var fromToOpenStates = OpeningStatesCreator.CreateDayOpeningStates(restaurant.OpeningHours, restaurant.SpecialOpeningHours, date);
+                var fromToOpenState = fromToOpenStates.FirstOrDefault(e => e.IsBetween(date));
+
+                if (fromToOpenState != null)
                 {
-                    result.Add(new FromToTime
-                    {
-                        From = OpeningStatesCreator.CreateDate(date, 0, 0, 0),
-                        To = OpeningStatesCreator.CreateDate(date, 23, 59, 59),
-                        State = OpenState.NoDefinition,
-                    });
+                    result = fromToOpenState.State;
                 }
             }
             return result;
         }
-        public static IEnumerable<FromToTime> LoadWeekTimeTable(IEnumerable<OpeningHour> openingHours, IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime date)
+        public static IEnumerable<FromToTime> CreateDayOpeningStates(IEnumerable<OpeningHour> openingHours, IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime date)
         {
-            var result = new List<FromToTime>();
+            var dayStamp = date.GetDayStamp();
+            var result = CreateFromToOpeningStates(openingHours, specialOpeningHours, date.AddDays(-1), date.AddDays(1));
+
+            return result.Where(e => e.From.GetDayStamp() >= dayStamp && dayStamp <= e.To.GetDayStamp());
+        }
+        public static IEnumerable<FromToTime> CreateWeekOpeningStates(IEnumerable<OpeningHour> openingHours, IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime date)
+        {
             var (from, to) = OpeningStatesCreator.CreateWeekRangeAt(date);
+            var result = CreateFromToOpeningStates(openingHours, specialOpeningHours, from.AddDays(-1), to.AddDays(1));
 
-            result.AddRange(CreateOpeningStates(openingHours, from.AddDays(-1), to));
-            result.AddRange(CreateOpeningStates(specialOpeningHours, from, to));
-            result.AddRange(OpeningStatesCreator.Expand(result.Eject()));
-            result.AddRange(OpeningStatesCreator.Fillup(result.Eject()));
-
-            if (result.Any() == false)
-            {
-                if (result.Count == 0)
-                {
-                    result.Add(new FromToTime
-                    {
-                        From = OpeningStatesCreator.CreateDate(date, 0, 0, 0),
-                        To = OpeningStatesCreator.CreateDate(date, 23, 59, 59),
-                        State = OpenState.NoDefinition,
-                    });
-                }
-            }
-            return result;
+            return result.Where(e => e.IsBetween(from) || e.IsBetween(to));
         }
         public static IEnumerable<FromToTime> CreateFromToOpeningStates(IEnumerable<OpeningHour> openingHours, IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime from, DateTime to)
         {
@@ -324,46 +351,45 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
         private static IEnumerable<FromToTime> CreateOpeningStates(IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime from, DateTime to)
         {
             var result = new List<FromToTime>();
-            var runFrom = OpeningStatesCreator.CreateDate(from, 0, 0, 0);
-            var runTo = OpeningStatesCreator.CreateDate(to, 23, 59, 59);
-            var run = runFrom;
+            var run = CreateDate(from, 0, 0, 0);
+            var runTo = CreateDate(to, 23, 59, 59);
+            var openState = OpenState.NoDefinition;
 
             while (run <= runTo)
             {
                 var dayStamp = run.GetDayStamp();
 
-                foreach (var item in specialOpeningHours.Where(e => (e.From.HasValue && e.From.Value.GetDayStamp() <= dayStamp)
-                                                                 && (e.To.HasValue && e.To.Value.GetDayStamp() >= dayStamp))
+                if (openState == OpenState.ClosedPermanent)
+                {
+                    result.Add(new FromToTime
+                    {
+                        From = run,
+                        To = CreateDate(run, 23, 59, 59),
+                        State = openState,
+                    });
+                }
+
+                foreach (var item in specialOpeningHours.Where(e => e.From.GetDayStamp() == dayStamp)
                                                         .OrderBy(e => e.From))
                 {
-                    var fromToTime = new FromToTime
+                    if (openState != OpenState.ClosedPermanent)
                     {
-                        From = item.From != null ? item.From.Value : run,
-                        To = item.To ?? run.AddDays(1),
-                        State = item.State
-                    };
-                    if (result.Any(e => e.IsEquals(fromToTime)) == false)
+                        result.Add(new FromToTime
+                        {
+                            From = item.From,
+                            To = item.To ?? CreateDate(run, 23, 59, 59),
+                            State = item.State
+                        });
+                    }
+
+                    if (item.State == OpenState.ClosedPermanent && item.To.HasValue== false)
                     {
-                        result.Add(fromToTime);
+                        openState = OpenState.ClosedPermanent;
                     }
                 }
                 run = run.AddDays(1);
             }
             return result;
         }
-
-        private static IEnumerable<FromToTime> LoadDayOpeningHours(IEnumerable<OpeningHour> openingHours, DateTime date)
-        {
-            var result = CreateOpeningStates(openingHours, date.AddDays(-1), date.AddDays(1));
-
-            return result.Where(e => e.From.GetDayStamp() == date.GetDayStamp() || e.To.GetDayStamp() == date.GetDayStamp());
-        }
-        private static IEnumerable<FromToTime> LoadDaySpecialOpeningHours(IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime date)
-        {
-            var result = CreateOpeningStates(specialOpeningHours, date, date);
-
-            return result;
-        }
-
     }
 }

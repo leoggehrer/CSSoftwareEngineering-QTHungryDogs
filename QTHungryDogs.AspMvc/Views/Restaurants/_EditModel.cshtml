@@ -131,10 +131,10 @@
 {
     <dl class="row">
         <dd class="col-sm-1">
-            @(item.From.HasValue ? item.From.Value.DayOfWeek : string.Empty)
+            @(item.From.DayOfWeek)
         </dd>
         <dd class="col-sm-2">
-            @(item.From.HasValue ? item.From.Value : string.Empty)
+            @(item.From)
         </dd>
         <dd class="col-sm-2">
             @(item.To.HasValue ? item.To.Value : string.Empty)

@@ -38,6 +38,7 @@ namespace QTHungryDogs.AspMvc.Controllers.App
             var accessModel = new Models.App.SpecialOpeningHour
             {
                 RestaurantId = restaurantId,
+                From = DateTime.Now,
             };
             SessionWrapper.SetStringValue($"{ControllerName}.BackController", "Restaurants");
             SessionWrapper.SetStringValue($"{ControllerName}.BackAction", "Edit");

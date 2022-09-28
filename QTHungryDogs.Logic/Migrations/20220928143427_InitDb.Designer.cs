@@ -12,7 +12,7 @@ using QTHungryDogs.Logic.DataContext;
 namespace QTHungryDogs.Logic.Migrations
 {
     [DbContext(typeof(ProjectDbContext))]
-    [Migration("20220927072543_InitDb")]
+    [Migration("20220928143427_InitDb")]
     partial class InitDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -215,7 +215,7 @@ namespace QTHungryDogs.Logic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("From")
+                    b.Property<DateTime>("From")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Notes")

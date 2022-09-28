@@ -1,5 +1,6 @@
 ﻿using QTHungryDogs.Logic.Entities.App;
 using QTHungryDogs.Logic.Modules.Common;
+using QTHungryDogs.Logic.Modules.OpeningState;
 
 namespace QTHungryDogs.Logic.Entities.Base
 {
@@ -29,7 +30,7 @@ namespace QTHungryDogs.Logic.Entities.Base
             get 
             {
                 var openState = State == RestaurantState.InActive 
-                             || State == RestaurantState.Closed ? OpenState.ClosedPermanent : OpenState.Open;
+                             || State == RestaurantState.Closed ? OpenState.Closed : OpeningStatesCreator.GetOpenState(this, DateTime.Now);
 
                 return openState;
             }
