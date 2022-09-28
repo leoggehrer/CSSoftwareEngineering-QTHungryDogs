@@ -148,13 +148,13 @@
 <h3>Opening states</h3>
 <hr />
 <dl class="row">
-    <dt class="col-sm-1">
+    <dt class="col-sm-2">
         From
     </dt>
-    <dt class="col-sm-1">
+    <dt class="col-sm-2">
         To
     </dt>
-    <dt class="col-sm-1">
+    <dt class="col-sm-2">
         State
     </dt>
 </dl>
@@ -162,13 +162,13 @@
 @foreach (var item in Model.OpeningStates)
 {
     <dl class="row">
-        <dd class="col-sm-1">
-            @item.From.ToString("HH:mm:ss")
+        <dd class="col-sm-2">
+            @item.From.ToString("ddd, HH:mm:ss")
         </dd>
-        <dd class="col-sm-1">
-            @item.To.ToString("HH:mm:ss")
+        <dd class="col-sm-2">
+            @item.To.ToString("ddd, HH:mm:ss")
         </dd>
-        <dd class="col-sm-1">
+        <dd class="col-sm-2">
             @item.State
         </dd>
     </dl>

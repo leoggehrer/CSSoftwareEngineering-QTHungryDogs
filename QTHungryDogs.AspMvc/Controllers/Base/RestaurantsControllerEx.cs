@@ -4,7 +4,7 @@
     {
         protected override Models.Base.Restaurant BeforeView(Models.Base.Restaurant viewModel, ActionMode actionMode)
         {
-            if (actionMode == ActionMode.Details)
+            if ((actionMode & ActionMode.EditAction) > 0 || actionMode == ActionMode.Details)
             {
                 var dayStamp = DateTime.Now.GetDayStamp();
                 var instanceAccess = DataAccess as Logic.Contracts.Base.IRestaurantsAccess<Logic.Entities.Base.Restaurant>;

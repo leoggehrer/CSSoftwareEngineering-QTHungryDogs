@@ -48,7 +48,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                 if ((curItem.State & OpenState.OpenState) > 0
                     && curItem.ToDateSecondStamp > nxtItem.ToDateSecondStamp)
                 {
-                    FromToTime fromToTime = new FromToTime
+                    var fromToTime = new FromToTime
                     {
                         From = nxtItem.To.AddSeconds(1),
                         To = curItem.To,
@@ -91,7 +91,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                     {
                         From = lastItem.To.AddSeconds(1),
                         To = curItem.From.AddSeconds(-1),
-                        State = OpenState.NoDefinition,
+                        State = (lastItem.State & OpenState.OpenState) > 0 ? OpenState.Closed : OpenState.Open,
                     };
                     result.Add(item);
                 }
@@ -108,7 +108,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                     {
                         From = checkItem.To.AddSeconds(1),
                         To = CreateDate(checkItem.To, 23, 59, 59),
-                        State = OpenState.NoDefinition,
+                        State = (checkItem.State & OpenState.OpenState) > 0 ? OpenState.Closed : OpenState.Open,
                     };
                     result.Add(item);
                 }
@@ -199,7 +199,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
         public static DateTime CreateDate(int hour, int minute, int second)
                                             => CreateDate(DateTime.Now, hour, minute, second);
         public static DateTime CreateDate(DateTime date, int hour, int minute, int second)
-                                            => new DateTime(date.Year, date.Month, date.Day, hour, minute, second);
+                                            => new(date.Year, date.Month, date.Day, hour, minute, second);
         public static (DateTime from, DateTime to) CreateWeekRange(DateTime date)
                                             => (CreateDate(date.AddDays(DayOfWeek.Sunday - date.DayOfWeek), 0, 0, 0),
                                                 CreateDate(date.AddDays(DayOfWeek.Saturday - date.DayOfWeek), 23, 59, 59));
