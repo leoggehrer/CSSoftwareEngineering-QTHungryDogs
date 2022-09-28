@@ -20,6 +20,14 @@ namespace QTHungryDogs.AspMvc.Models.OpeningState
         /// </summary>
         public OpenState State { get; set; }
 
+        public bool IsBetween(DateTime date)
+        {
+            var fromStamp = From.GetDateSecondStamp();
+            var dateStamp = date.GetDateSecondStamp();
+            var toStamp = To.GetDateSecondStamp();
+
+            return fromStamp <= dateStamp && dateStamp <= toStamp;
+        }
         /// <summary>
         /// Creates an instance of type FromToTime.
         /// </summary>
