@@ -25,7 +25,12 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                     while (run.From.GetDayStamp() < item.To.GetDayStamp())
                     {
                         result.Add(run);
-                        run = new FromToTime { From = CreateDate(run.From.AddDays(1), 0, 0, 0), To = item.To, State = item.State };
+                        run = new FromToTime
+                        {
+                            From = CreateDate(run.From.AddDays(1), 0, 0, 0),
+                            To = item.To,
+                            State = item.State
+                        };
 
                         if (run.From.GetDayStamp() < item.To.GetDayStamp())
                         {
@@ -39,13 +44,13 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
         }
         public static IEnumerable<FromToTime> Expand(IEnumerable<FromToTime> timeTable)
         {
-            var expandTable = new List<FromToTime>();
+            var result = new List<FromToTime>();
             var orderdTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.FromDateSecondStamp));
             var firstItem = orderdTimeTable.FirstOrDefault();
 
             if (firstItem != null && firstItem.From.GetTimeSecondStamp() > 0)
             {
-                expandTable.Add(new FromToTime
+                result.Add(new FromToTime
                 {
                     From = CreateDate(firstItem.From, 0, 0, 0),
                     To = firstItem.From.AddSeconds(-1),
@@ -53,44 +58,66 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                 });
             }
 
-            for (int i = 0; i < orderdTimeTable.Count - 1; i++)
+            if (orderdTimeTable.Count < 2)
             {
-                var curItem = orderdTimeTable[i];
-                var nxtItem = orderdTimeTable[i + 1];
+                result.AddRange(orderdTimeTable);
+            }
+            else
+            {
+                for (int i = 0; i < orderdTimeTable.Count - 1; i++)
+                {
+                    var curItem = orderdTimeTable[i];
+                    var nxtItem = orderdTimeTable[i + 1];
 
-                if ((curItem.State & OpenState.OpenState) > 0
-                    && curItem.ToDateSecondStamp > nxtItem.ToDateSecondStamp)
-                {
-                    expandTable.Add(new FromToTime
+                    result.Add(curItem);
+
+                    if (curItem.To.GetDateSecondStamp() + 1 < nxtItem.From.GetDateSecondStamp())
                     {
-                        From = nxtItem.To.AddSeconds(1),
-                        To = curItem.To,
-                        State = curItem.State,
-                    });
-                }
-                else if ((curItem.State & OpenState.OpenState) > 0
-                         && (nxtItem.State & OpenState.OpenState) > 0
-                         && curItem.ToDateSecondStamp < nxtItem.FromDateSecondStamp)
-                {
-                    expandTable.Add(new FromToTime
-                    {
-                        From = curItem.To.AddSeconds(1),
-                        To = nxtItem.From.AddSeconds(-1),
-                        State = OpenState.Closed,
-                    });
-                    expandTable.Add(curItem);
-                }
-                else
-                {
-                    expandTable.Add(curItem);
+                        result.Add(new FromToTime
+                        {
+                            From = curItem.To.AddSeconds(1),
+                            To = nxtItem.From.AddSeconds(-1),
+                            State = OpenState.Closed,
+                        });
+                    }
                 }
             }
-            MoveFromTimeToBottom(expandTable, OpenState.ClosedState, OpenState.OpenState);
-            MoveToTimeToTop(expandTable, OpenState.ClosedState, OpenState.OpenState);
-            MoveFromTimeToBottom(expandTable, OpenState.OpenState, OpenState.OpenState);
-            MoveToTimeToTop(expandTable, OpenState.OpenState, OpenState.OpenState);
+            return result.Where(e => e.ToDateSecondStamp > e.FromDateSecondStamp);
+        }
+        public static IEnumerable<FromToTime> Merge(IEnumerable<FromToTime> timeTable)
+        {
+            var result = new List<FromToTime>();
+            var orderdTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.FromDateSecondStamp));
 
-            return Split(expandTable.Where(e => e.ToDateSecondStamp > e.FromDateSecondStamp));
+            if (orderdTimeTable.Count < 2)
+            {
+                result.AddRange(orderdTimeTable);
+            }
+            else
+            {
+                for (int i = 0; i < orderdTimeTable.Count - 1; i++)
+                {
+                    var curItem = orderdTimeTable[i];
+                    var nxtItem = orderdTimeTable[i + 1];
+
+                    if (curItem.State == nxtItem.State
+                        && curItem.To.GetDateSecondStamp() <= nxtItem.From.GetDateSecondStamp())
+                    {
+                        result.Add(new FromToTime
+                        {
+                            From = curItem.From,
+                            To = nxtItem.To,
+                            State = curItem.State,
+                        });
+                        i++;
+                    }
+                    else
+                    {
+                        result.Add(curItem);
+                    }
+                }
+            }
+            return result;
         }
         public static IEnumerable<FromToTime> Fillup(IEnumerable<FromToTime> timeTable)
         {
@@ -289,8 +316,10 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
 
             result.AddRange(CreateOpeningStates(openingHours, from, to));
             result.AddRange(CreateOpeningStates(specialOpeningHours, from, to));
-            result.AddRange(OpeningStatesCreator.Expand(result.Eject()));
-            result.AddRange(OpeningStatesCreator.Fillup(result.Eject()));
+            result.AddRange(Expand(result.Eject()));
+            result.AddRange(Split(result.Eject()));
+            result.AddRange(Merge(result.Eject()));
+//            result.AddRange(OpeningStatesCreator.Fillup(result.Eject()));
 
             if (result.Any() == false)
             {
@@ -383,7 +412,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                         });
                     }
 
-                    if (item.State == OpenState.ClosedPermanent && item.To.HasValue== false)
+                    if (item.State == OpenState.ClosedPermanent && item.To.HasValue == false)
                     {
                         openState = OpenState.ClosedPermanent;
                     }
