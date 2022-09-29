@@ -11,7 +11,6 @@ namespace QTHungryDogs.Logic.Entities.Base
         public TimeSpan OpenTo { get; set; }
         [MaxLength(2048)]
         public string? Notes { get; set; }
-
         public bool IsActive { get; set; } = true;
 
         // Navigation properties

@@ -39,27 +39,29 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
         }
         public static IEnumerable<FromToTime> Expand(IEnumerable<FromToTime> timeTable)
         {
-            var result = new List<FromToTime>();
-            var expandTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.FromDateSecondStamp));
+            var expandTable = new List<FromToTime>();
+            var orderdTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.FromDateSecondStamp));
+            var firstItem = orderdTimeTable.FirstOrDefault();
 
-            for (int i = 0; i < expandTimeTable.Count - 1; i++)
+            if (firstItem != null && firstItem.From.GetTimeSecondStamp() > 0)
             {
-                var curItem = expandTimeTable[i];
-                var nxtItem = expandTimeTable[i + 1];
-
-                if (i == 0 && curItem.From.GetTimeSecondStamp() > 0)
+                expandTable.Add(new FromToTime
                 {
-                    result.Add(new FromToTime
-                    {
-                        From = CreateDate(curItem.From, 0, 0, 0),
-                        To = curItem.From.AddSeconds(-1),
-                        State = OpenState.Closed,
-                    });
-                }
+                    From = CreateDate(firstItem.From, 0, 0, 0),
+                    To = firstItem.From.AddSeconds(-1),
+                    State = OpenState.Closed,
+                });
+            }
+
+            for (int i = 0; i < orderdTimeTable.Count - 1; i++)
+            {
+                var curItem = orderdTimeTable[i];
+                var nxtItem = orderdTimeTable[i + 1];
+
                 if ((curItem.State & OpenState.OpenState) > 0
                     && curItem.ToDateSecondStamp > nxtItem.ToDateSecondStamp)
                 {
-                    result.Add(new FromToTime
+                    expandTable.Add(new FromToTime
                     {
                         From = nxtItem.To.AddSeconds(1),
                         To = curItem.To,
@@ -70,25 +72,25 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                          && (nxtItem.State & OpenState.OpenState) > 0
                          && curItem.ToDateSecondStamp < nxtItem.FromDateSecondStamp)
                 {
-                    result.Add(new FromToTime
+                    expandTable.Add(new FromToTime
                     {
                         From = curItem.To.AddSeconds(1),
                         To = nxtItem.From.AddSeconds(-1),
                         State = OpenState.Closed,
                     });
-                    result.Add(curItem);
+                    expandTable.Add(curItem);
                 }
                 else
                 {
-                    result.Add(curItem);
+                    expandTable.Add(curItem);
                 }
             }
-            MoveFromTimeToBottom(result, OpenState.ClosedState, OpenState.OpenState);
-            MoveToTimeToTop(result, OpenState.ClosedState, OpenState.OpenState);
-            MoveFromTimeToBottom(result, OpenState.OpenState, OpenState.OpenState);
-            MoveToTimeToTop(result, OpenState.OpenState, OpenState.OpenState);
+            MoveFromTimeToBottom(expandTable, OpenState.ClosedState, OpenState.OpenState);
+            MoveToTimeToTop(expandTable, OpenState.ClosedState, OpenState.OpenState);
+            MoveFromTimeToBottom(expandTable, OpenState.OpenState, OpenState.OpenState);
+            MoveToTimeToTop(expandTable, OpenState.OpenState, OpenState.OpenState);
 
-            return result.Where(e => e.ToDateSecondStamp > e.FromDateSecondStamp);
+            return Split(expandTable.Where(e => e.ToDateSecondStamp > e.FromDateSecondStamp));
         }
         public static IEnumerable<FromToTime> Fillup(IEnumerable<FromToTime> timeTable)
         {
@@ -313,8 +315,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
 
             while (run <= runTo)
             {
-                foreach (var item in openingHours.Where(e => (int)e.Weekday == (int)run.DayOfWeek 
-                                                          && e.IsActive == true)
+                foreach (var item in openingHours.Where(e => (int)e.Weekday == (int)run.DayOfWeek && e.IsActive == true)
                                                  .OrderBy(e => e.OpenFrom))
                 {
                     var fromToTime = default(FromToTime);

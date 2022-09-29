@@ -45,5 +45,12 @@
       <FileName>Entities\Account\Identity.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Enum Name="QTHungryDogs.Logic.Modules.Common.OpenState">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAACAAAAIAAICAAAAAAAABAAAAAAAAAAAAAAACAACA=</HashCode>
+      <FileName>Modules\Common\OpenState.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
