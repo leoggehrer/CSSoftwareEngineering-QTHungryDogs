@@ -8,36 +8,31 @@ namespace QTHungryDogs.Logic.Models.OpeningState
         public DateTime To { get; set; }
         public OpenState State { get; set; }
 
-        internal long FromDateSecondStamp => From.GetDateSecondStamp();
-        internal long FromTimeSecondStamp => From.GetTimeSecondStamp();
-        internal long ToDateSecondStamp => To.GetDateSecondStamp();
-        internal long ToTimeSecondStamp => To.GetTimeSecondStamp();
-
         public bool IsEquals(FromToTime other)
         {
             other.CheckArgument(nameof(other));
 
-            return FromDateSecondStamp == other.FromDateSecondStamp
-                   && ToDateSecondStamp == other.ToDateSecondStamp
+            return From.GetDateSecondStamp() == other.From.GetDateSecondStamp()
+                   && To.GetDateSecondStamp() == other.To.GetDateSecondStamp()
                    && State == other.State;
         }
         public bool IsBetween(DateTime date)
         {
             var stamp = date.GetDateSecondStamp();
 
-            return FromDateSecondStamp <= stamp && ToDateSecondStamp >= stamp;
+            return From.GetDateSecondStamp() <= stamp && To.GetDateSecondStamp() >= stamp;
         }
         public bool InRange(FromToTime fromToTime)
         {
-            return IsOverlap(fromToTime.FromDateSecondStamp) && IsOverlap(fromToTime.ToDateSecondStamp);
+            return IsOverlap(fromToTime.From.GetDateSecondStamp()) && IsOverlap(fromToTime.To.GetDateSecondStamp());
         }
         public bool IsOverlap(FromToTime fromToTime)
         {
-            return IsOverlap(fromToTime.FromDateSecondStamp) || IsOverlap(fromToTime.ToDateSecondStamp);
+            return IsOverlap(fromToTime.From.GetDateSecondStamp()) || IsOverlap(fromToTime.To.GetDateSecondStamp());
         }
         public bool IsOverlap(long secondStamp)
         {
-            return FromDateSecondStamp >= secondStamp && secondStamp <= ToDateSecondStamp;
+            return From.GetDateSecondStamp() >= secondStamp && secondStamp <= To.GetDateSecondStamp();
         }
         public override string ToString()
         {

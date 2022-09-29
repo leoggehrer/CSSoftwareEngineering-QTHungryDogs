@@ -45,7 +45,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
         public static IEnumerable<FromToTime> Expand(IEnumerable<FromToTime> timeTable)
         {
             var result = new List<FromToTime>();
-            var orderdTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.FromDateSecondStamp));
+            var orderdTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.From.GetDateSecondStamp()));
             var firstItem = orderdTimeTable.FirstOrDefault();
 
             if (firstItem != null && firstItem.From.GetTimeSecondStamp() > 0)
@@ -82,12 +82,12 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                     }
                 }
             }
-            return result.Where(e => e.ToDateSecondStamp > e.FromDateSecondStamp);
+            return result.Where(e => e.To.GetDateSecondStamp() > e.From.GetDateSecondStamp());
         }
         public static IEnumerable<FromToTime> Merge(IEnumerable<FromToTime> timeTable)
         {
             var result = new List<FromToTime>();
-            var orderdTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.FromDateSecondStamp));
+            var orderdTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.From.GetDateSecondStamp()));
 
             if (orderdTimeTable.Count < 2)
             {
@@ -101,7 +101,8 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                     var nxtItem = orderdTimeTable[i + 1];
 
                     if (curItem.State == nxtItem.State
-                        && curItem.To.GetDateSecondStamp() <= nxtItem.From.GetDateSecondStamp())
+                        && curItem.From.GetDayStamp() == nxtItem.From.GetDayStamp()
+                        && curItem.To.GetDateSecondStamp() >= nxtItem.From.GetDateSecondStamp())
                     {
                         result.Add(new FromToTime
                         {
@@ -122,10 +123,10 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
         public static IEnumerable<FromToTime> Fillup(IEnumerable<FromToTime> timeTable)
         {
             var result = new List<FromToTime>();
-            var source = new List<FromToTime>(timeTable.OrderBy(e => e.FromDateSecondStamp));
+            var source = new List<FromToTime>(timeTable.OrderBy(e => e.From.GetDateSecondStamp()));
             var checkItem = source.FirstOrDefault();
 
-            if (checkItem != null && CreateDate(checkItem.From, 0, 0, 0).GetDateSecondStamp() < checkItem.FromDateSecondStamp)
+            if (checkItem != null && CreateDate(checkItem.From, 0, 0, 0).GetDateSecondStamp() < checkItem.From.GetDateSecondStamp())
             {
                 var item = new FromToTime
                 {
@@ -157,7 +158,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
 
             if (checkItem != null)
             {
-                if (checkItem.ToDateSecondStamp < CreateDate(checkItem.To, 23, 59, 59).GetDateSecondStamp())
+                if (checkItem.To.GetDateSecondStamp() < CreateDate(checkItem.To, 23, 59, 59).GetDateSecondStamp())
                 {
                     var item = new FromToTime
                     {
@@ -168,7 +169,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                     result.Add(item);
                 }
             }
-            return result.Where(e => e.ToDateSecondStamp - e.FromDateSecondStamp > 0).OrderBy(e => e.FromDateSecondStamp);
+            return result.Where(e => e.To.GetDateSecondStamp() - e.From.GetDateSecondStamp() > 0).OrderBy(e => e.From.GetDateSecondStamp());
         }
 
         public static void MoveFromTimeToBottom(IEnumerable<FromToTime> timeTable, OpenState curState, OpenState prvState)
@@ -186,7 +187,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                         var prvItem = timeTable.ElementAt(j);
 
                         if ((prvItem.State & prvState) > 0
-                            && curItem.FromDateSecondStamp <= prvItem.ToDateSecondStamp)
+                            && curItem.From.GetDateSecondStamp() <= prvItem.To.GetDateSecondStamp())
                         {
                             prvItem.To = curItem.From.AddSeconds(-1);
                         }
@@ -209,7 +210,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                         var nxtItem = timeTable.ElementAt(j);
 
                         if ((nxtItem.State & nxtState) > 0
-                            && cur.ToDateSecondStamp >= nxtItem.FromDateSecondStamp)
+                            && cur.To.GetDateSecondStamp() >= nxtItem.From.GetDateSecondStamp())
                         {
                             nxtItem.From = IsLastDayTime(cur.To) ? cur.To : cur.To.AddSeconds(1);
                         }
@@ -264,13 +265,9 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
             var result = OpenState.NoDefinition;
             var dateStamp = date.GetDateSecondStamp();
 
-            if (restaurant.State == RestaurantState.InActive)
+            if (restaurant.State == State.Locked)
             {
-                result = OpenState.Closed;
-            }
-            else if (restaurant.State == RestaurantState.Closed)
-            {
-                result = OpenState.Closed;
+                result = OpenState.ClosedPermanent;
             }
             else if (restaurant.SpecialOpeningHours.FirstOrDefault(e => e.State == OpenState.IsBusy && e.To.HasValue && e.From.GetDateSecondStamp() <= dateStamp && dateStamp <= e.To.Value.GetDateSecondStamp()) != null)
             {
@@ -301,7 +298,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
             var dayStamp = date.GetDayStamp();
             var result = CreateFromToOpeningStates(openingHours, specialOpeningHours, date.AddDays(-1), date.AddDays(1));
 
-            return result.Where(e => e.From.GetDayStamp() >= dayStamp && dayStamp <= e.To.GetDayStamp());
+            return result.Where(e => e.From.GetDayStamp() <= dayStamp && dayStamp <= e.To.GetDayStamp());
         }
         public static IEnumerable<FromToTime> CreateWeekOpeningStates(IEnumerable<OpeningHour> openingHours, IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime date)
         {

@@ -63,7 +63,7 @@
         <div class="form-group">
             <label asp-for="State" class="control-label"></label>
             @{
-                var valuesState = Enum.GetValues(typeof(QTHungryDogs.Logic.Modules.Common.RestaurantState)).Cast<QTHungryDogs.Logic.Modules.Common.RestaurantState>().Select(e => new SelectListItem(e.ToString(), e.ToString()));
+                var valuesState = Enum.GetValues(typeof(QTHungryDogs.Logic.Modules.Common.State)).Cast<QTHungryDogs.Logic.Modules.Common.State>().Select(e => new SelectListItem(e.ToString(), e.ToString()));
             }
             @Html.DropDownListFor(m => m.State, valuesState, null, new { @class = "form-select" })
             <span asp-validation-for="State" class="text-danger"></span>
@@ -139,8 +139,12 @@
         <dd class="col-sm-2">
             @(item.To.HasValue ? item.To.Value : string.Empty)
         </dd>
-        <dd class="col-sm-1">
+        <dd class="col-sm-2">
             @item.State
+        </dd>
+        <dd class="col-sm-1">
+            @Html.ActionLink("...", "Edit", "SpecialOpeningHours", new { id = item.Id }, new { @class="btn btn-sm btn-outline-primary" })
+            @Html.ActionLink("X", "Delete", "SpecialOpeningHours", new { id = item.Id }, new { @class="btn btn-sm btn-outline-danger" })
         </dd>
     </dl>
 }

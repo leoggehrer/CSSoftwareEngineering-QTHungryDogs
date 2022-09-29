@@ -21,6 +21,9 @@ AspMvc;AddServices;All;Generate;True
 AspMvc;Property;Base.OpeningHour.OpenFrom;Attributes;DisplayFormat(DataFormatString="{0:hh\\:mm}", ApplyFormatInEditMode = true)
 AspMvc;Property;Base.OpeningHour.OpenTo;Attributes;DisplayFormat(DataFormatString="{0:hh\\:mm}", ApplyFormatInEditMode = true)
 
+AspMvc;Property;App.SpecialOpeningHour.From;Attributes;DataType(DataType.DateTime)
+AspMvc;Property;App.SpecialOpeningHour.To;Attributes;DataType(DataType.DateTime)
+
 WebApi;Property;App.EntityType.EntityTypeId;Attributes;System.Text.Json.Serialization.JsonIgnore
 AspMvc;Property;App.ColumnInfoFilter.EntityTypeId;Generate;False
 

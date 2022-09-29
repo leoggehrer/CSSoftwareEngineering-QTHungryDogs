@@ -9,7 +9,7 @@ namespace QTHungryDogs.ConApp
         {
             var login = Task.Run(async () => await Logic.AccountAccess.LogonAsync(SaEmail, SaPwd, "Import")).Result;
 
-            Task.Run(async () => await ImportRestaurants(login)).Wait();
+            ImportRestaurants(login).Wait();
         }
 
         static string RestaurantFile = "Restaurants.csv";
@@ -36,7 +36,7 @@ namespace QTHungryDogs.ConApp
                                           AddressHousenumber = d[5],
                                           AddressZipcode = d[6],
                                           AddressCity = d[7],
-                                          State = (Logic.Modules.Common.RestaurantState)Int32.Parse(d[8])
+                                          State = d[8] == "2" ? Logic.Modules.Common.State.Active : Logic.Modules.Common.State.Locked
                                       }
                                   });
             var openings = File.ReadLines(OpeningHourFile, System.Text.Encoding.Default)
@@ -52,7 +52,7 @@ namespace QTHungryDogs.ConApp
                                         OpenFrom = TimeSpan.Parse(d[3]),
                                         OpenTo = TimeSpan.Parse(d[4]),
                                         Notes = d[5],
-                                        IsActive = d[6] == "1" ? true : false,
+                                        IsActive = d[6] == "1",
                                     }
                                 });
 

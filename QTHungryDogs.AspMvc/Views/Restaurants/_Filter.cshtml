@@ -28,7 +28,7 @@
             <div class="form-group">
                 <label asp-for="State" class="control-label"></label>
                 @{
-                    var valuesState = new SelectListItem[] { new SelectListItem() }.Union(Enum.GetValues(typeof(QTHungryDogs.Logic.Modules.Common.RestaurantState)).Cast<QTHungryDogs.Logic.Modules.Common.RestaurantState>().Select(e => new SelectListItem(e.ToString(), e.ToString())));
+                    var valuesState = new SelectListItem[] { new SelectListItem() }.Union(Enum.GetValues(typeof(QTHungryDogs.Logic.Modules.Common.State)).Cast<QTHungryDogs.Logic.Modules.Common.State>().Select(e => new SelectListItem(e.ToString(), e.ToString())));
                 }
                 @Html.DropDownListFor(m => m.State, valuesState, null, new { @class = "form-select" })
             </div>
