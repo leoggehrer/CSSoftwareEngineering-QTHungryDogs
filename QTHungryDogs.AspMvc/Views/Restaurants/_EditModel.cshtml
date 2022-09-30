@@ -113,16 +113,13 @@
 <h3>Special opening hours @Html.ActionLink("+", "AddSpecialOpeningHour", "SpecialOpeningHours", new { restaurantId = Model.Id }, new { @class="btn btn-outline-success", @title="Add item" })</h3>
 <hr />
 <dl class="row">
-    <dt class="col-sm-1">
-        Weekday
+    <dt class="col-sm-2">
+        From
     </dt>
     <dt class="col-sm-2">
-        OpenFrom
+        To
     </dt>
     <dt class="col-sm-2">
-        OpenTo
-    </dt>
-    <dt class="col-sm-1">
         State
     </dt>
 </dl>
@@ -130,14 +127,11 @@
 @foreach (var item in Model.SpecialOpeningHours.OrderBy(e => e.From))
 {
     <dl class="row">
-        <dd class="col-sm-1">
-            @(item.From.DayOfWeek)
+        <dd class="col-sm-2">
+            @(item.From.ToString("ddd, dd.MM.yyyy HH:mm:ss"))
         </dd>
         <dd class="col-sm-2">
-            @(item.From)
-        </dd>
-        <dd class="col-sm-2">
-            @(item.To.HasValue ? item.To.Value : string.Empty)
+            @(item.To.HasValue ? item.To.Value.ToString("ddd, dd.MM.yyyy HH:mm:ss") : string.Empty)
         </dd>
         <dd class="col-sm-2">
             @item.State
@@ -161,14 +155,19 @@
     <dt class="col-sm-2">
         State
     </dt>
+    <dt class="col-sm-2">
+        Action
+    </dt>
 </dl>
 <p></p>
 @foreach (var item in Model.OpeningStates)
 {
+    var isBetween = false;
     var style = string.Empty;
 
     if (item.IsBetween(DateTime.Now))
     {
+        isBetween = true;
         style += "font-weight: bold;";
         if ((item.State & QTHungryDogs.Logic.Modules.Common.OpenState.OpenState) > 0)
         {
@@ -178,7 +177,10 @@
         {
             style += "color: red;";
         }
-
+        else if (item.State == QTHungryDogs.Logic.Modules.Common.OpenState.IsBusy)
+        {
+            style += "color: orange;";
+        }
     }
     <dl class="row" style="@style">
         <dd class="col-sm-2">
@@ -189,6 +191,22 @@
         </dd>
         <dd class="col-sm-2">
             @item.State
+        </dd>
+        <dd class="col-sm-2">
+            @if (isBetween 
+                 && (item.State == QTHungryDogs.Logic.Modules.Common.OpenState.Open
+                     || item.State == QTHungryDogs.Logic.Modules.Common.OpenState.OpenNow))
+            {
+                @Html.ActionLink("Close now", "CloseNow", "Restaurants", new { restaurantId = Model.Id }, new { @class="btn btn-sm btn-outline-danger", @style="margin-right: 10px;" })
+                @Html.ActionLink("Busy now", "SetBusy", "Restaurants", new { restaurantId = Model.Id }, new { @class="btn btn-sm btn-outline-warning" })
+            }
+            else if (isBetween
+                    && (item.State == QTHungryDogs.Logic.Modules.Common.OpenState.Closed
+                        || item.State == QTHungryDogs.Logic.Modules.Common.OpenState.ClosedNow
+                        || item.State == QTHungryDogs.Logic.Modules.Common.OpenState.ClosedPermanent))
+            {
+                @Html.ActionLink("Open now", "OpenNow", "Restaurants", new { restaurantId = Model.Id }, new { @class="btn btn-sm btn-outline-success" })
+            }
         </dd>
     </dl>
 }

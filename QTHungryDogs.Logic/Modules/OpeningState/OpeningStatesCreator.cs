@@ -8,7 +8,72 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
 {
     internal class OpeningStatesCreator
     {
-        public static IEnumerable<FromToTime> Split(IEnumerable<FromToTime> timeTable)
+        public static IEnumerable<FromToTime> ExpandTimeTable(IEnumerable<FromToTime> timeTable)
+        {
+            var result = new List<FromToTime>();
+            var orderedTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.From.GetDateSecondStamp()));
+            var item = orderedTimeTable.FirstOrDefault();
+
+            if (item != null && item.From.GetTimeSecondStamp() > 0)
+            {
+                result.Add(new FromToTime
+                {
+                    From = CreateDate(item.From, 0, 0, 0),
+                    To = item.From.AddSeconds(-1),
+                    State = OpenState.Closed,
+                });
+            }
+
+            if (orderedTimeTable.Count < 2)
+            {
+                result.AddRange(orderedTimeTable);
+            }
+            else
+            {
+                var curItem = default(FromToTime);
+                var nxtItem = default(FromToTime);
+
+                for (int i = 0; i < orderedTimeTable.Count - 1; i++)
+                {
+                    curItem = orderedTimeTable[i];
+                    nxtItem = orderedTimeTable[i + 1];
+
+                    result.Add(curItem);
+
+                    if (curItem.To.AddSeconds(1).GetDateSecondStamp() < nxtItem.From.GetDateSecondStamp())
+                    {
+                        result.Add(new FromToTime
+                        {
+                            From = curItem.To.AddSeconds(1),
+                            To = nxtItem.From.AddSeconds(-1),
+                            State = OpenState.Closed,
+                        });
+                    }
+                }
+                if (nxtItem != null && nxtItem.From.GetDateSecondStamp() < nxtItem.To.GetDateSecondStamp())
+                {
+                    result.Add(nxtItem);
+                }
+            }
+
+            item = result.LastOrDefault();
+
+            if (item != null)
+            {
+                if (item.To.GetDateSecondStamp() < CreateDate(item.To, 23, 59, 59).GetDateSecondStamp())
+                {
+                    result.Add(new FromToTime
+                    {
+                        From = item.To.AddSeconds(1),
+                        To = CreateDate(item.To, 23, 59, 59),
+                        State = OpenState.Closed,
+                    });
+                }
+            }
+
+            return result.Where(e => e.To.GetDateSecondStamp() > e.From.GetDateSecondStamp());
+        }
+        public static IEnumerable<FromToTime> SplitTimeTable(IEnumerable<FromToTime> timeTable)
         {
             var result = new List<FromToTime>();
 
@@ -42,66 +107,26 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
             }
             return result;
         }
-        public static IEnumerable<FromToTime> Expand(IEnumerable<FromToTime> timeTable)
+        public static IEnumerable<FromToTime> RemoveOverlaps(IEnumerable<FromToTime> timeTable)
         {
             var result = new List<FromToTime>();
-            var orderdTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.From.GetDateSecondStamp()));
-            var firstItem = orderdTimeTable.FirstOrDefault();
+            var orderedTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.From.GetDateSecondStamp()));
 
-            if (firstItem != null && firstItem.From.GetTimeSecondStamp() > 0)
+            if (orderedTimeTable.Count < 2)
             {
-                result.Add(new FromToTime
-                {
-                    From = CreateDate(firstItem.From, 0, 0, 0),
-                    To = firstItem.From.AddSeconds(-1),
-                    State = OpenState.Closed,
-                });
-            }
-
-            if (orderdTimeTable.Count < 2)
-            {
-                result.AddRange(orderdTimeTable);
+                result.AddRange(orderedTimeTable);
             }
             else
             {
-                for (int i = 0; i < orderdTimeTable.Count - 1; i++)
+                var curItem = default(FromToTime);
+                var nxtItem = default(FromToTime);
+
+                for (int i = 0; i < orderedTimeTable.Count - 1; i++)
                 {
-                    var curItem = orderdTimeTable[i];
-                    var nxtItem = orderdTimeTable[i + 1];
-
-                    result.Add(curItem);
-
-                    if (curItem.To.GetDateSecondStamp() + 1 < nxtItem.From.GetDateSecondStamp())
-                    {
-                        result.Add(new FromToTime
-                        {
-                            From = curItem.To.AddSeconds(1),
-                            To = nxtItem.From.AddSeconds(-1),
-                            State = OpenState.Closed,
-                        });
-                    }
-                }
-            }
-            return result.Where(e => e.To.GetDateSecondStamp() > e.From.GetDateSecondStamp());
-        }
-        public static IEnumerable<FromToTime> Merge(IEnumerable<FromToTime> timeTable)
-        {
-            var result = new List<FromToTime>();
-            var orderdTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.From.GetDateSecondStamp()));
-
-            if (orderdTimeTable.Count < 2)
-            {
-                result.AddRange(orderdTimeTable);
-            }
-            else
-            {
-                for (int i = 0; i < orderdTimeTable.Count - 1; i++)
-                {
-                    var curItem = orderdTimeTable[i];
-                    var nxtItem = orderdTimeTable[i + 1];
+                    curItem = orderedTimeTable[i];
+                    nxtItem = orderedTimeTable[i + 1];
 
                     if (curItem.State == nxtItem.State
-                        && curItem.From.GetDayStamp() == nxtItem.From.GetDayStamp()
                         && curItem.To.GetDateSecondStamp() >= nxtItem.From.GetDateSecondStamp())
                     {
                         result.Add(new FromToTime
@@ -112,143 +137,73 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                         });
                         i++;
                     }
-                    else
+                    else if ((curItem.State & OpenState.SpecialState) > 0
+                        && curItem.To.GetDateSecondStamp() >= nxtItem.From.GetDateSecondStamp())
+                    {
+                        result.Add(new FromToTime
+                        {
+                            From = curItem.From,
+                            To = nxtItem.From.AddSeconds(-1),
+                            State = curItem.State,
+                        });
+                    }
+                    else if ((nxtItem.State & OpenState.SpecialState) > 0
+                        && curItem.To.GetDateSecondStamp() >= nxtItem.From.GetDateSecondStamp())
+                    {
+                        result.Add(new FromToTime
+                        {
+                            From = curItem.From,
+                            To = nxtItem.From.AddSeconds(-1),
+                            State = curItem.State,
+                        });
+                    }
+                    else if (curItem.From.GetDateSecondStamp() < curItem.To.GetDateSecondStamp())
                     {
                         result.Add(curItem);
                     }
                 }
-            }
-            return result;
-        }
-        public static IEnumerable<FromToTime> Fillup(IEnumerable<FromToTime> timeTable)
-        {
-            var result = new List<FromToTime>();
-            var source = new List<FromToTime>(timeTable.OrderBy(e => e.From.GetDateSecondStamp()));
-            var checkItem = source.FirstOrDefault();
-
-            if (checkItem != null && CreateDate(checkItem.From, 0, 0, 0).GetDateSecondStamp() < checkItem.From.GetDateSecondStamp())
-            {
-                var item = new FromToTime
+                if (nxtItem != null && nxtItem.From.GetDateSecondStamp() < nxtItem.To.GetDateSecondStamp())
                 {
-                    From = CreateDate(checkItem.From, 0, 0, 0),
-                    To = checkItem.From.AddSeconds(-1),
-                    State = OpenState.NoDefinition,
-                };
-                result.Add(item);
-            }
-
-            foreach (var curItem in source)
-            {
-                var lastItem = result.LastOrDefault();
-
-                if (lastItem != null && (lastItem.To.AddSeconds(1)).GetDateSecondStamp() < curItem.From.GetDateSecondStamp())
-                {
-                    var item = new FromToTime
-                    {
-                        From = lastItem.To.AddSeconds(1),
-                        To = curItem.From.AddSeconds(-1),
-                        State = (lastItem.State & OpenState.OpenState) > 0 ? OpenState.Closed : OpenState.Open,
-                    };
-                    result.Add(item);
-                }
-                result.Add(curItem);
-            }
-
-            checkItem = result.LastOrDefault();
-
-            if (checkItem != null)
-            {
-                if (checkItem.To.GetDateSecondStamp() < CreateDate(checkItem.To, 23, 59, 59).GetDateSecondStamp())
-                {
-                    var item = new FromToTime
-                    {
-                        From = checkItem.To.AddSeconds(1),
-                        To = CreateDate(checkItem.To, 23, 59, 59),
-                        State = (checkItem.State & OpenState.OpenState) > 0 ? OpenState.Closed : OpenState.Open,
-                    };
-                    result.Add(item);
-                }
-            }
-            return result.Where(e => e.To.GetDateSecondStamp() - e.From.GetDateSecondStamp() > 0).OrderBy(e => e.From.GetDateSecondStamp());
-        }
-
-        public static void MoveFromTimeToBottom(IEnumerable<FromToTime> timeTable, OpenState curState, OpenState prvState)
-        {
-            var count = timeTable.Count();
-
-            for (int i = count - 1; i > 0; i--)
-            {
-                var curItem = timeTable.ElementAt(i);
-
-                if ((curItem.State & curState) > 0)
-                {
-                    for (int j = i - 1; j >= 0; j--)
-                    {
-                        var prvItem = timeTable.ElementAt(j);
-
-                        if ((prvItem.State & prvState) > 0
-                            && curItem.From.GetDateSecondStamp() <= prvItem.To.GetDateSecondStamp())
-                        {
-                            prvItem.To = curItem.From.AddSeconds(-1);
-                        }
-                    }
-                }
-            }
-        }
-        public static void MoveToTimeToTop(IEnumerable<FromToTime> timeTable, OpenState curState, OpenState nxtState)
-        {
-            var count = timeTable.Count();
-
-            for (int i = 0; i < count - 1; i++)
-            {
-                var cur = timeTable.ElementAt(i);
-
-                if ((cur.State & curState) > 0)
-                {
-                    for (int j = i + 1; j < count; j++)
-                    {
-                        var nxtItem = timeTable.ElementAt(j);
-
-                        if ((nxtItem.State & nxtState) > 0
-                            && cur.To.GetDateSecondStamp() >= nxtItem.From.GetDateSecondStamp())
-                        {
-                            nxtItem.From = IsLastDayTime(cur.To) ? cur.To : cur.To.AddSeconds(1);
-                        }
-                    }
-                }
-            }
-        }
-        public static IEnumerable<FromToTime> Merge(IEnumerable<FromToTime> timeTable, OpenState state)
-        {
-            var result = new List<FromToTime>();
-
-            foreach (var curItem in timeTable)
-            {
-                var lastItem = result.LastOrDefault();
-
-                if (lastItem != null
-                    && ((lastItem.State & state) > 0 && (curItem.State & state) > 0)
-                    && (lastItem.To.AddSeconds(1).GetDateSecondStamp() == curItem.From.GetDateSecondStamp()))
-                {
-                    lastItem.To = curItem.To;
-                }
-                else
-                {
-                    var item = new FromToTime
-                    {
-                        From = curItem.From,
-                        To = curItem.To,
-                        State = curItem.State,
-                    };
-                    result.Add(item);
+                    result.Add(nxtItem);
                 }
             }
             return result;
         }
-
-        public static bool IsLastDayTime(DateTime date)
+        public static IEnumerable<FromToTime> ClearTimeTable(IEnumerable<FromToTime> timeTable)
         {
-            return date.Hour == 23 && date.Minute == 59 && date.Second == 59;
+            var result = new List<FromToTime>();
+            var orderedTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.From.GetDateSecondStamp()));
+
+            if (orderedTimeTable.Count < 2)
+            {
+                result.AddRange(orderedTimeTable);
+            }
+            else
+            {
+                var prvItem = orderedTimeTable.First();
+
+                result.Add(prvItem);
+                for (int i = 1; i < orderedTimeTable.Count; i++)
+                {
+                    var curItem = orderedTimeTable[i];
+
+                    if (curItem.From.GetDateSecondStamp() > prvItem.To.GetDateSecondStamp())
+                    {
+                        result.Add(curItem);
+                    }
+                    else if (curItem.To.GetDateSecondStamp() > prvItem.To.GetDateSecondStamp())
+                    {
+                        result.Add(new FromToTime
+                        {
+                            From = prvItem.To.AddSeconds(1),
+                            To = curItem.To,
+                            State = curItem.State,
+                        });
+                    }
+                    prvItem = result.Last(); ;
+                }
+            }
+            return result;
         }
 
         public static DateTime CreateDate(DateTime date, int hour, int minute, int second)
@@ -260,29 +215,29 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                                             => (CreateDate(date, 0, 0, 0),
                                                 CreateDate(date.AddDays(7), 23, 59, 59));
 
-        public static OpenState GetOpenState(Restaurant restaurant, DateTime date)
+        public static bool IsClosedPermanent(Restaurant restaurant, DateTime date)
         {
             var result = OpenState.NoDefinition;
             var dateStamp = date.GetDateSecondStamp();
 
-            if (restaurant.State == State.Locked)
+            if (restaurant.State == RestaurantState.Locked
+                || restaurant.State == RestaurantState.Closed)
             {
-                result = OpenState.ClosedPermanent;
-            }
-            else if (restaurant.SpecialOpeningHours.FirstOrDefault(e => e.State == OpenState.IsBusy && e.To.HasValue && e.From.GetDateSecondStamp() <= dateStamp && dateStamp <= e.To.Value.GetDateSecondStamp()) != null)
-            {
-                //var specialOpening = restaurant.SpecialOpeningHours.FirstOrDefault(e => e.From.GetDateSecondStamp() <= date.GetDateSecondStamp() && e.To.HasValue == false && e.State == OpenState.ClosedPermanent);
-
                 result = OpenState.ClosedPermanent;
             }
             else if (restaurant.SpecialOpeningHours.FirstOrDefault(e => e.State == OpenState.ClosedPermanent && e.From.GetDateSecondStamp() <= dateStamp && (e.To.HasValue == false || dateStamp <= e.To.Value.GetDateSecondStamp())) != null)
             {
-                //var specialOpening = restaurant.SpecialOpeningHours.FirstOrDefault(e => e.From.GetDateSecondStamp() <= date.GetDateSecondStamp() && e.To.HasValue == false && e.State == OpenState.ClosedPermanent);
-
                 result = OpenState.ClosedPermanent;
             }
-            else
+            return result == OpenState.ClosedPermanent;
+        }
+        public static OpenState GetOpenState(Restaurant restaurant, DateTime date)
+        {
+            var result = IsClosedPermanent(restaurant, date) ? OpenState.ClosedPermanent : OpenState.NoDefinition;
+
+            if (result != OpenState.ClosedPermanent)
             {
+                var dateStamp = date.GetDateSecondStamp();
                 var fromToOpenStates = OpeningStatesCreator.CreateDayOpeningStates(restaurant.OpeningHours, restaurant.SpecialOpeningHours, date);
                 var fromToOpenState = fromToOpenStates.FirstOrDefault(e => e.IsBetween(date));
 
@@ -292,6 +247,15 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                 }
             }
             return result;
+        }
+        public static FromToTime CreateClosedPermanentItem(DateTime dateTime)
+        {
+            return new FromToTime
+            {
+                From = CreateDate(dateTime, 0, 0, 0),
+                To = CreateDate(dateTime, 23, 59, 59),
+                State = OpenState.ClosedPermanent,
+            };
         }
         public static IEnumerable<FromToTime> CreateDayOpeningStates(IEnumerable<OpeningHour> openingHours, IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime date)
         {
@@ -307,16 +271,18 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
 
             return result.Where(e => e.IsBetween(from) || e.IsBetween(to));
         }
+
         public static IEnumerable<FromToTime> CreateFromToOpeningStates(IEnumerable<OpeningHour> openingHours, IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime from, DateTime to)
         {
             var result = new List<FromToTime>();
+            var openingHourStates = RemoveOverlaps(CreateOpeningStates(openingHours, from, to));
+            var specialOpeningHourStates = RemoveOverlaps(CreateSpecialOpeningStates(specialOpeningHours, from, to));
 
-            result.AddRange(CreateOpeningStates(openingHours, from, to));
-            result.AddRange(CreateOpeningStates(specialOpeningHours, from, to));
-            result.AddRange(Expand(result.Eject()));
-            result.AddRange(Split(result.Eject()));
-            result.AddRange(Merge(result.Eject()));
-//            result.AddRange(OpeningStatesCreator.Fillup(result.Eject()));
+            result.AddRange(MergeOpeningStates(openingHourStates, specialOpeningHourStates));
+            result.AddRange(ExpandTimeTable(result.Eject()));
+            result.AddRange(SplitTimeTable(result.Eject()));
+            result.AddRange(RemoveOverlaps(result.Eject()));
+            result.AddRange(ClearTimeTable(result.Eject()));
 
             if (result.Any() == false)
             {
@@ -375,31 +341,31 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
             }
             return result;
         }
-        private static IEnumerable<FromToTime> CreateOpeningStates(IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime from, DateTime to)
+        private static IEnumerable<FromToTime> CreateSpecialOpeningStates(IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime from, DateTime to)
         {
             var result = new List<FromToTime>();
             var run = CreateDate(from, 0, 0, 0);
             var runTo = CreateDate(to, 23, 59, 59);
-            var openState = OpenState.NoDefinition;
+            var closedPermanent = false;
 
             while (run <= runTo)
             {
                 var dayStamp = run.GetDayStamp();
 
-                if (openState == OpenState.ClosedPermanent)
+                if (closedPermanent)
                 {
                     result.Add(new FromToTime
                     {
                         From = run,
                         To = CreateDate(run, 23, 59, 59),
-                        State = openState,
+                        State = OpenState.ClosedPermanent,
                     });
                 }
 
                 foreach (var item in specialOpeningHours.Where(e => e.From.GetDayStamp() == dayStamp)
                                                         .OrderBy(e => e.From))
                 {
-                    if (openState != OpenState.ClosedPermanent)
+                    if (closedPermanent == false)
                     {
                         result.Add(new FromToTime
                         {
@@ -411,10 +377,39 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
 
                     if (item.State == OpenState.ClosedPermanent && item.To.HasValue == false)
                     {
-                        openState = OpenState.ClosedPermanent;
+                        closedPermanent = true;
                     }
                 }
                 run = run.AddDays(1);
+            }
+            return result;
+        }
+        private static IEnumerable<FromToTime> MergeOpeningStates(IEnumerable<FromToTime> openingHourStates, IEnumerable<FromToTime> specialOpeningHourStates)
+        {
+            var result = new List<FromToTime>();
+            var orderedTimeTable = new List<FromToTime>(openingHourStates.Union(specialOpeningHourStates).OrderBy(e => e.From));
+
+            foreach (var item in orderedTimeTable)
+            {
+                var last = result.LastOrDefault();
+
+                if (item.State == OpenState.IsBusy
+                    && last != null
+                    && last.To.GetDateSecondStamp() >= item.From.GetDateSecondStamp())
+                {
+                    result.Add(item);
+                    result.Add(new FromToTime
+                    {
+                        From = item.To.AddSeconds(1),
+                        To = last.To,
+                        State = last.State,
+                    });
+                    last.To = item.From.AddSeconds(-1);
+                }
+                else
+                {
+                    result.Add(item);
+                }
             }
             return result;
         }

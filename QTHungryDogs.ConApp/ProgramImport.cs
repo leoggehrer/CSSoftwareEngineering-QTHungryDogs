@@ -36,7 +36,7 @@ namespace QTHungryDogs.ConApp
                                           AddressHousenumber = d[5],
                                           AddressZipcode = d[6],
                                           AddressCity = d[7],
-                                          State = d[8] == "2" ? Logic.Modules.Common.State.Active : Logic.Modules.Common.State.Locked
+                                          State = (Logic.Modules.Common.RestaurantState)Enum.Parse(typeof(Logic.Modules.Common.RestaurantState), d[8])
                                       }
                                   });
             var openings = File.ReadLines(OpeningHourFile, System.Text.Encoding.Default)

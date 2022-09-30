@@ -36,7 +36,7 @@ namespace QTHungryDogs.Logic.Models.OpeningState
         }
         public override string ToString()
         {
-            return $"{From.ToString("HH:mm:ss")} - {To.ToString("HH:mm:ss")} - {State}";
+            return $"{From:dd.MM.yyyy HH:mm:ss} - {To:dd.MM.yyyy HH:mm:ss} - {State}";
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace QTHungryDogs.AspMvc.Controllers.Base
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace QTHungryDogs.AspMvc.Controllers.Base
 {
     partial class RestaurantsController
     {
@@ -13,6 +15,52 @@
                 viewModel.OpeningStates = openingStates.Select(e => Models.OpeningState.FromToTime.Create(e)).ToArray();
             }
             return base.BeforeView(viewModel, actionMode);
+        }
+
+        public async Task<IActionResult> CloseNow(int restaurantId)
+        {
+            var instanceAccess = DataAccess as Logic.Contracts.Base.IRestaurantsAccess<Logic.Entities.Base.Restaurant>;
+
+            if (instanceAccess != null)
+            {
+                var result = await instanceAccess.CloseNowAsync(restaurantId);
+
+                if (result)
+                {
+                    instanceAccess.SaveChangesAsync().Wait();
+                }
+            }
+            return RedirectToAction("Edit", new { id = restaurantId });
+        }
+        public async Task<IActionResult> OpenNow(int restaurantId)
+        {
+            var instanceAccess = DataAccess as Logic.Contracts.Base.IRestaurantsAccess<Logic.Entities.Base.Restaurant>;
+
+            if (instanceAccess != null)
+            {
+                var result = await instanceAccess.OpenNowAsync(restaurantId);
+
+                if (result)
+                {
+                    instanceAccess.SaveChangesAsync().Wait();
+                }
+            }
+            return RedirectToAction("Edit", new { id = restaurantId });
+        }
+        public async Task<IActionResult> SetBusy(int restaurantId)
+        {
+            var instanceAccess = DataAccess as Logic.Contracts.Base.IRestaurantsAccess<Logic.Entities.Base.Restaurant>;
+
+            if (instanceAccess != null)
+            {
+                var result = await instanceAccess.SetBusyAsync(restaurantId);
+
+                if (result)
+                {
+                    instanceAccess.SaveChangesAsync().Wait();
+                }
+            }
+            return RedirectToAction("Edit", new { id = restaurantId });
         }
     }
 }

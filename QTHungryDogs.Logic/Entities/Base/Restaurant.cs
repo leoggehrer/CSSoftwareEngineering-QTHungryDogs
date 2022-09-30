@@ -29,12 +29,12 @@ namespace QTHungryDogs.Logic.Entities.Base
         {
             get 
             {
-                var openState = State == State.Locked ? OpenState.ClosedPermanent : OpeningStatesCreator.GetOpenState(this, DateTime.Now);
+                var openState = State == RestaurantState.Locked || State == RestaurantState.Closed ? OpenState.ClosedPermanent : OpeningStatesCreator.GetOpenState(this, DateTime.Now);
 
                 return openState;
             }
         }
-        public State State { get; set; }
+        public RestaurantState State { get; set; }
 
         // Navigation properties
         public List<OpeningHour> OpeningHours { get; set; } = new();
