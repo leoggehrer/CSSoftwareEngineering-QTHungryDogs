@@ -63,150 +63,218 @@
         <div class="form-group">
             <label asp-for="State" class="control-label"></label>
             @{
-                var valuesState = Enum.GetValues(typeof(QTHungryDogs.Logic.Modules.Common.State)).Cast<QTHungryDogs.Logic.Modules.Common.State>().Select(e => new SelectListItem(e.ToString(), e.ToString()));
+                var valuesState = Enum.GetValues(typeof(QTHungryDogs.Logic.Modules.Common.RestaurantState)).Cast<QTHungryDogs.Logic.Modules.Common.RestaurantState>().Select(e => new SelectListItem(e.ToString(), e.ToString()));
             }
             @Html.DropDownListFor(m => m.State, valuesState, null, new { @class = "form-select" })
             <span asp-validation-for="State" class="text-danger"></span>
         </div>
     </div>
 </div>
+<h3>Store managers</h3>
 
-<h3>Opening hours @Html.ActionLink("+", "AddOpeningHour", "OpeningHours", new { restaurantId = Model.Id }, new { @class="btn btn-outline-success", @title="Add item" })</h3>
-<hr />
-<dl class="row">
-    <dt class="col-sm-1">
-        Weekday
-    </dt>
-    <dt class="col-sm-1">
-        OpenFrom
-    </dt>
-    <dt class="col-sm-1">
-        OpenTo
-    </dt>
-    <dt class="col-sm-1">
-        Active
-    </dt>
-</dl>
-<p></p>
-@foreach (var item in Model.OpeningHours.OrderBy(e => e.Weekday).ThenBy(e => e.OpenFrom))
+@if (Model.Id > 0)
 {
-    <dl class="row">
-        <dd class="col-sm-1">
-            @item.Weekday
-        </dd>
-        <dd class="col-sm-1">
-            @item.OpenFrom.ToString("hh':'mm")
-        </dd>
-        <dd class="col-sm-1">
-            @item.OpenTo.ToString("hh':'mm")
-        </dd>
-        <dd class="col-sm-1">
-            @item.IsActive
-        </dd>
-        <dd class="col-sm-1">
-            @Html.ActionLink("...", "Edit", "OpeningHours", new { id = item.Id }, new { @class="btn btn-sm btn-outline-primary" })
-            @Html.ActionLink("X", "Delete", "OpeningHours", new { id = item.Id }, new { @class="btn btn-sm btn-outline-danger" })
-        </dd>
-    </dl>
-}
-
-<h3>Special opening hours @Html.ActionLink("+", "AddSpecialOpeningHour", "SpecialOpeningHours", new { restaurantId = Model.Id }, new { @class="btn btn-outline-success", @title="Add item" })</h3>
-<hr />
-<dl class="row">
-    <dt class="col-sm-2">
-        From
-    </dt>
-    <dt class="col-sm-2">
-        To
-    </dt>
-    <dt class="col-sm-2">
-        State
-    </dt>
-</dl>
-<p></p>
-@foreach (var item in Model.SpecialOpeningHours.OrderBy(e => e.From))
-{
-    <dl class="row">
-        <dd class="col-sm-2">
-            @(item.From.ToString("ddd, dd.MM.yyyy HH:mm:ss"))
-        </dd>
-        <dd class="col-sm-2">
-            @(item.To.HasValue ? item.To.Value.ToString("ddd, dd.MM.yyyy HH:mm:ss") : string.Empty)
-        </dd>
-        <dd class="col-sm-2">
-            @item.State
-        </dd>
-        <dd class="col-sm-1">
-            @Html.ActionLink("...", "Edit", "SpecialOpeningHours", new { id = item.Id }, new { @class="btn btn-sm btn-outline-primary" })
-            @Html.ActionLink("X", "Delete", "SpecialOpeningHours", new { id = item.Id }, new { @class="btn btn-sm btn-outline-danger" })
-        </dd>
-    </dl>
-}
-
-<h3>Opening states</h3>
-<hr />
-<dl class="row">
-    <dt class="col-sm-2">
-        From
-    </dt>
-    <dt class="col-sm-2">
-        To
-    </dt>
-    <dt class="col-sm-2">
-        State
-    </dt>
-    <dt class="col-sm-2">
-        Action
-    </dt>
-</dl>
-<p></p>
-@foreach (var item in Model.OpeningStates)
-{
-    var isBetween = false;
-    var style = string.Empty;
-
-    if (item.IsBetween(DateTime.Now))
+    <hr />
+    @foreach (var item in Model.ManagerIdentities!)
     {
-        isBetween = true;
-        style += "font-weight: bold;";
-        if ((item.State & QTHungryDogs.Logic.Modules.Common.OpenState.OpenState) > 0)
+        var parms = new Dictionary<string, string>
         {
-            style += "color: green;";
-        }
-        else if ((item.State & QTHungryDogs.Logic.Modules.Common.OpenState.ClosedState) > 0)
-        {
-            style += "color: red;";
-        }
-        else if (item.State == QTHungryDogs.Logic.Modules.Common.OpenState.IsBusy)
-        {
-            style += "color: orange;";
-        }
+            { "id", Model.Id.ToString() },
+            { "identityId", item.Id.ToString() }
+        };
+        <div class="btn-group" style="margin-bottom: 10px; margin-right: 10px;">
+            <a href="#" class="btn btn-outline-primary"><i class="fa-regular fa-hand-point-right"></i></a>
+            <a href="#" class="btn btn-outline-primary">@item.Email</a>
+            <a asp-action="RemoveStoreManager" asp-all-route-data="parms" class="btn btn-primary"><i class="fa fa-times"></i></a>
+        </div>
     }
-    <dl class="row" style="@style">
-        <dd class="col-sm-2">
-            @item.From.ToString("ddd, HH:mm:ss")
-        </dd>
-        <dd class="col-sm-2">
-            @item.To.ToString("ddd, HH:mm:ss")
-        </dd>
-        <dd class="col-sm-2">
-            @item.State
-        </dd>
-        <dd class="col-sm-2">
-            @if (isBetween 
-                 && (item.State == QTHungryDogs.Logic.Modules.Common.OpenState.Open
-                     || item.State == QTHungryDogs.Logic.Modules.Common.OpenState.OpenNow))
-            {
-                @Html.ActionLink("Close now", "CloseNow", "Restaurants", new { restaurantId = Model.Id }, new { @class="btn btn-sm btn-outline-danger", @style="margin-right: 10px;" })
-                @Html.ActionLink("Busy now", "SetBusy", "Restaurants", new { restaurantId = Model.Id }, new { @class="btn btn-sm btn-outline-warning" })
-            }
-            else if (isBetween
-                    && (item.State == QTHungryDogs.Logic.Modules.Common.OpenState.Closed
-                        || item.State == QTHungryDogs.Logic.Modules.Common.OpenState.ClosedNow
-                        || item.State == QTHungryDogs.Logic.Modules.Common.OpenState.ClosedPermanent))
-            {
-                @Html.ActionLink("Open now", "OpenNow", "Restaurants", new { restaurantId = Model.Id }, new { @class="btn btn-sm btn-outline-success" })
-            }
-        </dd>
-    </dl>
+
+    if (Model.AddIdentityList.Any())
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary" style="min-width: 100%;">Add store manager</button>
+                    <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var item in Model.AddIdentityList)
+                        {
+                            <li>@Html.ActionLink(item.Email, "AddStoreManager", null, new {id=Model.Id, identityId=item.Id}, new { @class="dropdown-item"})</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
 }
+<hr />
+<div class="accordion" id="accordionPanelsStayOpenExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                <strong>Opening hours</strong>
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+            <div class="accordion-body">
+                @Html.ActionLink("+", "AddOpeningHour", "OpeningHours", new { restaurantId = Model.Id }, new { @class="btn btn-sm btn-outline-primary", style="float: right", @title="Add item" })<br />
+                <dl class="row">
+                    <dt class="col-sm-1">
+                        Weekday
+                    </dt>
+                    <dt class="col-sm-1">
+                        OpenFrom
+                    </dt>
+                    <dt class="col-sm-1">
+                        OpenTo
+                    </dt>
+                    <dt class="col-sm-1">
+                        Active
+                    </dt>
+                </dl>
+                <p></p>
+                @foreach (var item in Model.OpeningHours.OrderBy(e => e.Weekday).ThenBy(e => e.OpenFrom))
+                {
+                    <dl class="row">
+                        <dd class="col-sm-1">
+                            @item.Weekday
+                        </dd>
+                        <dd class="col-sm-1">
+                            @item.OpenFrom.ToString("hh':'mm")
+                        </dd>
+                        <dd class="col-sm-1">
+                            @item.OpenTo.ToString("hh':'mm")
+                        </dd>
+                        <dd class="col-sm-1">
+                            @item.IsActive
+                        </dd>
+                        <dd class="col-sm-1">
+                            @Html.ActionLink("...", "Edit", "OpeningHours", new { id = item.Id }, new { @class="btn btn-sm btn-outline-primary" })
+                            @Html.ActionLink("X", "Delete", "OpeningHours", new { id = item.Id }, new { @class="btn btn-sm btn-outline-danger" })
+                        </dd>
+                    </dl>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                <strong>Special opening hours</strong>
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+            <div class="accordion-body">
+                @Html.ActionLink("+", "AddSpecialOpeningHour", "SpecialOpeningHours", new { restaurantId = Model.Id }, new { @class="btn btn-outline-primary", style="float: right", @title="Add item" })
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        From
+                    </dt>
+                    <dt class="col-sm-2">
+                        To
+                    </dt>
+                    <dt class="col-sm-2">
+                        State
+                    </dt>
+                </dl>
+                <p></p>
+                @foreach (var item in Model.SpecialOpeningHours.OrderBy(e => e.From))
+                {
+                    <dl class="row">
+                        <dd class="col-sm-2">
+                            @(item.From.ToString("ddd, dd.MM.yyyy HH:mm:ss"))
+                        </dd>
+                        <dd class="col-sm-2">
+                            @(item.To.HasValue ? item.To.Value.ToString("ddd, dd.MM.yyyy HH:mm:ss") : string.Empty)
+                        </dd>
+                        <dd class="col-sm-2">
+                            @item.State
+                        </dd>
+                        <dd class="col-sm-1">
+                            @Html.ActionLink("...", "Edit", "SpecialOpeningHours", new { id = item.Id }, new { @class="btn btn-sm btn-outline-primary" })
+                            @Html.ActionLink("X", "Delete", "SpecialOpeningHours", new { id = item.Id }, new { @class="btn btn-sm btn-outline-danger" })
+                        </dd>
+                    </dl>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                <strong>Opening states</strong>
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseThree" class="accordion-collapse" aria-labelledby="panelsStayOpen-headingThree">
+            <div class="accordion-body">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        From
+                    </dt>
+                    <dt class="col-sm-2">
+                        To
+                    </dt>
+                    <dt class="col-sm-2">
+                        State
+                    </dt>
+                    <dt class="col-sm-2">
+                        Action
+                    </dt>
+                </dl>
+                <p></p>
+                @foreach (var item in Model.OpeningStates)
+                {
+                    var isBetween = false;
+                    var style = string.Empty;
+
+                    if (item.IsBetween(DateTime.Now))
+                    {
+                        isBetween = true;
+                        style += "font-weight: bold;";
+                        if ((item.State & QTHungryDogs.Logic.Modules.Common.OpenState.OpenState) > 0)
+                        {
+                            style += "color: green;";
+                        }
+                        else if ((item.State & QTHungryDogs.Logic.Modules.Common.OpenState.ClosedState) > 0)
+                        {
+                            style += "color: red;";
+                        }
+                        else if (item.State == QTHungryDogs.Logic.Modules.Common.OpenState.IsBusy)
+                        {
+                            style += "color: orange;";
+                        }
+                    }
+                    <dl class="row" style="@style">
+                        <dd class="col-sm-2">
+                            @item.From.ToString("ddd, HH:mm:ss")
+                        </dd>
+                        <dd class="col-sm-2">
+                            @item.To.ToString("ddd, HH:mm:ss")
+                        </dd>
+                        <dd class="col-sm-2">
+                            @item.State
+                        </dd>
+                        <dd class="col-sm-2">
+                            @if (isBetween
+                           && (item.State == QTHungryDogs.Logic.Modules.Common.OpenState.Open
+                           || item.State == QTHungryDogs.Logic.Modules.Common.OpenState.OpenNow))
+                            {
+                                @Html.ActionLink("Close now", "CloseNow", "Restaurants", new { restaurantId = Model.Id }, new { @class="btn btn-sm btn-outline-danger", @style="margin-right: 10px;" })
+                                @Html.ActionLink("Busy now", "SetBusy", "Restaurants", new { restaurantId = Model.Id }, new { @class="btn btn-sm btn-outline-warning" })
+                            }
+                            else if (isBetween
+                            && (item.State == QTHungryDogs.Logic.Modules.Common.OpenState.Closed
+                            || item.State == QTHungryDogs.Logic.Modules.Common.OpenState.ClosedNow
+                            || item.State == QTHungryDogs.Logic.Modules.Common.OpenState.ClosedPermanent))
+                            {
+                                @Html.ActionLink("Open now", "OpenNow", "Restaurants", new { restaurantId = Model.Id }, new { @class="btn btn-sm btn-outline-success" })
+                            }
+                        </dd>
+                    </dl>
+                }
+            </div>
+        </div>
+    </div>
+</div>

@@ -48,7 +48,7 @@ namespace QTHungryDogs.Logic.Controllers.Account
         {
             await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Create).ConfigureAwait(false);
 
-            var roleCtrl = new RolesController(this);
+            using var roleCtrl = new RolesController(this);
             var role = await roleCtrl.GetByIdAsync(roleId).ConfigureAwait(false);
 
             if (role != null)
@@ -65,7 +65,7 @@ namespace QTHungryDogs.Logic.Controllers.Account
         {
             await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Delete).ConfigureAwait(false);
 
-            var roleCtrl = new RolesController(this);
+            using var roleCtrl = new RolesController(this);
             var role = await roleCtrl.GetByIdAsync(roleId).ConfigureAwait(false);
 
             if (role != null)

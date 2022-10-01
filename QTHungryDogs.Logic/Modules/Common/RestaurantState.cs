@@ -1,13 +1,9 @@
-﻿//@CodeCopy
-//MdStart
-
-namespace QTHungryDogs.Logic.Modules.Common
+﻿namespace QTHungryDogs.Logic.Modules.Common
 {
     public enum RestaurantState : int
     {
-        Locked = 0,
-        Closed = 2,
-        Active = 4,
+        Locked = 1,
+        Active = 2,
+        Closed = 4,
     }
 }
-//MdEnd

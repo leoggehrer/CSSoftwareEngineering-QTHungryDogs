@@ -19,6 +19,10 @@ namespace QTHungryDogs.WebApi.Models.OpeningState
         /// Gets and sets the time span state.
         /// </summary>
         public OpenState State { get; set; }
+        /// <summary>
+        /// Returns the status as text.
+        /// </summary>
+        public string StateText => State.ToString();
 
         /// <summary>
         /// Creates an instance of type FromToTime.

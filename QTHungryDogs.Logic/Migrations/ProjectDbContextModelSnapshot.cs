@@ -352,10 +352,10 @@ namespace QTHungryDogs.Logic.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("IdentityId")
+                    b.Property<int?>("IdentityId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RestaurantId")
+                    b.Property<int?>("RestaurantId")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("RowVersion")
@@ -366,9 +366,10 @@ namespace QTHungryDogs.Logic.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("RestaurantId", "IdentityId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[RestaurantId] IS NOT NULL AND [IdentityId] IS NOT NULL");
 
-                    b.ToTable("RestaurantXIdentity", "base");
+                    b.ToTable("RestaurantXIdentities", "base");
                 });
 
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Logging.ActionLog", b =>
@@ -500,13 +501,10 @@ namespace QTHungryDogs.Logic.Migrations
 
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Base.RestaurantXIdentity", b =>
                 {
-                    b.HasOne("QTHungryDogs.Logic.Entities.Base.Restaurant", "Restaurant")
-                        .WithMany()
+                    b.HasOne("QTHungryDogs.Logic.Entities.Base.Restaurant", null)
+                        .WithMany("Managers")
                         .HasForeignKey("RestaurantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Restaurant");
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Account.Identity", b =>
@@ -516,6 +514,8 @@ namespace QTHungryDogs.Logic.Migrations
 
             modelBuilder.Entity("QTHungryDogs.Logic.Entities.Base.Restaurant", b =>
                 {
+                    b.Navigation("Managers");
+
                     b.Navigation("OpeningHours");
 
                     b.Navigation("SpecialOpeningHours");

@@ -52,6 +52,42 @@ namespace QTHungryDogs.AspMvc.Controllers.Account
         partial void BeforeToViewModel(TAccessModel accessModel, ActionMode actionMode, ref TViewModel? viewModel, ref bool handled);
         partial void AfterToViewModel(TViewModel viewModel, ActionMode actionMode);
 
+        public override IActionResult Create()
+        {
+            return View(new Models.Account.IdentityCreate());
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateIdentity(Models.Account.IdentityCreate model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await Logic.AccountAccess.AddAppAccessAsync(SessionWrapper.SessionToken, model.Name, model.Email, model.Password, model.TimeOutInMinutes, false);
+
+                    var entity = (await DataAccess.QueryAsync($"{nameof(model.Email)}=\"{model.Email}\"")).FirstOrDefault();
+
+                    return entity == null ? RedirectToAction("Index") : RedirectToAction("Edit", new { id=entity.Id });
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.Error = ex.Message;
+
+                    if (ex.InnerException != null)
+                    {
+                        ViewBag.Error = ex.InnerException.Message;
+                    }
+                }
+            }
+            else
+            {
+                ViewBag.Error = string.Join("; ", ModelState.Values
+                                      .SelectMany(x => x.Errors)
+                                      .Select(x => x.ErrorMessage));
+            }
+            return View("Create", model);
+        }
         // Extensions
         private Models.Account.AccessRole[]? accessRoleList;
         public Models.Account.AccessRole[] AccessRoleList
@@ -120,7 +156,6 @@ namespace QTHungryDogs.AspMvc.Controllers.Account
             }
             return RedirectToAction("Edit", new { id });
         }
-
         // Extensions
     }
 }

@@ -203,21 +203,21 @@ namespace QTHungryDogs.Logic.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RestaurantXIdentity",
+                name: "RestaurantXIdentities",
                 schema: "base",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RestaurantId = table.Column<int>(type: "int", nullable: false),
-                    IdentityId = table.Column<int>(type: "int", nullable: false),
+                    RestaurantId = table.Column<int>(type: "int", nullable: true),
+                    IdentityId = table.Column<int>(type: "int", nullable: true),
                     RowVersion = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RestaurantXIdentity", x => x.Id);
+                    table.PrimaryKey("PK_RestaurantXIdentities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RestaurantXIdentity_Restaurants_RestaurantId",
+                        name: "FK_RestaurantXIdentities_Restaurants_RestaurantId",
                         column: x => x.RestaurantId,
                         principalSchema: "base",
                         principalTable: "Restaurants",
@@ -318,11 +318,12 @@ namespace QTHungryDogs.Logic.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_RestaurantXIdentity_RestaurantId_IdentityId",
+                name: "IX_RestaurantXIdentities_RestaurantId_IdentityId",
                 schema: "base",
-                table: "RestaurantXIdentity",
+                table: "RestaurantXIdentities",
                 columns: new[] { "RestaurantId", "IdentityId" },
-                unique: true);
+                unique: true,
+                filter: "[RestaurantId] IS NOT NULL AND [IdentityId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Roles_Designation",
@@ -367,7 +368,7 @@ namespace QTHungryDogs.Logic.Migrations
                 schema: "base");
 
             migrationBuilder.DropTable(
-                name: "RestaurantXIdentity",
+                name: "RestaurantXIdentities",
                 schema: "base");
 
             migrationBuilder.DropTable(

@@ -8,10 +8,33 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
 {
     internal class OpeningStatesCreator
     {
+        public static IEnumerable<FromToTime> FillupTimeTable(IEnumerable<FromToTime> timeTable, DateTime from, DateTime to)
+        {
+            var result = new List<FromToTime>(timeTable);
+            var run = CreateDate(from, 0, 0, 0);
+            var runTo = CreateDate(to, 23, 59, 59);
+
+            while (run <= runTo)
+            {
+                var dayStamp = run.GetDayStamp();
+
+                if (result.Any(e => e.From.GetDayStamp() == dayStamp) == false)
+                {
+                    result.Add(new FromToTime
+                    {
+                        From = CreateDate(run, 0, 0, 0),
+                        To = CreateDate(run, 23, 59, 59),
+                        State = OpenState.Closed,
+                    });
+                }
+                run = run.AddDays(1);
+            }
+            return result.OrderBy(e => e.From);
+        }
         public static IEnumerable<FromToTime> ExpandTimeTable(IEnumerable<FromToTime> timeTable)
         {
             var result = new List<FromToTime>();
-            var orderedTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.From.GetDateSecondStamp()));
+            var orderedTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.From));
             var item = orderedTimeTable.FirstOrDefault();
 
             if (item != null && item.From.GetTimeSecondStamp() > 0)
@@ -110,7 +133,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
         public static IEnumerable<FromToTime> RemoveOverlaps(IEnumerable<FromToTime> timeTable)
         {
             var result = new List<FromToTime>();
-            var orderedTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.From.GetDateSecondStamp()));
+            var orderedTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.From));
 
             if (orderedTimeTable.Count < 2)
             {
@@ -172,7 +195,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
         public static IEnumerable<FromToTime> ClearTimeTable(IEnumerable<FromToTime> timeTable)
         {
             var result = new List<FromToTime>();
-            var orderedTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.From.GetDateSecondStamp()));
+            var orderedTimeTable = new List<FromToTime>(timeTable.OrderBy(e => e.From));
 
             if (orderedTimeTable.Count < 2)
             {
@@ -220,8 +243,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
             var result = OpenState.NoDefinition;
             var dateStamp = date.GetDateSecondStamp();
 
-            if (restaurant.State == RestaurantState.Locked
-                || restaurant.State == RestaurantState.Closed)
+            if (restaurant.State == RestaurantState.Closed)
             {
                 result = OpenState.ClosedPermanent;
             }
@@ -279,6 +301,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
             var specialOpeningHourStates = RemoveOverlaps(CreateSpecialOpeningStates(specialOpeningHours, from, to));
 
             result.AddRange(MergeOpeningStates(openingHourStates, specialOpeningHourStates));
+            result.AddRange(FillupTimeTable(result.Eject(), from, to));
             result.AddRange(ExpandTimeTable(result.Eject()));
             result.AddRange(SplitTimeTable(result.Eject()));
             result.AddRange(RemoveOverlaps(result.Eject()));

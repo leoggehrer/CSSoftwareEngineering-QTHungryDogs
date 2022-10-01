@@ -2,18 +2,17 @@
 @*#if ACCOUNT_ON*@
 @{
     @using Microsoft.AspNetCore.Mvc.Rendering
-    @using QTHungryDogs.AspMvc.Modules.Session
-    @using QTHungryDogs.AspMvc.Models.Account
     @using QTHungryDogs.AspMvc.Models.View
-    @model QTHungryDogs.AspMvc.Models.Account.ResetPasswordViewModel
+    @using QTHungryDogs.AspMvc.Modules.Session
+    @model QTHungryDogs.AspMvc.Models.Account.IdentityCreate
 
     var sessionWrapper = new SessionWrapper(Context.Session);
     var controller = ViewContext.RouteData?.Values["controller"]?.ToString() ?? string.Empty;
     var action = ViewContext.RouteData?.Values["action"]?.ToString() ?? string.Empty;
-    var title = (action);
-    string logedInText = $"{("Reset Password Form")}";
+    ViewData["Title"] = "Create";
 
-    <h1>@title</h1>
+    <img class="card-img-top" src="/img/banner.jpg" style="margin-top: -20px; margin-bottom: -50px" alt="Banner">
+    <h1>Create</h1>
 
     <div class="d-flex bg-transparent">
         <div class="p-sm-2 mr-auto">
@@ -29,24 +28,31 @@
         </div>
     }
 
-    <form asp-action="ResetPassword" asp-controller="Account" method="post">
+    <form asp-action="CreateIdentity" method="post">
         @Html.AntiForgeryToken()
         @Html.ValidationSummary("", new { @class = "text-danger" })
 
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-4">
                 <div class="form-group">
-                    <h5>@logedInText</h5>
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">@(nameof(Model.Email))</label>
-                    <input asp-for="Email" class="form-control" type="email" />
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">@(nameof(Model.NewPassword))</label>
-                    <input asp-for="NewPassword" class="form-control" type="password" />
-                    <span asp-validation-for="NewPassword" class="text-danger"></span>
+                    <label asp-for="TimeOutInMinutes" class="control-label"></label>
+                    <input asp-for="TimeOutInMinutes" class="form-control" />
+                    <span asp-validation-for="TimeOutInMinutes" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">@(nameof(Model.Password))</label>
+                    <input asp-for="Password" class="form-control" type="password" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label class="control-label">@(nameof(Model.ConfirmPassword))</label>
@@ -55,11 +61,8 @@
                 </div>
             </div>
         </div>
-        @await Html.PartialAsync("_SubmitBack", new SubmitBackCmd() { SubmitText = "Reset" })
+        <p></p>
+        @await Html.PartialAsync("_SubmitBack", new SubmitBackCmd() { SubmitText = "Create" })
     </form>
 }
 @*#endif*@
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

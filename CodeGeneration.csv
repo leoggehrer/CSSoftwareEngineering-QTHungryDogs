@@ -8,6 +8,9 @@ Logic;Service;All;Generate;True
 Logic;Facade;All;Generate;False
 Logic;Factory;All;Generate;True
 
+Logic;Controller;Base.Restaurants;Attributes;Modules.Security.Authorize("SysAdmin", "AppAdmin")
+Logic;Controller;Base.RestaurantXIdentity;Attributes;Modules.Security.Authorize("SysAdmin", "AppAdmin")
+
 WebApi;Model;All;Generate;True
 WebApi;Controller;All;Generate;True
 WebApi;AddServices;All;Generate;True

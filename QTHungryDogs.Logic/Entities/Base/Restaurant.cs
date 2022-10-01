@@ -29,8 +29,16 @@ namespace QTHungryDogs.Logic.Entities.Base
         {
             get 
             {
-                var openState = State == RestaurantState.Locked || State == RestaurantState.Closed ? OpenState.ClosedPermanent : OpeningStatesCreator.GetOpenState(this, DateTime.Now);
+                var openState = OpenState.NoDefinition;
 
+                if (State == RestaurantState.Closed)
+                {
+                    openState = OpenState.ClosedPermanent;
+                }
+                else
+                {
+                    openState = OpeningStatesCreator.GetOpenState(this, DateTime.Now);
+                }
                 return openState;
             }
         }
@@ -39,5 +47,6 @@ namespace QTHungryDogs.Logic.Entities.Base
         // Navigation properties
         public List<OpeningHour> OpeningHours { get; set; } = new();
         public List<SpecialOpeningHour> SpecialOpeningHours { get; set; } = new();
+        public List<RestaurantXIdentity> Managers { get; set; } = new();
     }
 }
