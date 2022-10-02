@@ -1,0 +1,133 @@
+@*@CustomCode*@
+@model QTHungryDogs.AspMvc.Models.Base.Restaurant
+
+<style>
+    .row {
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+
+    h3 {
+        margin-top: 20px;
+    }
+</style>
+
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.DisplayName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.DisplayName)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.OwnerName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.OwnerName)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.UniqueName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.UniqueName)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Email)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Email)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.AddressStreet)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.AddressStreet)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.AddressHousenumber)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.AddressHousenumber)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.AddressZipcode)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.AddressZipcode)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.AddressCity)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.AddressCity)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.OpenState)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.OpenState)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.State)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.State)
+    </dd>
+</dl>
+<hr />
+
+<div class="accordion-item">
+    <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+            <strong>Opening states</strong>
+        </button>
+    </h2>
+    <div id="panelsStayOpen-collapseThree" class="accordion-collapse" aria-labelledby="panelsStayOpen-headingThree">
+        <div class="accordion-body">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    From
+                </dt>
+                <dt class="col-sm-2">
+                    To
+                </dt>
+                <dt class="col-sm-2">
+                    State
+                </dt>
+            </dl>
+            <p></p>
+            @foreach (var item in Model.OpeningStates)
+            {
+                var style = string.Empty;
+
+                if (item.IsBetween(DateTime.Now))
+                {
+                    style += "font-weight: bold;";
+                    if ((item.State & QTHungryDogs.Logic.Modules.Common.OpenState.OpenState) > 0)
+                    {
+                        style += "color: green;";
+                    }
+                    else if ((item.State & QTHungryDogs.Logic.Modules.Common.OpenState.ClosedState) > 0)
+                    {
+                        style += "color: red;";
+                    }
+                    else if (item.State == QTHungryDogs.Logic.Modules.Common.OpenState.IsBusy)
+                    {
+                        style += "color: orange;";
+                    }
+                }
+                <dl class="row" style="@style">
+                    <dd class="col-sm-2">
+                        @item.From.ToString("ddd, HH:mm:ss")
+                    </dd>
+                    <dd class="col-sm-2">
+                        @item.To.ToString("ddd, HH:mm:ss")
+                    </dd>
+                    <dd class="col-sm-2">
+                        @item.State
+                    </dd>
+                </dl>
+            }
+        </div>
+    </div>
+</div>

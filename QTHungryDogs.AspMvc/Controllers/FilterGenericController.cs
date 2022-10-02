@@ -19,7 +19,7 @@ namespace QTHungryDogs.AspMvc.Controllers
         }
         static partial void ClassConstructing();
         static partial void ClassConstructed();
-        private static string FilterName => typeof(TFilterModel).Name;
+        protected static string FilterName => typeof(TFilterModel).Name;
         protected abstract string ControllerName { get; }
         protected string OrderByName => $"{ControllerName}.OrderBy";
         protected FilterGenericController(TAccessContract dataAccess)

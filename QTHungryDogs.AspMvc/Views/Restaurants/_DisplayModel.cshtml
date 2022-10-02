@@ -75,101 +75,153 @@
     </dd>
 </dl>
 
-<h3>Opening hours</h3>
-<hr />
-<dl class="row">
-    <dt class="col-sm-1">
-        Weekday
-    </dt>
-    <dt class="col-sm-1">
-        OpenFrom
-    </dt>
-    <dt class="col-sm-1">
-        OpenTo
-    </dt>
-    <dt class="col-sm-1">
-        Active
-    </dt>
-</dl>
-<p></p>
-@foreach (var item in Model.OpeningHours.OrderBy(e => e.Weekday).ThenBy(e => e.OpenFrom))
+<h3>Store managers</h3>
+@if (Model.Id > 0)
 {
-    <dl class="row">
-        <dd class="col-sm-1">
-            @item.Weekday
-        </dd>
-        <dd class="col-sm-1">
-            @item.OpenFrom.ToString("hh':'mm")
-        </dd>
-        <dd class="col-sm-1">
-            @item.OpenTo.ToString("hh':'mm")
-        </dd>
-        <dd class="col-sm-1">
-            @item.IsActive
-        </dd>
-    </dl>
+    <hr />
+    @foreach (var item in Model.ManagerIdentities!)
+    {
+        <div class="btn-group" style="margin-bottom: 10px; margin-right: 10px;">
+            <a href="#" class="btn btn-outline-primary"><i class="fa-regular fa-hand-point-right"></i></a>
+            <a href="#" class="btn btn-outline-primary">@item.Email</a>
+        </div>
+    }
 }
+<hr />
+<div class="accordion" id="accordionPanelsStayOpenExample">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                <strong>Opening hours</strong>
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
+            <div class="accordion-body">
+                <dl class="row">
+                    <dt class="col-sm-1">
+                        Weekday
+                    </dt>
+                    <dt class="col-sm-1">
+                        OpenFrom
+                    </dt>
+                    <dt class="col-sm-1">
+                        OpenTo
+                    </dt>
+                    <dt class="col-sm-1">
+                        Active
+                    </dt>
+                </dl>
+                <p></p>
+                @foreach (var item in Model.OpeningHours.OrderBy(e => e.Weekday).ThenBy(e => e.OpenFrom))
+                {
+                    <dl class="row">
+                        <dd class="col-sm-1">
+                            @item.Weekday
+                        </dd>
+                        <dd class="col-sm-1">
+                            @item.OpenFrom.ToString("hh':'mm")
+                        </dd>
+                        <dd class="col-sm-1">
+                            @item.OpenTo.ToString("hh':'mm")
+                        </dd>
+                        <dd class="col-sm-1">
+                            @item.IsActive
+                        </dd>
+                    </dl>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                <strong>Special opening hours</strong>
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+            <div class="accordion-body">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        From
+                    </dt>
+                    <dt class="col-sm-2">
+                        To
+                    </dt>
+                    <dt class="col-sm-2">
+                        State
+                    </dt>
+                </dl>
+                <p></p>
+                @foreach (var item in Model.SpecialOpeningHours.OrderBy(e => e.From))
+                {
+                    <dl class="row">
+                        <dd class="col-sm-2">
+                            @(item.From.ToString("ddd, dd.MM.yyyy HH:mm:ss"))
+                        </dd>
+                        <dd class="col-sm-2">
+                            @(item.To.HasValue ? item.To.Value.ToString("ddd, dd.MM.yyyy HH:mm:ss") : string.Empty)
+                        </dd>
+                        <dd class="col-sm-2">
+                            @item.State
+                        </dd>
+                    </dl>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="panelsStayOpen-headingThree">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                <strong>Opening states</strong>
+            </button>
+        </h2>
+        <div id="panelsStayOpen-collapseThree" class="accordion-collapse" aria-labelledby="panelsStayOpen-headingThree">
+            <div class="accordion-body">
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        From
+                    </dt>
+                    <dt class="col-sm-2">
+                        To
+                    </dt>
+                    <dt class="col-sm-2">
+                        State
+                    </dt>
+                </dl>
+                <p></p>
+                @foreach (var item in Model.OpeningStates)
+                {
+                    var style = string.Empty;
 
-<h3>Special opening hours</h3>
-<hr />
-<dl class="row">
-    <dt class="col-sm-1">
-        Weekday
-    </dt>
-    <dt class="col-sm-2">
-        OpenFrom
-    </dt>
-    <dt class="col-sm-2">
-        OpenTo
-    </dt>
-    <dt class="col-sm-1">
-        State
-    </dt>
-</dl>
-<p></p>
-@foreach (var item in Model.SpecialOpeningHours.OrderBy(e => e.From))
-{
-    <dl class="row">
-        <dd class="col-sm-1">
-            @(item.From.DayOfWeek)
-        </dd>
-        <dd class="col-sm-2">
-            @(item.From)
-        </dd>
-        <dd class="col-sm-2">
-            @(item.To.HasValue ? item.To.Value : string.Empty)
-        </dd>
-        <dd class="col-sm-1">
-            @item.State
-        </dd>
-    </dl>
-}
-
-<h3>Opening states</h3>
-<hr />
-<dl class="row">
-    <dt class="col-sm-2">
-        From
-    </dt>
-    <dt class="col-sm-2">
-        To
-    </dt>
-    <dt class="col-sm-2">
-        State
-    </dt>
-</dl>
-<p></p>
-@foreach (var item in Model.OpeningStates)
-{
-    <dl class="row">
-        <dd class="col-sm-2">
-            @item.From.ToString("ddd, HH:mm:ss")
-        </dd>
-        <dd class="col-sm-2">
-            @item.To.ToString("ddd, HH:mm:ss")
-        </dd>
-        <dd class="col-sm-2">
-            @item.State
-        </dd>
-    </dl>
-}
+                    if (item.IsBetween(DateTime.Now))
+                    {
+                        style += "font-weight: bold;";
+                        if ((item.State & QTHungryDogs.Logic.Modules.Common.OpenState.OpenState) > 0)
+                        {
+                            style += "color: green;";
+                        }
+                        else if ((item.State & QTHungryDogs.Logic.Modules.Common.OpenState.ClosedState) > 0)
+                        {
+                            style += "color: red;";
+                        }
+                        else if (item.State == QTHungryDogs.Logic.Modules.Common.OpenState.IsBusy)
+                        {
+                            style += "color: orange;";
+                        }
+                    }
+                    <dl class="row" style="@style">
+                        <dd class="col-sm-2">
+                            @item.From.ToString("ddd, HH:mm:ss")
+                        </dd>
+                        <dd class="col-sm-2">
+                            @item.To.ToString("ddd, HH:mm:ss")
+                        </dd>
+                        <dd class="col-sm-2">
+                            @item.State
+                        </dd>
+                    </dl>
+                }
+            </div>
+        </div>
+    </div>
+</div>

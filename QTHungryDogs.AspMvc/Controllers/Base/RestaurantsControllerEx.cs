@@ -24,10 +24,7 @@ namespace QTHungryDogs.AspMvc.Controllers.Base
 
         protected override Models.Base.Restaurant BeforeView(Models.Base.Restaurant viewModel, ActionMode actionMode)
         {
-            if ((actionMode & ActionMode.EditAction) > 0)
-            {
-                viewModel.IdentityList = Identities;
-            }
+            viewModel.IdentityList = Identities;
 
             if ((actionMode & ActionMode.EditAction) > 0 || actionMode == ActionMode.Details)
             {
@@ -42,7 +39,7 @@ namespace QTHungryDogs.AspMvc.Controllers.Base
             }
             return base.BeforeView(viewModel, actionMode);
         }
-       
+
         public async Task<IActionResult> CloseNow(int restaurantId)
         {
             var instanceAccess = DataAccess as Logic.Contracts.Base.IRestaurantsAccess<Logic.Entities.Base.Restaurant>;

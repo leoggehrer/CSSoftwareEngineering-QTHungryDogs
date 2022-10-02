@@ -1,4 +1,5 @@
-﻿using QTHungryDogs.Logic.Models.OpeningState;
+﻿using QTHungryDogs.Logic.Entities.Base;
+using QTHungryDogs.Logic.Models.OpeningState;
 
 namespace QTHungryDogs.Logic.Contracts.Base
 {
@@ -13,5 +14,7 @@ namespace QTHungryDogs.Logic.Contracts.Base
         Task<bool> CloseNowAsync(int id);
         Task<bool> OpenNowAsync(int id);
         Task<bool> SetBusyAsync(int id);
+
+        Task<Restaurant[]> QueryRestaurantInfos(string? predicate, string? orderBy);
     }
 }

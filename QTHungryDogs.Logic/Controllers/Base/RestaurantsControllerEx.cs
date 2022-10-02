@@ -1,7 +1,12 @@
 ﻿using QTHungryDogs.Logic.Controllers.Account;
 using QTHungryDogs.Logic.Entities.App;
+using QTHungryDogs.Logic.Entities.Base;
 using QTHungryDogs.Logic.Models.OpeningState;
+using QTHungryDogs.Logic.Modules.Account;
+using QTHungryDogs.Logic.Modules.Exceptions;
 using QTHungryDogs.Logic.Modules.OpeningState;
+using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Reflection;
 
 namespace QTHungryDogs.Logic.Controllers.Base
@@ -77,13 +82,18 @@ namespace QTHungryDogs.Logic.Controllers.Base
             }
         }
 
+        [Modules.Security.Authorize("SysAdmin", "AppAdmin", "StoreManager")]
         public async Task<bool> CloseNowAsync(int id)
         {
+            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Create).ConfigureAwait(false);
+
             var result = false;
-            var restaurant = await GetByIdAsync(id).ConfigureAwait(false);
+            var restaurant = await ExecuteGetByIdAsync(id).ConfigureAwait(false);
 
             if (restaurant != null)
             {
+                await CheckAuthorizationAsync(restaurant).ConfigureAwait(false);
+
                 var now = DateTime.Now;
                 var openingStates = OpeningStatesCreator.CreateDayOpeningStates(restaurant.OpeningHours, restaurant.SpecialOpeningHours, now);
                 var nowOpeningState = openingStates.Where(e => e.IsBetween(now)).FirstOrDefault();
@@ -100,26 +110,31 @@ namespace QTHungryDogs.Logic.Controllers.Base
                             State = Modules.Common.OpenState.ClosedNow,
                         };
                         restaurant.SpecialOpeningHours.Add(specialOpeningHour);
-                        await UpdateAsync(restaurant).ConfigureAwait(false);
+                        await ExecuteUpdateAsync(restaurant).ConfigureAwait(false);
                         result = true;
                     }
                 }
             }
             return result;
         }
+        [Modules.Security.Authorize("SysAdmin", "AppAdmin", "StoreManager")]
         public async Task<bool> OpenNowAsync(int id)
         {
+            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Create).ConfigureAwait(false);
+
             var result = false;
-            var restaurant = await GetByIdAsync(id).ConfigureAwait(false);
+            var restaurant = await ExecuteGetByIdAsync(id).ConfigureAwait(false);
 
             if (restaurant != null)
             {
+                await CheckAuthorizationAsync(restaurant).ConfigureAwait(false);
+
                 var now = DateTime.Now;
 
                 if (restaurant.State == Modules.Common.RestaurantState.Closed)
                 {
                     restaurant.State = Modules.Common.RestaurantState.Active;
-                    await UpdateAsync(restaurant).ConfigureAwait(false);
+                    await ExecuteUpdateAsync(restaurant).ConfigureAwait(false);
                     result = true;
                 }
 
@@ -132,7 +147,7 @@ namespace QTHungryDogs.Logic.Controllers.Base
                     {
                         restaurant.SpecialOpeningHours.Where(e => e.State == Modules.Common.OpenState.ClosedPermanent && e.To.HasValue == false)
                                                       .ForEach(e => e.To = now);
-                        await UpdateAsync(restaurant).ConfigureAwait(false);
+                        await ExecuteUpdateAsync(restaurant).ConfigureAwait(false);
                         result = true;
                     }
                     else if ((nowOpeningState.State & Modules.Common.OpenState.ClosedState) > 0)
@@ -145,20 +160,25 @@ namespace QTHungryDogs.Logic.Controllers.Base
                             State = Modules.Common.OpenState.OpenNow,
                         };
                         restaurant.SpecialOpeningHours.Add(specialOpeningHour);
-                        await UpdateAsync(restaurant).ConfigureAwait(false);
+                        await ExecuteUpdateAsync(restaurant).ConfigureAwait(false);
                         result = true;
                     }
                 }
             }
             return result;
         }
+        [Modules.Security.Authorize("SysAdmin", "AppAdmin", "StoreManager")]
         public async Task<bool> SetBusyAsync(int id)
         {
+            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Create).ConfigureAwait(false);
+
             var result = false;
-            var restaurant = await GetByIdAsync(id).ConfigureAwait(false);
+            var restaurant = await ExecuteGetByIdAsync(id).ConfigureAwait(false);
 
             if (restaurant != null)
             {
+                await CheckAuthorizationAsync(restaurant).ConfigureAwait(false);
+
                 var now = DateTime.Now;
                 var openingStates = OpeningStatesCreator.CreateDayOpeningStates(restaurant.OpeningHours, restaurant.SpecialOpeningHours, now);
                 var nowOpeningState = openingStates.Where(e => e.IsBetween(now)).FirstOrDefault();
@@ -175,12 +195,52 @@ namespace QTHungryDogs.Logic.Controllers.Base
                             State = Modules.Common.OpenState.IsBusy,
                         };
                         restaurant.SpecialOpeningHours.Add(specialOpeningHour);
-                        await UpdateAsync(restaurant).ConfigureAwait(false);
+                        await ExecuteUpdateAsync(restaurant).ConfigureAwait(false);
                         result = true;
                     }
                 }
             }
             return result;
+        }
+
+        public override Task<Restaurant?> GetByIdAsync(int id)
+        {
+            return base.ExecuteGetByIdAsync(id);
+        }
+        public Task<Restaurant[]> QueryRestaurantInfos(string? predicate, string? orderBy)
+        {
+            var query = EntitySet.AsQueryable();
+
+            foreach (var includeItem in Includes)
+            {
+                query = query.Include(includeItem);
+            }
+
+            query = query.Where(e => e.State == Modules.Common.RestaurantState.Active || e.State == Modules.Common.RestaurantState.Closed);
+
+            if (string.IsNullOrEmpty(predicate) == false)
+            {
+                query = query.Where(predicate);
+            }
+            if (string.IsNullOrEmpty(orderBy) == false)
+            {
+                query = query.OrderBy(orderBy);
+            }
+            return query.ToArrayAsync();
+        }
+
+        private async Task CheckAuthorizationAsync(Restaurant restaurant)
+        {
+            var curSession = await AccountManager.QueryAliveSessionAsync(SessionToken).ConfigureAwait(false);
+
+            if (curSession == null)
+                throw new AuthorizationException(ErrorType.InvalidSessionToken);
+
+            if (curSession.Roles.Any(e => e.Equals("StoreManager"))
+                && restaurant.Managers.Any(e => e.IdentityId == curSession.IdentityId) == false)
+            {
+                throw new AuthorizationException(ErrorType.NotAuthorized);
+            }
         }
     }
 }

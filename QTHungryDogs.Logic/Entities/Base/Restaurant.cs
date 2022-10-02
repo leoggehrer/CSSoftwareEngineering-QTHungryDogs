@@ -31,7 +31,11 @@ namespace QTHungryDogs.Logic.Entities.Base
             {
                 var openState = OpenState.NoDefinition;
 
-                if (State == RestaurantState.Closed)
+                if (State == RestaurantState.Locked)
+                {
+                    openState = OpenState.NoDefinition;
+                }
+                else if (State == RestaurantState.Closed)
                 {
                     openState = OpenState.ClosedPermanent;
                 }

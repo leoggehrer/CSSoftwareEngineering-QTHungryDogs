@@ -1,0 +1,44 @@
+@*@CustomCode*@
+@model QTHungryDogs.AspMvc.Models.Base.Restaurant
+
+@{
+    var style = "";
+    var openState = Model.OpenState;
+    var openStateText = openState.ToString();
+
+    if (openState == QTHungryDogs.Logic.Modules.Common.OpenState.ClosedPermanent)
+    {
+        style += "color: red;";
+        openStateText = "The restaurant is permanently closed.";
+    }
+    else if ((openState & QTHungryDogs.Logic.Modules.Common.OpenState.ClosedState) > 0)
+    {
+        openStateText = "Closed";
+        style += "color: orange;";
+    }
+    else if ((openState & QTHungryDogs.Logic.Modules.Common.OpenState.OpenState) > 0)
+    {
+        var now = DateTime.Now;
+        var fromTo = Model.OpeningStates.FirstOrDefault(e => e.IsBetween(now));
+
+        openStateText = "Open";
+        if (fromTo != null && fromTo.To.AddMinutes(-30) <= now)
+        {
+            openStateText += " - close soon";
+        }
+        style += "color: green;";
+    }
+}
+
+<tr>
+    <td>
+        <strong>@Html.DisplayFor(model => model.DisplayName)</strong>
+        <br />
+        @Html.DisplayFor(model => model.AddressZipcode) @Html.DisplayFor(model => model.AddressCity)
+        <br />
+        <p style="@style">@openStateText</p>
+    </td>
+    <td>
+        @Html.ActionLink("Details", "Details", new { id=Model.Id })
+    </td>
+</tr>

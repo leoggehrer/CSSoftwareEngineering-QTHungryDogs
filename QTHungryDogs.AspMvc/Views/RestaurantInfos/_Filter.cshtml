@@ -1,6 +1,6 @@
-﻿@*@CodeCopy*@
-@*#if ACCOUNT_ON*@
-@model QTHungryDogs.AspMvc.Models.Account.IdentityUserFilter
+@*@CustomCode*@
+@model QTHungryDogs.AspMvc.Models.Base.RestaurantFilter
+
 @{
     var boolSelect = new SelectList(new[] { new { Id = "", Value = "---" }, new { Id = "True", Value = "True" }, new { Id = "False", Value = "False" } }, "Id", "Value");
 }
@@ -10,16 +10,20 @@
         <form asp-action="Filter">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="IdentityId" class="control-label"></label>
-                <input asp-for="IdentityId" class="form-control" />
+                <label asp-for="DisplayName" class="control-label"></label>
+                <input asp-for="DisplayName" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Firstname" class="control-label"></label>
-                <input asp-for="Firstname" class="form-control" />
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Lastname" class="control-label"></label>
-                <input asp-for="Lastname" class="form-control" />
+                <label asp-for="AddressZipcode" class="control-label"></label>
+                <input asp-for="AddressZipcode" class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="AddressCity" class="control-label"></label>
+                <input asp-for="AddressCity" class="form-control" />
             </div>
             <p></p>
             <div class="form-group">
@@ -29,4 +33,3 @@
         </form>
     </div>
 </div>
-@*#endif*@

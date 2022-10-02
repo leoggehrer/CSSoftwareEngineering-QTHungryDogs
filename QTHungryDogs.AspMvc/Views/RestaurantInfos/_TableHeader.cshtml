@@ -1,0 +1,24 @@
+@*@CustomCode*@
+@model IEnumerable<QTHungryDogs.AspMvc.Models.Base.Restaurant>
+@{
+    var orderBy = (string)ViewBag.OrderBy ?? string.Empty;
+}
+<thead>
+    <tr>
+        <th>
+            @if (orderBy.StartsWith("DisplayName") && orderBy.EndsWith("ASC"))
+            {
+                <a asp-action="OrderBy" asp-route-orderBy="DisplayName DESC" class="btn btn-outline"><strong>DisplayName</strong> <i class="fa fa-sort-desc"></i></a>
+            }
+            else if (orderBy.StartsWith("DisplayName") && orderBy.EndsWith("DESC"))
+            {
+                <a asp-action="OrderBy" asp-route-orderBy="" class="btn btn-outline"><strong>DisplayName</strong> <i class="fa fa-sort-asc"></i></a>
+            }
+            else
+            {
+                <a asp-action="OrderBy" asp-route-orderBy="DisplayName ASC" class="btn btn-outline"><strong>DisplayName</strong></a>
+            }
+        </th>
+        <th></th>
+    </tr>
+</thead>
