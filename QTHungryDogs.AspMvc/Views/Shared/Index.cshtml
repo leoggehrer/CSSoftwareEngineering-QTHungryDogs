@@ -3,6 +3,7 @@
 
 @{
     var title = "Index";
+    var image = (string)(ViewBag.Image ?? "banner.jpg");
     var pageSize = (int)(ViewBag.PageSize ?? 0);
     var modelCount = (int)(ViewBag.ModelCount ?? 0);
     var canCreate = (bool)(ViewBag.CanCreate ?? true);
@@ -30,7 +31,7 @@
     }
 }
 
-<img class="card-img-top" src="/img/banner.jpg" style="margin-top: -20px; margin-bottom: -50px" alt="Banner">
+<img class="card-img-top" src="@($"/img/{image}")" style="margin-top: -20px; margin-bottom: -50px" alt="Banner">
 <h1>@title</h1>
 
 @if (filter != null && filter.Show)

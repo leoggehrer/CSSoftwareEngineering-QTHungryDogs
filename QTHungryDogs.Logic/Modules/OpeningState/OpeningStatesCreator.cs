@@ -303,8 +303,8 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
             result.AddRange(MergeOpeningStates(openingHourStates, specialOpeningHourStates));
             result.AddRange(FillupTimeTable(result.Eject(), from, to));
             result.AddRange(ExpandTimeTable(result.Eject()));
-            result.AddRange(SplitTimeTable(result.Eject()));
             result.AddRange(RemoveOverlaps(result.Eject()));
+            //result.AddRange(SplitTimeTable(result.Eject()));
             result.AddRange(ClearTimeTable(result.Eject()));
 
             if (result.Any() == false)

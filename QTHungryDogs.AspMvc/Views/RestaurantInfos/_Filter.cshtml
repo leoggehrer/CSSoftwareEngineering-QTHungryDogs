@@ -1,5 +1,5 @@
 @*@CustomCode*@
-@model QTHungryDogs.AspMvc.Models.Base.RestaurantFilter
+@model QTHungryDogs.AspMvc.Models.Base.RestaurantInfoFilter
 
 @{
     var boolSelect = new SelectList(new[] { new { Id = "", Value = "---" }, new { Id = "True", Value = "True" }, new { Id = "False", Value = "False" } }, "Id", "Value");
@@ -12,10 +12,6 @@
             <div class="form-group">
                 <label asp-for="DisplayName" class="control-label"></label>
                 <input asp-for="DisplayName" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="AddressZipcode" class="control-label"></label>

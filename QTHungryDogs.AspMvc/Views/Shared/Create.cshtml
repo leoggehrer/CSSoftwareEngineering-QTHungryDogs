@@ -2,10 +2,12 @@
 @model QTHungryDogs.AspMvc.Models.IdentityModel
 
 @{
+    var image = (string)(ViewBag.Image ?? "banner.jpg");
+
     ViewData["Title"] = "Create";
 }
 
-<img class="card-img-top" src="/img/banner.jpg" style="margin-top: -20px; margin-bottom: -50px" alt="Banner">
+<img class="card-img-top" src="@($"/img/{image}")" style="margin-top: -20px; margin-bottom: -50px" alt="Banner">
 <h1>Create</h1>
 <h3>@Model!.GetType().Name</h3>
 <hr />

@@ -77,54 +77,36 @@
 <hr />
 
 <div class="accordion-item">
-    <h2 class="accordion-header" id="panelsStayOpen-headingThree">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
-            <strong>Opening states</strong>
+    <h2 class="accordion-header" id="panelsStayOpen-headingOne">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+            <strong>Opening hours</strong>
         </button>
     </h2>
-    <div id="panelsStayOpen-collapseThree" class="accordion-collapse" aria-labelledby="panelsStayOpen-headingThree">
+    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
         <div class="accordion-body">
             <dl class="row">
                 <dt class="col-sm-2">
-                    From
+                    Weekday
                 </dt>
-                <dt class="col-sm-2">
-                    To
+                <dt class="col-sm-1">
+                    OpenFrom
                 </dt>
-                <dt class="col-sm-2">
-                    State
+                <dt class="col-sm-1">
+                    OpenTo
                 </dt>
             </dl>
             <p></p>
-            @foreach (var item in Model.OpeningStates)
+            @foreach (var item in Model.OpeningHours.Where(e => e.IsActive).OrderBy(e => e.Weekday).ThenBy(e => e.OpenFrom))
             {
-                var style = string.Empty;
-
-                if (item.IsBetween(DateTime.Now))
-                {
-                    style += "font-weight: bold;";
-                    if ((item.State & QTHungryDogs.Logic.Modules.Common.OpenState.OpenState) > 0)
-                    {
-                        style += "color: green;";
-                    }
-                    else if ((item.State & QTHungryDogs.Logic.Modules.Common.OpenState.ClosedState) > 0)
-                    {
-                        style += "color: red;";
-                    }
-                    else if (item.State == QTHungryDogs.Logic.Modules.Common.OpenState.IsBusy)
-                    {
-                        style += "color: orange;";
-                    }
-                }
-                <dl class="row" style="@style">
+                <dl class="row">
                     <dd class="col-sm-2">
-                        @item.From.ToString("ddd, HH:mm:ss")
+                        @item.Weekday
                     </dd>
-                    <dd class="col-sm-2">
-                        @item.To.ToString("ddd, HH:mm:ss")
+                    <dd class="col-sm-1">
+                        @item.OpenFrom.ToString("hh':'mm")
                     </dd>
-                    <dd class="col-sm-2">
-                        @item.State
+                    <dd class="col-sm-1">
+                        @item.OpenTo.ToString("hh':'mm")
                     </dd>
                 </dl>
             }
