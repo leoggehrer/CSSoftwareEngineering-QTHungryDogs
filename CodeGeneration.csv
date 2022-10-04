@@ -22,6 +22,12 @@ AspMvc;View;All;Generate;True
 AspMvc;AddServices;All;Generate;True
 
 AspMvc;Property;Base.Restaurant.AddressStreet;Attributes;Display(Name="Street")
+<<<<<<< HEAD
+=======
+AspMvc;Property;Base.Restaurant.AddressHousenumber;Attributes;Display(Name="Housenumber")
+AspMvc;Property;Base.Restaurant.AddressZipcode;Attributes;Display(Name="Zipcode")
+AspMvc;Property;Base.Restaurant.AddressCity;Attributes;Display(Name="City")
+>>>>>>> f5a5328d54d557350a7cf471a6e422c0f01eb4ca
 
 AspMvc;Property;Base.OpeningHour.OpenFrom;Attributes;DisplayFormat(DataFormatString="{0:hh\\:mm}", ApplyFormatInEditMode = true)
 AspMvc;Property;Base.OpeningHour.OpenTo;Attributes;DisplayFormat(DataFormatString="{0:hh\\:mm}", ApplyFormatInEditMode = true)

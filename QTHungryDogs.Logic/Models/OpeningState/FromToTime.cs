@@ -4,9 +4,16 @@ namespace QTHungryDogs.Logic.Models.OpeningState
 {
     public class FromToTime
     {
+        internal enum FromToType
+        {
+            OpeningHour,
+            SpecialOpeningHour,
+            CalculationHour,
+        }
         public DateTime From { get; set; }
         public DateTime To { get; set; }
         public OpenState State { get; set; }
+        internal FromToType Type { get; init; }
 
         public bool IsEquals(FromToTime other)
         {

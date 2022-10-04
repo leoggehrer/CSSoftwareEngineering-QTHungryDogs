@@ -195,6 +195,17 @@ namespace QTHungryDogs.Logic.Controllers.Base
                             State = Modules.Common.OpenState.IsBusy,
                         };
                         restaurant.SpecialOpeningHours.Add(specialOpeningHour);
+                        if (nowOpeningState.Type == FromToTime.FromToType.SpecialOpeningHour)
+                        {
+                            var specialOpeningHourAfter = new SpecialOpeningHour
+                            {
+                                Restaurant = restaurant,
+                                From = specialOpeningHour.To.Value.AddSeconds(1),
+                                To = nowOpeningState.To,
+                                State = nowOpeningState.State,
+                            };
+                            restaurant.SpecialOpeningHours.Add(specialOpeningHourAfter);
+                        }
                         await ExecuteUpdateAsync(restaurant).ConfigureAwait(false);
                         result = true;
                     }
