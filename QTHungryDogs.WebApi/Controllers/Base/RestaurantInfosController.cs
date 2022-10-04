@@ -23,7 +23,7 @@ namespace QTHungryDogs.WebApi.Controllers.Base
             [FromQuery(Name = "orderBy")]string? orderBy)
         {
             var instanceAccess = HttpContext.RequestServices.GetRequiredService<Logic.Contracts.Base.IRestaurantsAccess<Logic.Entities.Base.Restaurant>>();
-            var entities = instanceAccess != null ? await instanceAccess.QueryRestaurantInfos(predicate, orderBy) : Array.Empty<Logic.Entities.Base.Restaurant>();
+            var entities = instanceAccess != null ? await instanceAccess.QueryRestaurantInfosAsync(predicate, orderBy) : Array.Empty<Logic.Entities.Base.Restaurant>();
 
             return entities.Select(e => Models.Base.Restaurant.Create(e)).ToArray();
         }

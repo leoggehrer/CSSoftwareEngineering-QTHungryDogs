@@ -218,7 +218,20 @@ namespace QTHungryDogs.Logic.Controllers.Base
         {
             return base.ExecuteGetByIdAsync(id);
         }
-        public Task<Restaurant[]> QueryRestaurantInfos(string? predicate, string? orderBy)
+        public async Task<Restaurant[]> QueryStoreManagerRestaurantsAsync()
+        {
+            await CheckAuthorizationAsync(GetType(), GetType().GetMethod(nameof(QueryStoreManagerRestaurantsAsync)), AccessType.Create).ConfigureAwait(false);
+
+            var curSession = await AccountManager.QueryAliveSessionAsync(SessionToken).ConfigureAwait(false);
+            var restaurants = Array.Empty<Entities.Base.Restaurant>();
+
+            if (curSession != null)
+            {
+                restaurants = await ExecuteQueryAsync(r => r.State == Modules.Common.RestaurantState.Active && r.Managers.Any(e => e.IdentityId == curSession.IdentityId)).ConfigureAwait(false);
+            }
+            return restaurants;
+        }
+        public Task<Restaurant[]> QueryRestaurantInfosAsync(string? predicate, string? orderBy)
         {
             var query = EntitySet.AsQueryable();
 
@@ -239,7 +252,7 @@ namespace QTHungryDogs.Logic.Controllers.Base
             }
             return query.ToArrayAsync();
         }
-
+        [Modules.Security.Authorize("SysAdmin", "AppAdmin", "StoreManager")]
         private async Task CheckAuthorizationAsync(Restaurant restaurant)
         {
             var curSession = await AccountManager.QueryAliveSessionAsync(SessionToken).ConfigureAwait(false);

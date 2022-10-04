@@ -59,7 +59,7 @@ namespace QTHungryDogs.AspMvc.Controllers.Base
             var filter = SessionWrapper.Get<TFilterModel>(FilterName) ?? new TFilterModel();
             var orderBy = SessionWrapper.Get<string>(OrderByName) ?? string.Empty;
             var instanceAccess = DataAccess as Logic.Contracts.Base.IRestaurantsAccess<Logic.Entities.Base.Restaurant>;
-            var accessModels = await instanceAccess!.QueryRestaurantInfos(filter.CreateEntityPredicate(), orderBy);
+            var accessModels = await instanceAccess!.QueryRestaurantInfosAsync(filter.CreateEntityPredicate(), orderBy);
             var viewModels = AfterQuery(accessModels!).Select(e => ToViewModel(e, ActionMode.Index));
 
             modelCount = viewModels.Count();

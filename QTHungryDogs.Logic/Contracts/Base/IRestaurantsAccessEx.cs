@@ -15,6 +15,7 @@ namespace QTHungryDogs.Logic.Contracts.Base
         Task<bool> OpenNowAsync(int id);
         Task<bool> SetBusyAsync(int id);
 
-        Task<Restaurant[]> QueryRestaurantInfos(string? predicate, string? orderBy);
+        Task<Restaurant[]> QueryStoreManagerRestaurantsAsync();
+        Task<Restaurant[]> QueryRestaurantInfosAsync(string? predicate, string? orderBy);
     }
 }
