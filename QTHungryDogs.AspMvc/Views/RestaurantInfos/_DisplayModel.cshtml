@@ -98,7 +98,13 @@
             <p></p>
             @foreach (var item in Model.OpeningHours.Where(e => e.IsActive).OrderBy(e => e.Weekday).ThenBy(e => e.OpenFrom))
             {
-                <dl class="row">
+                var style = string.Empty;
+
+                if ((int)DateTime.Now.DayOfWeek == (int)item.Weekday)
+                {
+                    style = "color: green;";
+                }
+                <dl class="row" style="@style">
                     <dd class="col-sm-2">
                         @item.Weekday
                     </dd>
