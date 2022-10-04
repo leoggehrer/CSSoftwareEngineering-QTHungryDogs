@@ -1,8 +1,16 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
+    @{
+        var controller = ViewContext.RouteData?.Values["controller"]?.ToString() ?? string.Empty;
+        //var action = ViewContext.RouteData?.Values["action"]?.ToString() ?? string.Empty;
+    }
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @if (controller.Equals("RestaurantInfos", StringComparison.CurrentCultureIgnoreCase))
+    {
+        <meta http-equiv="refresh" content="5">
+    }
     <title>@ViewData["Title"] - QTHungryDogs.AspMvc</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />

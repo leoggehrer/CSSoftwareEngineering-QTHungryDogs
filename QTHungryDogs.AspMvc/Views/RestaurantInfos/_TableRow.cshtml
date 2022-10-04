@@ -11,6 +11,11 @@
         style += "color: red;";
         openStateText = "The restaurant is permanently closed.";
     }
+    else if ((openState & QTHungryDogs.Logic.Modules.Common.OpenState.IsBusy) > 0)
+    {
+        openStateText = "Open (busy)";
+        style += "color: green;";
+    }
     else if ((openState & QTHungryDogs.Logic.Modules.Common.OpenState.ClosedState) > 0)
     {
         openStateText = "Closed";

@@ -21,7 +21,7 @@ AspMvc;Service;All;Generate;True
 AspMvc;View;All;Generate;True
 AspMvc;AddServices;All;Generate;True
 
-AspMvc;Property;Base.Restaurant.AddressStreet;Attributes;DisplayName("Street")
+AspMvc;Property;Base.Restaurant.AddressStreet;Attributes;Display(Name="Street")
 
 AspMvc;Property;Base.OpeningHour.OpenFrom;Attributes;DisplayFormat(DataFormatString="{0:hh\\:mm}", ApplyFormatInEditMode = true)
 AspMvc;Property;Base.OpeningHour.OpenTo;Attributes;DisplayFormat(DataFormatString="{0:hh\\:mm}", ApplyFormatInEditMode = true)

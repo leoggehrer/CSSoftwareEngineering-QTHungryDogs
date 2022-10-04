@@ -25,6 +25,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                         From = CreateDate(run, 0, 0, 0),
                         To = CreateDate(run, 23, 59, 59),
                         State = OpenState.Closed,
+                        Type = FromToTime.FromToType.CalculationHour,
                     });
                 }
                 run = run.AddDays(1);
@@ -44,6 +45,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                     From = CreateDate(item.From, 0, 0, 0),
                     To = item.From.AddSeconds(-1),
                     State = OpenState.Closed,
+                    Type = FromToTime.FromToType.CalculationHour,
                 });
             }
 
@@ -70,6 +72,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                             From = curItem.To.AddSeconds(1),
                             To = nxtItem.From.AddSeconds(-1),
                             State = OpenState.Closed,
+                            Type = FromToTime.FromToType.CalculationHour,
                         });
                     }
                 }
@@ -90,6 +93,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                         From = item.To.AddSeconds(1),
                         To = CreateDate(item.To, 23, 59, 59),
                         State = OpenState.Closed,
+                        Type = FromToTime.FromToType.CalculationHour,
                     });
                 }
             }
@@ -108,7 +112,13 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                 }
                 else
                 {
-                    var run = new FromToTime { From = item.From, To = CreateDate(item.From, 23, 59, 59), State = item.State };
+                    var run = new FromToTime
+                    {
+                        From = item.From,
+                        To = CreateDate(item.From, 23, 59, 59),
+                        State = item.State,
+                        Type = FromToTime.FromToType.CalculationHour,
+                    };
 
                     while (run.From.GetDayStamp() < item.To.GetDayStamp())
                     {
@@ -117,7 +127,8 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                         {
                             From = CreateDate(run.From.AddDays(1), 0, 0, 0),
                             To = item.To,
-                            State = item.State
+                            State = item.State,
+                            Type = FromToTime.FromToType.CalculationHour,
                         };
 
                         if (run.From.GetDayStamp() < item.To.GetDayStamp())
@@ -157,6 +168,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                             From = curItem.From,
                             To = nxtItem.To,
                             State = curItem.State,
+                            Type = curItem.Type,
                         });
                         i++;
                     }
@@ -168,6 +180,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                             From = curItem.From,
                             To = nxtItem.From.AddSeconds(-1),
                             State = curItem.State,
+                            Type = curItem.Type,
                         });
                     }
                     else if ((nxtItem.State & OpenState.SpecialState) > 0
@@ -178,6 +191,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                             From = curItem.From,
                             To = nxtItem.From.AddSeconds(-1),
                             State = curItem.State,
+                            Type = curItem.Type,
                         });
                     }
                     else if (curItem.From.GetDateSecondStamp() < curItem.To.GetDateSecondStamp())
@@ -221,6 +235,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                             From = prvItem.To.AddSeconds(1),
                             To = curItem.To,
                             State = curItem.State,
+                            Type = curItem.Type,
                         });
                     }
                     prvItem = result.Last(); ;
@@ -277,6 +292,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                 From = CreateDate(dateTime, 0, 0, 0),
                 To = CreateDate(dateTime, 23, 59, 59),
                 State = OpenState.ClosedPermanent,
+                Type = FromToTime.FromToType.CalculationHour,
             };
         }
         public static IEnumerable<FromToTime> CreateDayOpeningStates(IEnumerable<OpeningHour> openingHours, IEnumerable<SpecialOpeningHour> specialOpeningHours, DateTime date)
@@ -316,6 +332,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                         From = OpeningStatesCreator.CreateDate(from, 0, 0, 0),
                         To = OpeningStatesCreator.CreateDate(from, 23, 59, 59),
                         State = OpenState.NoDefinition,
+                        Type = FromToTime.FromToType.CalculationHour,
                     });
                 }
             }
@@ -342,6 +359,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                             From = OpeningStatesCreator.CreateDate(run, item.OpenFrom.Hours, item.OpenFrom.Minutes, item.OpenFrom.Seconds),
                             To = OpeningStatesCreator.CreateDate(run, item.OpenTo.Hours, item.OpenTo.Minutes, item.OpenTo.Seconds),
                             State = OpenState.Open,
+                            Type = FromToTime.FromToType.OpeningHour,
                         };
                     }
                     else
@@ -353,6 +371,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                             From = OpeningStatesCreator.CreateDate(run, item.OpenFrom.Hours, item.OpenFrom.Minutes, item.OpenFrom.Seconds),
                             To = OpeningStatesCreator.CreateDate(nextDay, item.OpenTo.Hours, item.OpenTo.Minutes, item.OpenTo.Seconds),
                             State = OpenState.Open,
+                            Type = FromToTime.FromToType.OpeningHour,
                         };
                     }
                     if (result.Any(e => e.IsEquals(fromToTime)) == false)
@@ -382,6 +401,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                         From = run,
                         To = CreateDate(run, 23, 59, 59),
                         State = OpenState.ClosedPermanent,
+                        Type = FromToTime.FromToType.SpecialOpeningHour,
                     });
                 }
 
@@ -394,7 +414,8 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                         {
                             From = item.From,
                             To = item.To ?? CreateDate(run, 23, 59, 59),
-                            State = item.State
+                            State = item.State,
+                            Type = FromToTime.FromToType.SpecialOpeningHour,
                         });
                     }
 
@@ -426,6 +447,7 @@ namespace QTHungryDogs.Logic.Modules.OpeningState
                         From = item.To.AddSeconds(1),
                         To = last.To,
                         State = last.State,
+                        Type = last.Type,
                     });
                     last.To = item.From.AddSeconds(-1);
                 }
