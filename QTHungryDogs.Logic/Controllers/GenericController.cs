@@ -772,8 +772,13 @@ namespace QTHungryDogs.Logic.Controllers
                 ValidateEntity(ActionType.Insert, entity);
                 BeforeActionExecute(ActionType.Insert, entity);
                 await BeforeActionExecuteAsync(ActionType.Insert, entity).ConfigureAwait(false);
+                BeforeExecuteInsert(entity);
             }
             await EntitySet.AddRangeAsync(entities).ConfigureAwait(false);
+            foreach (var entity in entities)
+            {
+                AfterExecuteInsert(entity);
+            }
             AfterActionExecute(ActionType.InsertArray);
             return entities;
         }
@@ -834,8 +839,13 @@ namespace QTHungryDogs.Logic.Controllers
                 ValidateEntity(ActionType.Update, entity);
                 BeforeActionExecute(ActionType.Update, entity);
                 await BeforeActionExecuteAsync(ActionType.Update, entity).ConfigureAwait(false);
+                BeforeExecuteUpdate(entity);
             }
             EntitySet.UpdateRange(entities);
+            foreach (var entity in entities)
+            {
+                AfterExecuteUpdate(entity);
+            }
             AfterActionExecute(ActionType.UpdateArray);
             return entities;
         }
