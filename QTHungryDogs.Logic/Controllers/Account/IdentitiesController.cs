@@ -1,7 +1,6 @@
 ﻿//@CodeCopy
 //MdStart
 #if ACCOUNT_ON
-using QTHungryDogs.Logic.Entities.Account;
 using System.Reflection;
 
 namespace QTHungryDogs.Logic.Controllers.Account
@@ -18,7 +17,7 @@ namespace QTHungryDogs.Logic.Controllers.Account
         {
         }
 
-        protected override void BeforeActionExecute(ActionType actionType, Identity entity)
+        protected override void BeforeActionExecute(ActionType actionType, Entities.Account.Identity entity)
         {
             if (actionType == ActionType.Insert)
             {
@@ -46,7 +45,7 @@ namespace QTHungryDogs.Logic.Controllers.Account
 
         public async Task AddRoleAsync(int id, int roleId)
         {
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Create).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(AddRoleAsync)).ConfigureAwait(false);
 
             using var roleCtrl = new RolesController(this);
             var role = await roleCtrl.GetByIdAsync(roleId).ConfigureAwait(false);
@@ -63,7 +62,7 @@ namespace QTHungryDogs.Logic.Controllers.Account
         }
         public async Task RemoveRoleAsync(int id, int roleId)
         {
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Delete).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(RemoveRoleAsync)).ConfigureAwait(false);
 
             using var roleCtrl = new RolesController(this);
             var role = await roleCtrl.GetByIdAsync(roleId).ConfigureAwait(false);

@@ -188,7 +188,7 @@ namespace QTHungryDogs.Logic.Modules.Account
         [Authorize]
         public static async Task LogoutAsync(string sessionToken)
         {
-            await Authorization.CheckAuthorizationAsync(sessionToken, MethodBase.GetCurrentMethod(), AccessType.QueryBy).ConfigureAwait(false);
+            await Authorization.CheckAuthorizationAsync(sessionToken, typeof(AccountManager), nameof(LogoutAsync)).ConfigureAwait(false);
 
             try
             {
@@ -216,13 +216,13 @@ namespace QTHungryDogs.Logic.Modules.Account
             }
             catch (AuthorizationException ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error in {MethodBase.GetCurrentMethod()?.Name}: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"Error in {typeof(AccountManager)?.Name}: {ex.Message}");
             }
         }
         [Authorize]
         public static async Task<IEnumerable<string>> QueryRolesAsync(string sessionToken)
         {
-            await Authorization.CheckAuthorizationAsync(sessionToken, MethodBase.GetCurrentMethod(), AccessType.QueryBy).ConfigureAwait(false);
+            await Authorization.CheckAuthorizationAsync(sessionToken, typeof(AccountManager), nameof(QueryRolesAsync)).ConfigureAwait(false);
 
             var loginSession = await QueryAliveSessionAsync(sessionToken).ConfigureAwait(false);
 
@@ -231,7 +231,7 @@ namespace QTHungryDogs.Logic.Modules.Account
         [Authorize]
         public static async Task<bool> HasRoleAsync(string sessionToken, string role)
         {
-            await Authorization.CheckAuthorizationAsync(sessionToken, MethodBase.GetCurrentMethod(), AccessType.QueryBy).ConfigureAwait(false);
+            await Authorization.CheckAuthorizationAsync(sessionToken, typeof(AccountManager), nameof(HasRoleAsync)).ConfigureAwait(false);
 
             var loginSession = await QueryAliveSessionAsync(sessionToken).ConfigureAwait(false);
 
@@ -240,14 +240,14 @@ namespace QTHungryDogs.Logic.Modules.Account
         [Authorize]
         public static async Task<LoginSession?> QueryLoginAsync(string sessionToken)
         {
-            await Authorization.CheckAuthorizationAsync(sessionToken, MethodBase.GetCurrentMethod(), AccessType.QueryBy).ConfigureAwait(false);
+            await Authorization.CheckAuthorizationAsync(sessionToken, typeof(AccountManager), nameof(QueryLoginAsync)).ConfigureAwait(false);
 
             return await QueryAliveSessionAsync(sessionToken).ConfigureAwait(false);
         }
         [Authorize]
         public static async Task ChangePasswordAsync(string sessionToken, string oldPassword, string newPassword)
         {
-            await Authorization.CheckAuthorizationAsync(sessionToken, MethodBase.GetCurrentMethod(), AccessType.Update).ConfigureAwait(false);
+            await Authorization.CheckAuthorizationAsync(sessionToken, typeof(AccountManager), nameof(ChangePasswordAsync)).ConfigureAwait(false);
 
             var login = await QueryAliveSessionAsync(sessionToken).ConfigureAwait(false)
                         ?? throw new AuthorizationException(ErrorType.InvalidToken);
@@ -283,7 +283,7 @@ namespace QTHungryDogs.Logic.Modules.Account
         [Authorize("SysAdmin", "AppAdmin")]
         public static async Task ChangePasswordForAsync(string sessionToken, string email, string newPassword)
         {
-            await Authorization.CheckAuthorizationAsync(sessionToken, MethodBase.GetCurrentMethod(), AccessType.Update).ConfigureAwait(false);
+            await Authorization.CheckAuthorizationAsync(sessionToken, typeof(AccountManager), nameof(ChangePasswordForAsync)).ConfigureAwait(false);
 
             var login = await QueryAliveSessionAsync(sessionToken).ConfigureAwait(false)
                         ?? throw new AuthorizationException(ErrorType.InvalidToken);
@@ -319,7 +319,7 @@ namespace QTHungryDogs.Logic.Modules.Account
         [Authorize("SysAdmin", "AppAdmin")]
         public static async Task ResetFailedCountForAsync(string sessionToken, string email)
         {
-            await Authorization.CheckAuthorizationAsync(sessionToken, MethodBase.GetCurrentMethod(), AccessType.Update).ConfigureAwait(false);
+            await Authorization.CheckAuthorizationAsync(sessionToken, typeof(AccountManager), nameof(ResetFailedCountForAsync)).ConfigureAwait(false);
 
             var login = await QueryAliveSessionAsync(sessionToken).ConfigureAwait(false)
                         ?? throw new AuthorizationException(ErrorType.InvalidToken);
@@ -553,7 +553,7 @@ namespace QTHungryDogs.Logic.Modules.Account
                     }
                     catch (Exception ex)
                     {
-                        System.Diagnostics.Debug.WriteLine($"Error in {MethodBase.GetCurrentMethod()?.Name}: {ex.Message}");
+                        System.Diagnostics.Debug.WriteLine($"Error in {typeof(AccountManager)?.Name}: {ex.Message}");
                     }
                     LastLoginUpdate = DateTime.Now;
                     await Task.Delay(UpdateDelay).ConfigureAwait(false);

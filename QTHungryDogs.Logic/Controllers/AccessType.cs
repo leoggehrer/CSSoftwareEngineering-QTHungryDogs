@@ -26,6 +26,8 @@ namespace QTHungryDogs.Logic.Controllers
         Save = 2 * UpdateArray,
         Reject = 2 * Save,
 
+        Logout = 2 * Reject,
+
         Get = GetBy + GetAll,
         Query = QueryBy + QueryAll,
     }

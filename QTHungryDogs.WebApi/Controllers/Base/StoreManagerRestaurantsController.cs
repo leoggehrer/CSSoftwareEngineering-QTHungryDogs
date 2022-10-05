@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using QTHungryDogs.Logic.Contracts;
-using System.ComponentModel;
 
 namespace QTHungryDogs.WebApi.Controllers.Base
 {

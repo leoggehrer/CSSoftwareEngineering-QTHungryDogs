@@ -6,7 +6,6 @@ namespace QTHungryDogs.Logic.Controllers
 {
 #if ACCOUNT_ON
     using QTHungryDogs.Logic.Modules.Security;
-    using System.Reflection;
 #endif
     public abstract partial class ControllerObject : IDisposable
     {
@@ -88,25 +87,23 @@ namespace QTHungryDogs.Logic.Controllers
         #endregion Instance-Constructors
 
 #if ACCOUNT_ON
-        protected virtual Task CheckAuthorizationAsync(Type subjectType, MethodBase? methodBase, AccessType accessType)
+        protected virtual Task CheckAuthorizationAsync(Type subjectType, string action)
         {
-            return CheckAuthorizationAsync(subjectType, methodBase, accessType, string.Empty);
+            return Authorization.CheckAuthorizationAsync(SessionToken, subjectType, action, string.Empty);
         }
-        protected virtual async Task CheckAuthorizationAsync(Type subjectType, MethodBase? methodBase, AccessType accessType, string infoData)
+        protected virtual Task CheckAuthorizationAsync(Type subjectType, string action, string infoData)
         {
-            _ = methodBase ?? throw new ArgumentNullException(nameof(methodBase));
-
-            bool handled = false;
-
-            BeforeCheckAuthorization(subjectType, methodBase, accessType, ref handled);
-            if (handled == false)
-            {
-                await Authorization.CheckAuthorizationAsync(SessionToken, subjectType, methodBase, accessType, infoData).ConfigureAwait(false);
-            }
-            AfterCheckAuthorization(subjectType, methodBase, accessType);
+            return Authorization.CheckAuthorizationAsync(SessionToken, subjectType, action, infoData);
         }
-        partial void BeforeCheckAuthorization(Type subjectType, MethodBase methodBase, AccessType accessType, ref bool handled);
-        partial void AfterCheckAuthorization(Type subjectType, MethodBase methodBase, AccessType accessType);
+
+        protected virtual Task CheckAuthorizationAsync(Type subjectType, string action, params string[] roles)
+        {
+            return Authorization.CheckAuthorizationAsync(SessionToken, subjectType, action, string.Empty, roles);
+        }
+        protected virtual Task CheckAuthorizationAsync(Type subjectType, string action, string infoData, params string[] roles)
+        {
+            return Authorization.CheckAuthorizationAsync(SessionToken, subjectType, action, infoData, roles);
+        }
 #endif
 
         #region Dispose pattern

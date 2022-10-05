@@ -99,7 +99,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<int> CountAsync()
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.QueryCount).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(CountAsync)).ConfigureAwait(false);
 #endif
             return await ExecuteCountAsync().ConfigureAwait(false);
         }
@@ -119,7 +119,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<int> CountAsync(string predicate)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.QueryCountBy).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(CountAsync), predicate).ConfigureAwait(false);
 #endif
             return await ExecuteCountAsync(predicate, Array.Empty<string>()).ConfigureAwait(false);
         }
@@ -132,7 +132,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<int> CountAsync(string predicate, params string[] includeItems)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.QueryCountBy).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(CountAsync), predicate).ConfigureAwait(false);
 #endif
             return await ExecuteCountAsync(predicate, includeItems).ConfigureAwait(false);
         }
@@ -179,7 +179,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<TEntity?> GetByIdAsync(int id)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.GetBy).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(GetByIdAsync), id.ToString()).ConfigureAwait(false);
 #endif
             return await ExecuteGetByIdAsync(id).ConfigureAwait(false);
         }
@@ -192,7 +192,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<TEntity?> GetByIdAsync(int id, params string[] includeItems)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.GetBy).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(GetByIdAsync), id.ToString()).ConfigureAwait(false);
 #endif
             return await ExecuteGetByIdAsync(id, includeItems).ConfigureAwait(false);
         }
@@ -205,7 +205,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<TEntity[]> GetAllAsync()
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.GetAll).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(GetAllAsync)).ConfigureAwait(false);
 #endif
             return await ExecuteGetAllAsync().ConfigureAwait(false);
         }
@@ -217,7 +217,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<TEntity[]> GetAllAsync(params string[] includeItems)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.GetAll).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(GetAllAsync)).ConfigureAwait(false);
 #endif
             return await ExecuteGetAllAsync(includeItems).ConfigureAwait(false);
         }
@@ -229,7 +229,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<TEntity[]> GetAllAsync(string orderBy)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.GetAll).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(GetAllAsync)).ConfigureAwait(false);
 #endif
             return await ExecuteGetAllAsync(orderBy).ConfigureAwait(false);
         }
@@ -242,7 +242,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<TEntity[]> GetAllAsync(string orderBy, params string[] includeItems)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.GetAll).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(GetAllAsync)).ConfigureAwait(false);
 #endif
             return await ExecuteGetAllAsync(orderBy, includeItems).ConfigureAwait(false);
         }
@@ -257,7 +257,7 @@ namespace QTHungryDogs.Logic.Controllers
         {
             CheckPageParams(pageIndex, pageSize);
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.GetPageList).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(GetPageListAsync)).ConfigureAwait(false);
 #endif
             return await ExecuteGetPageListAsync(pageIndex, pageSize).ConfigureAwait(false);
         }
@@ -272,7 +272,7 @@ namespace QTHungryDogs.Logic.Controllers
         {
             CheckPageParams(pageIndex, pageSize);
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.GetPageList).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(GetPageListAsync)).ConfigureAwait(false);
 #endif
             return await ExecuteGetPageListAsync(pageIndex, pageSize, includeItems).ConfigureAwait(false);
         }
@@ -287,7 +287,7 @@ namespace QTHungryDogs.Logic.Controllers
         {
             CheckPageParams(pageIndex, pageSize);
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.GetPageList).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(GetPageListAsync)).ConfigureAwait(false);
 #endif
             return await ExecuteGetPageListAsync(orderBy, pageIndex, pageSize).ConfigureAwait(false);
         }
@@ -303,7 +303,7 @@ namespace QTHungryDogs.Logic.Controllers
         {
             CheckPageParams(pageIndex, pageSize);
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.GetPageList).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(GetPageListAsync)).ConfigureAwait(false);
 #endif
             return await ExecuteGetPageListAsync(orderBy, pageIndex, pageSize, includeItems).ConfigureAwait(false);
         }
@@ -452,7 +452,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<TEntity[]> QueryAsync(string predicate)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.QueryBy).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(QueryAsync), predicate).ConfigureAwait(false);
 #endif
             int idx = 0, qryCount;
             var result = new List<TEntity>();
@@ -473,7 +473,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<TEntity[]> QueryAsync(string predicate, params string[] includeItems)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.QueryBy).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(QueryAsync), predicate).ConfigureAwait(false);
 #endif
             int idx = 0, qryCount;
             var result = new List<TEntity>();
@@ -494,7 +494,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<TEntity[]> QueryAsync(string predicate, string orderBy)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.QueryBy).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(QueryAsync), predicate).ConfigureAwait(false);
 #endif
             int idx = 0, qryCount;
             var result = new List<TEntity>();
@@ -516,7 +516,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<TEntity[]> QueryAsync(string predicate, string orderBy, params string[] includeItems)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.QueryBy).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(QueryAsync), predicate).ConfigureAwait(false);
 #endif
             int idx = 0, qryCount;
             var result = new List<TEntity>();
@@ -539,7 +539,7 @@ namespace QTHungryDogs.Logic.Controllers
         {
             CheckPageParams(pageIndex, pageSize);
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.QueryBy).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(QueryAsync), predicate).ConfigureAwait(false);
 #endif
             return await ExecuteQueryAsync(predicate, pageIndex, pageSize).ConfigureAwait(false);
         }
@@ -555,7 +555,7 @@ namespace QTHungryDogs.Logic.Controllers
         {
             CheckPageParams(pageIndex, pageSize);
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.QueryBy).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(QueryAsync), predicate).ConfigureAwait(false);
 #endif
             return await ExecuteQueryAsync(predicate, pageIndex, pageSize, includeItems).ConfigureAwait(false);
         }
@@ -571,7 +571,7 @@ namespace QTHungryDogs.Logic.Controllers
         {
             CheckPageParams(pageIndex, pageSize);
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.QueryBy).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(QueryAsync), predicate).ConfigureAwait(false);
 #endif
             return await ExecuteQueryAsync(predicate, orderBy, pageIndex, pageSize).ConfigureAwait(false);
         }
@@ -588,7 +588,7 @@ namespace QTHungryDogs.Logic.Controllers
         {
             CheckPageParams(pageIndex, pageSize);
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.QueryBy).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(QueryAsync), predicate).ConfigureAwait(false);
 #endif
             return await ExecuteQueryAsync(predicate, orderBy, pageIndex, pageSize, includeItems).ConfigureAwait(false);
         }
@@ -728,7 +728,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<TEntity> InsertAsync(TEntity entity)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Insert).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(InsertAsync)).ConfigureAwait(false);
 #endif
             return await ExecuteInsertAsync(entity).ConfigureAwait(false);
         }
@@ -756,7 +756,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<IEnumerable<TEntity>> InsertAsync(IEnumerable<TEntity> entities)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.InsertArray).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(InsertAsync), "Array").ConfigureAwait(false);
 #endif
             return await ExecuteInsertAsync(entities).ConfigureAwait(false);
         }
@@ -790,7 +790,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<TEntity> UpdateAsync(TEntity entity)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Update).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(UpdateAsync)).ConfigureAwait(false);
 #endif
             return await ExecuteUpdateAsync(entity).ConfigureAwait(false);
         }
@@ -818,7 +818,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task<IEnumerable<TEntity>> UpdateAsync(IEnumerable<TEntity> entities)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.UpdateArray).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(UpdateAsync), "Array").ConfigureAwait(false);
 #endif
             return await ExecuteUpdateAsync(entities).ConfigureAwait(false);
         }
@@ -851,7 +851,7 @@ namespace QTHungryDogs.Logic.Controllers
         public virtual async Task DeleteAsync(int id)
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Delete).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(DeleteAsync), id.ToString()).ConfigureAwait(false);
 #endif
             await ExecuteDeleteAsync(id).ConfigureAwait(false);
         }
@@ -886,7 +886,7 @@ namespace QTHungryDogs.Logic.Controllers
         public async Task<int> SaveChangesAsync()
         {
 #if ACCOUNT_ON
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Save).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(SaveChangesAsync)).ConfigureAwait(false);
 #endif
             return await ExecuteSaveChangesAsync().ConfigureAwait(false);
         }

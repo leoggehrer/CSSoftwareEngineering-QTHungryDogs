@@ -47,7 +47,7 @@ namespace QTHungryDogs.Logic.Controllers.Base
 
         public async Task AddStoreManagerAsync(int id, int identityId)
         {
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Create).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(AddStoreManagerAsync), $"id={id}, identityId={identityId}").ConfigureAwait(false);
 
             using var identityCtrl = new IdentitiesController(this);
             var restaurant = await GetByIdAsync(id).ConfigureAwait(false);
@@ -65,7 +65,7 @@ namespace QTHungryDogs.Logic.Controllers.Base
         }
         public async Task RemoveStoreManagerAsync(int id, int identityId)
         {
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Create).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(RemoveStoreManagerAsync), $"id={id}, identityId={identityId}").ConfigureAwait(false);
 
             var restaurant = await GetByIdAsync(id).ConfigureAwait(false);
 
@@ -82,10 +82,9 @@ namespace QTHungryDogs.Logic.Controllers.Base
             }
         }
 
-        [Modules.Security.Authorize("SysAdmin", "AppAdmin", "StoreManager")]
         public async Task<bool> CloseNowAsync(int id)
         {
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Create).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(CloseNowAsync), $"id={id}", StaticLiterals.AppRoles).ConfigureAwait(false);
 
             var result = false;
             var restaurant = await ExecuteGetByIdAsync(id).ConfigureAwait(false);
@@ -117,10 +116,9 @@ namespace QTHungryDogs.Logic.Controllers.Base
             }
             return result;
         }
-        [Modules.Security.Authorize("SysAdmin", "AppAdmin", "StoreManager")]
         public async Task<bool> OpenNowAsync(int id)
         {
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Create).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(OpenNowAsync), $"id={id}", StaticLiterals.AppRoles).ConfigureAwait(false);
 
             var result = false;
             var restaurant = await ExecuteGetByIdAsync(id).ConfigureAwait(false);
@@ -167,10 +165,9 @@ namespace QTHungryDogs.Logic.Controllers.Base
             }
             return result;
         }
-        [Modules.Security.Authorize("SysAdmin", "AppAdmin", "StoreManager")]
         public async Task<bool> SetBusyAsync(int id)
         {
-            await CheckAuthorizationAsync(GetType(), MethodBase.GetCurrentMethod(), AccessType.Create).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(SetBusyAsync), $"id={id}", StaticLiterals.AppRoles).ConfigureAwait(false);
 
             var result = false;
             var restaurant = await ExecuteGetByIdAsync(id).ConfigureAwait(false);
@@ -220,7 +217,7 @@ namespace QTHungryDogs.Logic.Controllers.Base
         }
         public async Task<Restaurant[]> QueryStoreManagerRestaurantsAsync()
         {
-            await CheckAuthorizationAsync(GetType(), GetType().GetMethod(nameof(QueryStoreManagerRestaurantsAsync)), AccessType.Create).ConfigureAwait(false);
+            await CheckAuthorizationAsync(GetType(), nameof(QueryStoreManagerRestaurantsAsync), StaticLiterals.AppRoles).ConfigureAwait(false);
 
             var curSession = await AccountManager.QueryAliveSessionAsync(SessionToken).ConfigureAwait(false);
             var restaurants = Array.Empty<Entities.Base.Restaurant>();
@@ -252,7 +249,6 @@ namespace QTHungryDogs.Logic.Controllers.Base
             }
             return query.ToArrayAsync();
         }
-        [Modules.Security.Authorize("SysAdmin", "AppAdmin", "StoreManager")]
         private async Task CheckAuthorizationAsync(Restaurant restaurant)
         {
             var curSession = await AccountManager.QueryAliveSessionAsync(SessionToken).ConfigureAwait(false);
