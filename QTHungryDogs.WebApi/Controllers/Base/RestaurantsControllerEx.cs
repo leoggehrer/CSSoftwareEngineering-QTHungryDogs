@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QTHungryDogs.WebApi.Models.Base;
 using QTHungryDogs.WebApi.Models.OpeningState;
 using System.Xml.Linq;
 

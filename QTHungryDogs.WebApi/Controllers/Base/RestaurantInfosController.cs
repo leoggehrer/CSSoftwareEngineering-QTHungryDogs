@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QTHungryDogs.Logic.Contracts;
+using System;
 using System.ComponentModel;
 
 namespace QTHungryDogs.WebApi.Controllers.Base
@@ -27,5 +28,27 @@ namespace QTHungryDogs.WebApi.Controllers.Base
 
             return entities.Select(e => Models.Base.Restaurant.Create(e)).ToArray();
         }
+
+        /// <summary>
+        /// Get a single model by Id.
+        /// </summary>
+        /// <param name="id">Id of the model to get</param>
+        /// <response code="200">Model found</response>
+        /// <response code="404">Model not found</response>
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public virtual async Task<ActionResult<Models.Base.Restaurant?>> GetAsync(int id)
+        {
+            var instanceAccess = HttpContext.RequestServices.GetRequiredService<Logic.Contracts.Base.IRestaurantsAccess<Logic.Entities.Base.Restaurant>>();
+            var entity = default(Logic.Entities.Base.Restaurant);
+
+            if (instanceAccess != null)
+            {
+                entity = await instanceAccess.GetByIdAsync(id);
+            }
+            return entity == null ? NotFound() : Ok(Models.Base.Restaurant.Create(entity));
+        }
+
     }
 }

@@ -215,6 +215,10 @@ namespace QTHungryDogs.Logic.Controllers.Base
         {
             return base.ExecuteGetByIdAsync(id);
         }
+        public override Task<Restaurant?> GetByIdAsync(int id, params string[] includeItems)
+        {
+            return base.ExecuteGetByIdAsync(id, includeItems);
+        }
         public async Task<Restaurant[]> QueryStoreManagerRestaurantsAsync()
         {
             await CheckAuthorizationAsync(GetType(), nameof(QueryStoreManagerRestaurantsAsync), StaticLiterals.AppRoles).ConfigureAwait(false);
